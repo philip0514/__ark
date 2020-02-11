@@ -1,0 +1,32 @@
+{
+    "name": "philip0514/ark",
+    "description": "laravel dashboard CMS",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philip",
+            "email": "philip0514@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "aws/aws-sdk-php": "~3.0",
+        "doctrine/dbal": "^2.9",
+        "barryvdh/laravel-elfinder": "^0.4.3",
+        "guzzlehttp/guzzle": "^6.5",
+        "intervention/image": "^2.5",
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "predis/predis": "^1.0",
+        "spatie/laravel-permission": "^3.2",
+        "symfony/thanks": "^1.1.0",
+        "yajra/laravel-datatables-oracle": "~9.0"
+    },
+    "autoload": {
+        "files": [
+            "philip0514/ark/src/Helpers/autoload.php"
+        ],
+        "psr-4": {
+            "Philip0514\\Ark\\": "src"
+        }
+    }
+}
