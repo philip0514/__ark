@@ -20,6 +20,11 @@ class RolesTableSeeder extends Seeder
             $structure_id[] = $structures[$i]->id;
         }
 
+        $role = Role::where('name', 'Super Admin')->first();
+        if(isset($role->id)){
+            return false;
+        }
+
         $role = Role::create([
             'name'          =>  'Super Admin',
             'guard_name'    =>  'admin',

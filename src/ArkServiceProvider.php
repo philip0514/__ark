@@ -1,46 +1,14 @@
 <?php
 namespace Philip0514\Ark;
-/*
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\AliasLoader;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
-*/
+
 use Illuminate\Support\ServiceProvider;
-use Spatie\Permission\PermissionServiceProvider;
-use Intervention\Image\ImageServiceProvider;
 
 class ArkServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+
         $this->loadRoutesFrom(__DIR__.'/routes/ark.php');
-
-        $this->publishes([
-            __DIR__.'/../publishable/config/ark.php' => config_path('ark.php'),
-            __DIR__.'/../publishable/config/datatables.php' => config_path('datatables.php'),
-            __DIR__.'/../publishable/config/elfinder.php' => config_path('elfinder.php'),
-            __DIR__.'/../publishable/config/image.php' => config_path('image.php'),
-            __DIR__.'/../publishable/config/permission.php' => config_path('permission.php'),
-        ], 'config');
-
-        /*
-        $this->mergeConfigFrom(
-            __DIR__.'/../publishable/config/app/provider.php', 'app.providers'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__.'/../publishable/config/app/alias.php', 'app.aliases'
-        );
-        */
 
         $this->mergeConfigFrom(
             __DIR__.'/../publishable/config/auth/guard.php', 'auth.guards'
@@ -53,25 +21,25 @@ class ArkServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../publishable/config/auth/provider.php', 'auth.providers'
         );
-
-        $this->loadMigrationsFrom(__DIR__.'/..//publishable/databases/migrations');
     }
 
     // 註冊套件函式
     public function register()
     {
-        //$this->app->register(ImageServiceProvider::class);
-        //$this->app->register(PermissionServiceProvider::class);
+        $this->loadViewsFrom(__DIR__.'/views', 'ark');
 
         $this->app->singleton('ark', function ($app) {
             return new Ark();
         });
-        
-        if($this->app->runningInConsole()){
-            
-        }
 
-        $this->registerPublishableResources();
+        $this->registerHelpers();
+
+        if ($this->app->runningInConsole()) {
+            //$this->removePublishableResources();exit;
+            $this->loadMigrationsFrom(__DIR__.'/../publishable/databases/migrations');
+            $this->registerPublishableResources();
+            $this->registerConsoleCommands();
+        }
     }
 
     /**
@@ -85,10 +53,79 @@ class ArkServiceProvider extends ServiceProvider
             'seeds' => [
                 "{$publishablePath}/databases/seeds/" => database_path('seeds'),
             ],
+            'config'    =>  [
+                "{$publishablePath}/config/ark.php" => config_path('ark.php'),
+                "{$publishablePath}/config/datatables.php" => config_path('datatables.php'),
+                "{$publishablePath}/config/elfinder.php" => config_path('elfinder.php'),
+                "{$publishablePath}/config/image.php" => config_path('image.php'),
+                "{$publishablePath}/config/permission.php" => config_path('permission.php'),
+            ],
+            'ark' => [
+                "{$publishablePath}/assets/" => public_path('ark'),
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
         }
     }
+
+    /**
+     * Register the commands accessible from the Console.
+     */
+    private function registerConsoleCommands()
+    {
+        $this->commands(Commands\InstallCommand::class);
+    }
+
+    private function registerHelpers()
+    {
+        // Load the helpers in app/Http/helpers.php
+        if (file_exists($file = dirname(__DIR__).'/src/Helpers/autoload.php'))
+        {
+            require $file;
+        }
+    }
+
+    private function removePublishableResources()
+    {
+        $rows1 = [
+            config_path('ark.php'),
+            config_path('datatables.php'),
+            config_path('elfinder.php'),
+            config_path('image.php'),
+            config_path('permission.php'),
+            database_path('seeds'),
+            public_path('ark'),
+        ];
+        for($i=0; $i<sizeof($rows1); $i++){
+            if(is_dir($rows1[$i])){
+                $this->deleteDirectory($rows1[$i]);
+            }else{
+                unlink($rows1[$i]);
+            }
+        }
+    }
+
+    private function deleteDirectory($dirname)
+    {
+        if (is_dir($dirname)){
+            $dir_handle = opendir($dirname);
+        }
+        if (!$dir_handle){
+            return false;
+        }
+        while($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($dirname."/".$file)){
+                    unlink($dirname."/".$file);
+                }else{
+                    $this->deleteDirectory($dirname.'/'.$file);
+                }
+            }
+        }
+        closedir($dir_handle);
+        rmdir($dirname);
+        return true;
+}
 }

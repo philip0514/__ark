@@ -1,6 +1,7 @@
 <?php
+use Philip0514\Ark\Repositories\AdministratorRepository;
 
-$structure = [];
+$structure = AdministratorRepository::structure();
 
 $route = app('Illuminate\Routing\Router');
 
@@ -12,10 +13,20 @@ $route->group([
     $route->get('tinymce5', 'ElfinderController@showTinyMCE5')->name('elfinder.tinymce5');
 });
 
+$route->group([
+    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'prefix'    =>  config('ark.prefix'),
+], function($route){
+    $route->get('ark/js/route', 'DashboardController@showRoute')->name('ark.route');
+});
+
 //login
 $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  config('ark.prefix'),
+    'middleware'    =>  [
+        '\Illuminate\Session\Middleware\StartSession',
+    ],
 ], function($route){
     //login
     $route->match(['get', 'post'], 'login', 'DashboardController@login')->name('login');
@@ -26,6 +37,9 @@ $route->group([
 $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  env('DASHBOARD_PREFIX'),
+    'middleware'    =>  [
+        '\Illuminate\Session\Middleware\StartSession',
+    ],
 ], function($route) use ($structure){
     $route->post('request/toggle_sidebar', 'RequestController@toggle_sidebar')->name('request.toggle_sidebar');
     $route->post('request/zip', 'RequestController@zip')->name('request.zip');
@@ -37,7 +51,7 @@ $route->group([
     $route->match(['get', 'post'], 'media/editor', 'MediaController@editor')->name('media.editor');
 
     //tag
-    $route->get('tag/seark', 'TagController@seark')->name('tag.seark');
+    $route->get('tag/search', 'TagController@search')->name('tag.search');
     $route->post('tag/insert', 'TagController@insert')->name('tag.insert');
 
     /*
@@ -54,16 +68,16 @@ $route->group([
     $route->match(['get', 'post', 'delete'], 'product/{product_id}/price/{id?}', 'ProductController@price')->name('product.price');
     $route->match(['get', 'post', 'delete'], 'product/{product_id}/inventory/{id?}', 'ProductController@inventory')->name('product.inventory');
     $route->match(['get', 'post', 'delete'], 'product/{product_id}/plus/{id?}', 'ProductController@plus')->name('product.plus');
-    $route->get('product/seark', 'ProductController@seark')->name('product.seark');
+    $route->get('product/search', 'ProductController@search')->name('product.search');
     $route->get('productCategory/product', 'ProductCategoryController@product')->name('productCategory.product');
 
     //coupon
     $route->match(['get', 'post'], 'coupon/{id}/datatableUser', 'CouponController@datatableUser')->name('coupon.datatableUser');
     $route->match(['get', 'post', 'delete'], 'coupon/{coupon_id}/user/{user_id?}', 'CouponController@user')->name('coupon.user');
 
-    //user
-    $route->get('user/seark', 'UserController@seark')->name('user.seark');
     */
+    //user
+    $route->get('user/search', 'UserController@search')->name('user.search');
 
     for($i=0; $i<sizeof($structure); $i++){
         $route->match(['get', 'post'], sprintf('%s/validate', $structure[$i]['url']), $structure[$i]['controller'].'@validate')->name(sprintf('%s.validate', $structure[$i]['url']));
@@ -79,12 +93,13 @@ $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  config('ark.prefix'),
     'middleware'    =>  [
+        '\Illuminate\Session\Middleware\StartSession',
         '\Philip0514\Ark\Middleware\Url',
         '\Philip0514\Ark\Middleware\Permission',
     ],
 ], function($route) use ($structure){
     //dashboard
-    $route->get('/', 'WelcomeController@index')->name('index');
+    //$route->get('/', 'WelcomeController@index')->name('index');
     $route->get('/', 'DashboardController@index')->name('dashboard');
     $route->match(['get', 'post'], 'profile', 'AdministratorController@profile')->name('administrator.profile');
 

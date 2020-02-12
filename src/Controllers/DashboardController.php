@@ -44,7 +44,7 @@ class DashboardController extends Controller
             'config'    =>  $this->config,
             'admin'     =>  $admin,
         ];
-        return $this->view('ark.dashboard.index', $data);
+        return $this->view('ark::dashboard.index', $data);
     }
 
     public function login(Request $request)
@@ -78,7 +78,7 @@ class DashboardController extends Controller
 			return redirect()->route('dashboard');
         }
 
-        return view('ark.dashboard.login');
+        return view('ark::dashboard.login');
     }
 
     public function logout(Request $request)
@@ -94,29 +94,13 @@ class DashboardController extends Controller
         $rows1 = [
             'request.toggle_sidebar',
             'request.zip',
-            'tag.seark',
+            'tag.search',
             'tag.insert',
             'media.manager',
             'media.upload',
             'media.data',
             'media.editor',
-            'product.createSpec',
-            'product.createCategory',
-            'product.createColor',
-            'product.createStyle',
-            'product.createInventory',
-            'product.createPlus',
-            'product.datatablePrice',
-            'product.datatablePlus',
-            'product.datatableInventory',
-            'product.price',
-            'product.inventory',
-            'product.plus',
-            'product.seark',
-            'productCategory.product',
-            'coupon.datatableUser',
-            'coupon.user',
-            'user.seark',
+            'user.search',
         ];
 
         $result = [];
@@ -125,7 +109,7 @@ class DashboardController extends Controller
 
             switch(sizeof($rows2)){
                 case 2:
-                    $result[ $rows2[0] ][ $rows2[1] ] = $this->route_uri($rows1[$i]);
+                    $result[ $rows2[0] ][ $rows2[1] ] = $this->routeUri($rows1[$i]);
                 break;
             }
         }
@@ -133,13 +117,15 @@ class DashboardController extends Controller
         $data = [
             'route'     =>  json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
         ];
-        $contents =  view('ark.dashboard.route', $data);
+        $contents =  view('ark::dashboard.route', $data);
 
         return response($contents, 200)->header('Content-Type', 'application/javascript');
     }
 
-    private function route_uri($name)
+    private function routeUri($name)
     {
-        return app('router')->getRoutes()->getByName($name)->uri();
+        $uri = app('router')->getRoutes()->getByName($name)->uri;
+        //return app('router')->getRoutes()->getByName($name)->uri();
+        return prefixUri($uri);
     }
 }

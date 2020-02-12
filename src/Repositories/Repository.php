@@ -119,15 +119,15 @@ class Repository
 
     public function datatable($request)
     {
-        $seark = $request->input('seark', null);
+        $search = $request->input('search', null);
         $parameter = $request->input('parameter', null);
         $admin = session()->get('admin');
         $route = $request->route()->getName();
         list($controller, $name) = explode('.', $route);
-        if($seark){
-            $admin['datatable'][$controller]['seark'] = $seark;
+        if($search){
+            $admin['datatable'][$controller]['search'] = $search;
         }else{
-			$admin['datatable'][$controller]['seark'] = null;
+			$admin['datatable'][$controller]['search'] = null;
         }
         if($parameter){
             $admin['datatable'][$controller]['parameter'] = $parameter;

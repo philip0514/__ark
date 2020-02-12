@@ -38,7 +38,7 @@ class Controller extends BaseController
 				'sort'				=>	0,
 				'import'			=>	0,
 				'export'			=>	0,
-				'seark'			=>	0,
+				'search'			=>	0,
 				'autocomplete'		=>	0,
             ],
 			'column'			=>	[
@@ -63,7 +63,7 @@ class Controller extends BaseController
 				'sort'				=>	'',
 				'import'			=>	'匯入',
 				'export'			=>	'匯出',
-				'seark'			=>	'',
+				'search'			=>	'',
             ],
             'path'				=>	[
 				'index'				=>	$this->path('', 1),
@@ -80,11 +80,11 @@ class Controller extends BaseController
 				'index'				=>	$this->path('index', 0),
 				'list'				=>	$this->path('list', 0),
 				'single'			=>	$this->path('single', 0),
-				//'seark'			=>	$this->path($this->class_name, 'seark', 0),
+				//'search'			=>	$this->path($this->class_name, 'search', 0),
 				//'sort'				=>	$this->path($this->class_name, 'sort', 0),
             ],
 			/*
-			'seark'			=>	[
+			'search'			=>	[
 				'input'				=>	[],		//html input name
 				'field'				=>	[],		//mysql field
 				'value'				=>	[],		//已搜尋的值
@@ -94,12 +94,12 @@ class Controller extends BaseController
 			'table'				=>	[],
 		];
 
-		//seark
+		//search
 		$session = session()->get('admin');
 
 		if(isset($session['datatable'][$config['controller']])){
-			if(isset($session['datatable'][$config['controller']]['seark'])){
-				$config['seark'] = $session['datatable'][$config['controller']]['seark'];
+			if(isset($session['datatable'][$config['controller']]['search'])){
+				$config['search'] = $session['datatable'][$config['controller']]['search'];
 			}
 			if(isset($session['datatable'][$config['controller']]['parameter'])){
 				$config['parameter'] = $session['datatable'][$config['controller']]['parameter'];
@@ -146,9 +146,9 @@ class Controller extends BaseController
 		}
 
 		$this->config = $config;
-    }
+	}
 
-    protected function datatable_config()
+    protected function datatableConfig()
     {
 		$config = $this->config;
 
@@ -161,7 +161,7 @@ class Controller extends BaseController
 			'info'				    =>	' _START_ ~ _END_ / 共 _TOTAL_ 筆 ',
 			'info_filtered'		    =>	'(全部 _MAX_ 筆)',
 			'zero'				    =>	'無資料',
-			'seark_placeholder'    =>	'敘述 必填',
+			'search_placeholder'    =>	'敘述 必填',
 
             'action'			    =>	$config['action'],
             'path'                  =>  $config['path'],
@@ -252,14 +252,15 @@ class Controller extends BaseController
 		if($slash){
 			return prefixUri(implode('/', $path));
 		}else{
-			return 'ark/'.implode('/', $path);
+			return 'ark::'.implode('.', $path);
 		}
     }
 
     protected function index(Request $request)
     {
 		$this->permissionCheck();
-		$this->datatable_config();
+		$this->datatableConfig();
+
 		$config = $this->config;
 
         $data = [
@@ -268,7 +269,7 @@ class Controller extends BaseController
         return $this->view($this->config['html']['list'], $data);
     }
 
-	protected function datatable_extend($datatable, $raw_columns)
+	protected function datatableExtend($datatable, $raw_columns)
 	{
 		return [
 			'datatable'		=>	$datatable,
@@ -378,7 +379,7 @@ class Controller extends BaseController
 			}
 		});
 
-		$result = $this->datatable_extend($datatable, $raw_columns);
+		$result = $this->datatableExtend($datatable, $raw_columns);
 		$datatable = $result['datatable'];
 		$raw_columns = array_merge($raw_columns, $result['raw_columns']);
 

@@ -19,13 +19,13 @@ class UserRepository extends Repository
 
 	public function newsletter_datatable($request)
 	{
-        $seark = $request->input('seark', null);
+        $search = $request->input('search', null);
         $parameter = $request->input('parameter', null);
         $admin = session()->get('admin');
         $route = $request->route()->getName();
         list($controller, $name) = explode('.', $route);
-        if($seark){
-            $admin['datatable'][$controller]['seark'] = $seark;
+        if($search){
+            $admin['datatable'][$controller]['search'] = $search;
         }
         if($parameter){
             $admin['datatable'][$controller]['parameter'] = $parameter;
@@ -119,7 +119,7 @@ class UserRepository extends Repository
         return 'true';
     }
 
-	public function seark($text)
+	public function search($text)
 	{
         $rows1 = $this->model
             ->checkTrashed()

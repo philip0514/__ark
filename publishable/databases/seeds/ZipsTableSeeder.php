@@ -11,6 +11,11 @@ class ZipsTableSeeder extends Seeder
      */
     public function run()
     {
+        $count = DB::table('zips')->count();
+        if($count){
+            return false;
+        }
+
         DB::table('zips')->insert([
             ["id" => 1, "city_id" => 0, "name" => "台北市", "code" => null, "sort" => 0],
             ["id" => 2, "city_id" => 0, "name" => "基隆市", "code" => null, "sort" => 1],

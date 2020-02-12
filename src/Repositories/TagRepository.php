@@ -16,7 +16,7 @@ class TagRepository extends Repository
 		$this->model = $model;
 	}
 
-	public function seark($text)
+	public function search($text)
 	{
 		$rows1 = $this->model->select('id', 'name as text')->where('name', 'like', '%'.$text.'%')->get()->toArray();
 		return $rows1;

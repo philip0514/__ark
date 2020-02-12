@@ -2,22 +2,22 @@
 
 return [
     /*
-     * DataTables seark options.
+     * DataTables search options.
      */
-    'seark' => [
+    'search' => [
         /*
-         * Smart seark will enclose seark keyword with wildcard string "%keyword%".
+         * Smart search will enclose search keyword with wildcard string "%keyword%".
          * SQL: column LIKE "%keyword%"
          */
         'smart' => true,
 
         /*
-         * Multi-term seark will explode seark keyword using spaces resulting into multiple term seark.
+         * Multi-term search will explode search keyword using spaces resulting into multiple term search.
          */
         'multi_term' => true,
 
         /*
-         * Case insensitive will seark the keyword in lower case format.
+         * Case insensitive will search the keyword in lower case format.
          * SQL: LOWER(column) LIKE LOWER(keyword)
          */
         'case_insensitive' => true,
@@ -94,12 +94,12 @@ return [
         'raw' => ['action'],
 
         /*
-         * List of columns are are forbidden from being searked/sorted.
+         * List of columns are are forbidden from being searched/sorted.
          */
         'blacklist' => ['password', 'remember_token'],
 
         /*
-         * List of columns that are only allowed fo seark/sort.
+         * List of columns that are only allowed fo search/sort.
          * If set to *, all columns are allowed.
          */
         'whitelist' => '*',

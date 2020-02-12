@@ -2,19 +2,10 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
-use Philip0514\Ark\Models\Role;
 use Philip0514\Ark\Models\Administrator;
 
 class AdministratorsTableSeeder extends Seeder
 {
-	function __construct(
-        Administrator $administrator,
-        Role $role
-	){
-		$this->administrator = $administrator;
-		$this->role = $role;
-    }
     /**
      * Run the database seeds.
      *
@@ -22,16 +13,21 @@ class AdministratorsTableSeeder extends Seeder
      */
     public function run()
     {
-        $role = $this->role->select('name')->first()->toArray();
+        $role = DB::table('roles')->select('name')->first();
 
-        $id = $this->administrator->insertGetId([
+        $admin = Administrator::where('id', 1)->first();
+        if(isset($admin->id)){
+            return false;
+        }
+
+        $id = Administrator::insertGetId([
             'name'      => 'Admin',
             'account'   => 'admin',
             'password'	=>	Hash::make('admin'),
             'display'   =>  1,
         ]);
 
-        $admin = $this->administrator->where('id', $id)->first();
-        $admin->assignRole($role['name']);
+        $admin = Administrator::where('id', $id)->first();
+        $admin->assignRole($role->name);
     }
 }

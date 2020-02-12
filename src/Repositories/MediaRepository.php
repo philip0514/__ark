@@ -388,7 +388,7 @@ class MediaRepository extends Repository
 		return in_array($file_type, $img_mimes, TRUE);
 	}
 
-	public function data($page, $limit, $request_time, $skip=null, $seark=null)
+	public function data($page, $limit, $request_time, $skip=null, $search=null)
 	{
 		$start = $limit*($page-1);
 
@@ -397,8 +397,8 @@ class MediaRepository extends Repository
 			$result = $result->whereNotIn('id', explode(',', $skip));
 		}
 
-		if($seark){
-			$result = $result->where('title', 'like', '%'.$seark.'%');
+		if($search){
+			$result = $result->where('title', 'like', '%'.$search.'%');
 		}
 
 		$result = $result

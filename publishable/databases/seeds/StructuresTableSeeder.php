@@ -11,6 +11,11 @@ class StructuresTableSeeder extends Seeder
      */
     public function run()
     {
+        $count = DB::table('structures')->count();
+        if($count){
+            return false;
+        }
+
         DB::table('structures')->insert([
             [
                 'parent_id'     =>  0,
