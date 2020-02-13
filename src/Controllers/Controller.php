@@ -249,7 +249,6 @@ class Controller extends BaseController
 		}
 		$path[] = $url;
 
-
 		//print_r($path);
 		//echo resource_path().'/views/'.implode('/', $path).'.blade.php<br>';
 		//dd(file_exists(resource_path().'views/'.implode('/', $path).'.blade.php'));
@@ -258,7 +257,11 @@ class Controller extends BaseController
 		if($slash){
 			return prefixUri(implode('/', $path));
 		}else{
-			return 'ark::'.implode('.', $path);
+			$view = 'ark::'.implode('.', $path);
+			if(!view()->exists($view)){
+				$view = 'ark.'.implode('.', $path);
+			}
+			return $view;
 		}
     }
 
