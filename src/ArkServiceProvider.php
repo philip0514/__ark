@@ -21,6 +21,9 @@ class ArkServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../publishable/config/auth/provider.php', 'auth.providers'
         );
+
+        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
     }
 
     // 註冊套件函式

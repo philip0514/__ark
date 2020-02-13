@@ -95,7 +95,7 @@
                                 <div class="form-group">
                                     <a href="javascript:;" class="btn btn-primary btn-ogimage-manager m-t-10 m-b-10"><i class="fas fa-plus"></i> 選擇社群分享圖片</a>
                                     <div class="alert alert-info">圖片可以拖曳排序，尺寸：寬 * 高 => 「600px * 315px」 ～ 「1200px * 630px」</div>
-                                    <div class="row ogimage-area">@if(isset($rows1['ogimage_data'])) @each('ark.media.preview', $rows1['ogimage_data'], 'data') @endif</div>
+                                    <div class="row ogimage-area">@if(isset($rows1['ogimage_data'])) @each('ark::media.preview', $rows1['ogimage_data'], 'data') @endif</div>
                                     <input id="ogimage_input" name="ogimage_input" class="ogimage_input" type="hidden" value="{{ isset($rows1['ogimage_input']) ? $rows1['ogimage_input'] : '' }}" />
                                 </div>
                             </div>

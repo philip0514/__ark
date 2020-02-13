@@ -19,6 +19,6 @@ class News extends Model
 
     public function media()
     {
-        return $this->morphToMany('App\Models\Media', 'media_relations');
+        return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations');
     }
 }

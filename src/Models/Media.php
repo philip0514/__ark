@@ -22,21 +22,21 @@ class Media extends Model
 
     public function abouts()
     {
-        return $this->morphedByMany('App\Models\About', 'media_relations');
+        return $this->morphedByMany('Philip0514\Ark\Models\About', 'media_relations');
     }
 
     public function news()
     {
-        return $this->morphedByMany('App\Models\News', 'media_relations');
+        return $this->morphedByMany('Philip0514\Ark\Models\News', 'media_relations');
     }
 
     public function tags()
     {
-        return $this->morphToMany('App\Models\Tag', 'tag_relations');
+        return $this->morphToMany('Philip0514\Ark\Models\Tag', 'tag_relations');
     }
 
     public function setting()
     {
-        return $this->morphedByMany('App\Models\Setting', 'media_relations');
+        return $this->morphedByMany('Philip0514\Ark\Models\Setting', 'media_relations');
     }
 }

@@ -19,7 +19,8 @@
         "predis/predis": "^1.0",
         "spatie/laravel-permission": "^3.2",
         "symfony/thanks": "^1.1.0",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "league/fractal": "^0.19.2"
     },
     "autoload": {
         "files": [

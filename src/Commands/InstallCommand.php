@@ -92,10 +92,10 @@ class InstallCommand extends Command
         /*
         $this->info('Setting up the hooks');
         $this->call('hook:setup');
+        */
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
-        */
 
         $this->info('Successfully installed Ark! Enjoy');
     }

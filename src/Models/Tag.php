@@ -20,11 +20,11 @@ class Tag extends Model
 
     public function media()
     {
-        return $this->morphedByMany('App\Models\Media', 'tag_relations');
+        return $this->morphedByMany('Philip0514\Ark\Models\Media', 'tag_relations');
     }
 
     public function setting()
     {
-        return $this->morphedByMany('App\Models\Setting', 'tag_relations');
+        return $this->morphedByMany('Philip0514\Ark\Models\Setting', 'tag_relations');
     }
 }

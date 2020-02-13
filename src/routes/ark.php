@@ -24,9 +24,6 @@ $route->group([
 $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  config('ark.prefix'),
-    'middleware'    =>  [
-        '\Illuminate\Session\Middleware\StartSession',
-    ],
 ], function($route){
     //login
     $route->match(['get', 'post'], 'login', 'DashboardController@login')->name('login');
@@ -36,10 +33,7 @@ $route->group([
 //ajax route
 $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
-    'prefix'    =>  env('DASHBOARD_PREFIX'),
-    'middleware'    =>  [
-        '\Illuminate\Session\Middleware\StartSession',
-    ],
+    'prefix'    =>  config('ark.prefix'),
 ], function($route) use ($structure){
     $route->post('request/toggle_sidebar', 'RequestController@toggle_sidebar')->name('request.toggle_sidebar');
     $route->post('request/zip', 'RequestController@zip')->name('request.zip');
@@ -54,28 +48,6 @@ $route->group([
     $route->get('tag/search', 'TagController@search')->name('tag.search');
     $route->post('tag/insert', 'TagController@insert')->name('tag.insert');
 
-    /*
-    //product
-    $route->match(['get', 'post'], 'product/createSpec', 'ProductController@createSpec')->name('product.createSpec');
-    $route->match(['get', 'post'], 'product/createCategory', 'ProductController@createCategory')->name('product.createCategory');
-    $route->match(['get', 'post'], 'product/createColor', 'ProductController@createColor')->name('product.createColor');
-    $route->match(['get', 'post'], 'product/createStyle', 'ProductController@createStyle')->name('product.createStyle');
-    $route->match(['get', 'post'], 'product/createInventory', 'ProductController@createInventory')->name('product.createInventory');
-    $route->match(['get', 'post'], 'product/createPlus', 'ProductController@createPlus')->name('product.createPlus');
-    $route->match(['get', 'post'], 'product/{id}/datatablePrice', 'ProductController@datatablePrice')->name('product.datatablePrice');
-    $route->match(['get', 'post'], 'product/{id}/datatablePlus', 'ProductController@datatablePlus')->name('product.datatablePlus');
-    $route->match(['get', 'post'], 'product/{id}/datatableInventory', 'ProductController@datatableInventory')->name('product.datatableInventory');
-    $route->match(['get', 'post', 'delete'], 'product/{product_id}/price/{id?}', 'ProductController@price')->name('product.price');
-    $route->match(['get', 'post', 'delete'], 'product/{product_id}/inventory/{id?}', 'ProductController@inventory')->name('product.inventory');
-    $route->match(['get', 'post', 'delete'], 'product/{product_id}/plus/{id?}', 'ProductController@plus')->name('product.plus');
-    $route->get('product/search', 'ProductController@search')->name('product.search');
-    $route->get('productCategory/product', 'ProductCategoryController@product')->name('productCategory.product');
-
-    //coupon
-    $route->match(['get', 'post'], 'coupon/{id}/datatableUser', 'CouponController@datatableUser')->name('coupon.datatableUser');
-    $route->match(['get', 'post', 'delete'], 'coupon/{coupon_id}/user/{user_id?}', 'CouponController@user')->name('coupon.user');
-
-    */
     //user
     $route->get('user/search', 'UserController@search')->name('user.search');
 
@@ -93,7 +65,6 @@ $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  config('ark.prefix'),
     'middleware'    =>  [
-        '\Illuminate\Session\Middleware\StartSession',
         '\Philip0514\Ark\Middleware\Url',
         '\Philip0514\Ark\Middleware\Permission',
     ],

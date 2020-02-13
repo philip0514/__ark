@@ -230,6 +230,6 @@ class AdministratorController extends Controller
 			'config'	=>	$config,
 			'rows1'		=>	$rows1,
 		];
-        return $this->view('ark.administrator.profile', $data);
+        return $this->view('ark::administrator.profile', $data);
 	}
 }

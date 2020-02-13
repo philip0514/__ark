@@ -126,6 +126,6 @@ class DashboardController extends Controller
     {
         $uri = app('router')->getRoutes()->getByName($name)->uri;
         //return app('router')->getRoutes()->getByName($name)->uri();
-        return prefixUri($uri);
+        return $uri;
     }
 }

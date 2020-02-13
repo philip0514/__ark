@@ -32,7 +32,7 @@
                                         </div>
                                         <div class="filter-content">
                                             @if($config['action']['search'])
-                                            @include(sprintf('ark.%s.search', $config['controller']))
+                                            @include(sprintf('ark::%s.search', $config['controller']))
                                             @endif
                                         </div>  
                                     </div>

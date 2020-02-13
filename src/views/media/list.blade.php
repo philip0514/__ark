@@ -88,11 +88,11 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ mix('/ark/css/datatables.css')}}">
+<link rel="stylesheet" href="{{ '/ark/css/datatables.css' }}">
 @endsection
 
 @section('js')
-<script src="{{ mix('/ark/js/datatables.js')}}"></script>
+<script src="{{ '/ark/js/datatables.js' }}"></script>
 <script>
 var config = @json($config['datatable'], JSON_PRETTY_PRINT);
 $(function() {

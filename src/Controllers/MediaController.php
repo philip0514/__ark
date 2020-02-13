@@ -53,7 +53,7 @@ class MediaController extends Controller
 				'autocomplete'		=>	0,
 			],
 			'html'				=>[
-				'list'				=>	'ark.media.list',
+				'list'				=>	'ark::media.list',
 			],
 			'column'			=>	[
 				[
@@ -231,7 +231,7 @@ class MediaController extends Controller
 	
 	public function manager(Request $request)
 	{
-        return view('ark.media.manager');
+        return view('ark::media.manager');
 	}
 
 	public function data(Request $request)
@@ -285,6 +285,6 @@ class MediaController extends Controller
 		$data = [
 			'rows1'		=>	$rows1,
 		];
-		return view('ark.media.editor', $data);
+		return view('ark::media.editor', $data);
 	}
 }

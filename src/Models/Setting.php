@@ -13,11 +13,11 @@ class Setting extends Model
 
     public function ogimages()
     {
-        return $this->morphToMany('App\Models\Media', 'media_relations');
+        return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations');
     }
 
     public function tags()
     {
-        return $this->morphToMany('App\Models\Tag', 'tag_relations');
+        return $this->morphToMany('Philip0514\Ark\Models\Tag', 'tag_relations');
     }
 }
