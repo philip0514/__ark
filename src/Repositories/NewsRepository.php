@@ -56,6 +56,7 @@ class NewsRepository extends Repository
 			}
 			$ogimage[ $ogimage_input[$i] ] = [
 				'sort'		=>	$i,
+				'type'		=>	'ogimage',
 			];
 		}
 
@@ -98,6 +99,7 @@ class NewsRepository extends Repository
 			}
 			$ogimage[ $ogimage_input[$i] ] = [
 				'sort'		=>	$i,
+				'type'		=>	'ogimage',
 			];
 		}
 

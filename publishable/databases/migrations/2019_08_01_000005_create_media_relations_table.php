@@ -17,7 +17,7 @@ class CreateMediaRelationsTable extends Migration
             $table->bigInteger('media_id');
             $table->bigInteger('media_relations_id');
             $table->string('media_relations_type', 100);
-            $table->string('type', 50);
+            $table->string('type', 50)->nullable();
             $table->integer('sort')->default(0)->nullable();
 
             $table->unique(['media_id', 'media_relations_id', 'media_relations_type', 'type'], 'media_uq');
