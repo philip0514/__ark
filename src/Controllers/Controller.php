@@ -249,6 +249,12 @@ class Controller extends BaseController
 		}
 		$path[] = $url;
 
+
+		//print_r($path);
+		//echo resource_path().'/views/'.implode('/', $path).'.blade.php<br>';
+		//dd(file_exists(resource_path().'views/'.implode('/', $path).'.blade.php'));
+
+		//file_exists
 		if($slash){
 			return prefixUri(implode('/', $path));
 		}else{

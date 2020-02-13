@@ -192,8 +192,9 @@ class AdministratorRepository extends Repository
         $setting = [];
         for($i=0; $i<sizeof($rows1); $i++){
             $setting[] = [
+                'namespace'     =>  $rows1[$i]['namespace'],
                 'controller'    =>  ucfirst($rows1[$i]['url']).'Controller',
-                'url'           =>  $rows1[$i]['url']
+                'url'           =>  $rows1[$i]['url'],
             ];
         }
         return $setting;

@@ -23,6 +23,10 @@ class AdministratorRoleController extends Controller
         $this->repo->main = $main;
         $this->method = strtolower($request->method());
 
+        if(!request()->route()){
+            return false;
+        }
+
 		$route = $request->route()->getName();
 		list($controller, $name) = explode('.', $route);
 

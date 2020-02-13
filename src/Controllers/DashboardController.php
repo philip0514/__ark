@@ -26,7 +26,11 @@ class DashboardController extends Controller
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
-		$route = $request->route()->getName();
+        if(!request()->route()){
+            return false;
+        }
+
+		$route = request()->route()->getName();
 		$this->route_index = sprintf('%s.index', $route);
 
         $this->config  = [

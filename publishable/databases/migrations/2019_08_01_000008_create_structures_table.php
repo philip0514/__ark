@@ -22,6 +22,7 @@ class CreateStructuresTable extends Migration
             $table->integer('display')->default(1)->nullable();
             $table->integer('sort')->default(0)->nullable();
             $table->integer('editable')->default(0)->nullable();
+            $table->string('namespace', 255)->nullable();
             $table->json('method')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))->nullable();

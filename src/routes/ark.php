@@ -34,7 +34,7 @@ $route->group([
 $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers',
     'prefix'    =>  config('ark.prefix'),
-], function($route) use ($structure){
+], function($route){
     $route->post('request/toggle_sidebar', 'RequestController@toggle_sidebar')->name('request.toggle_sidebar');
     $route->post('request/zip', 'RequestController@zip')->name('request.zip');
 
@@ -50,15 +50,6 @@ $route->group([
 
     //user
     $route->get('user/search', 'UserController@search')->name('user.search');
-
-    for($i=0; $i<sizeof($structure); $i++){
-        $route->match(['get', 'post'], sprintf('%s/validate', $structure[$i]['url']), $structure[$i]['controller'].'@validate')->name(sprintf('%s.validate', $structure[$i]['url']));
-        $route->get(sprintf('%s/datatable', $structure[$i]['url']), $structure[$i]['controller'].'@datatable')->name(sprintf('%s.datatable', $structure[$i]['url']));
-        $route->post(sprintf('%s/action', $structure[$i]['url']), $structure[$i]['controller'].'@action')->name(sprintf('%s.action', $structure[$i]['url']));
-        $route->post(sprintf('%s/columnVisible', $structure[$i]['url']), $structure[$i]['controller'].'@columnVisible')->name(sprintf('%s.columnVisible', $structure[$i]['url']));
-        $route->post(sprintf('%s/columnReorder', $structure[$i]['url']), $structure[$i]['controller'].'@columnReorder')->name(sprintf('%s.columnReorder', $structure[$i]['url']));
-        $route->post(sprintf('%s/rowReorder', $structure[$i]['url']), $structure[$i]['controller'].'@rowReorder')->name(sprintf('%s.rowReorder', $structure[$i]['url']));
-    }
 });
 
 $route->group([
@@ -68,17 +59,39 @@ $route->group([
         '\Philip0514\Ark\Middleware\Url',
         '\Philip0514\Ark\Middleware\Permission',
     ],
-], function($route) use ($structure){
+], function($route){
     //dashboard
-    //$route->get('/', 'WelcomeController@index')->name('index');
     $route->get('/', 'DashboardController@index')->name('dashboard');
     $route->match(['get', 'post'], 'profile', 'AdministratorController@profile')->name('administrator.profile');
-
-    for($i=0; $i<sizeof($structure); $i++){
-        $route->match(['get', 'post', 'delete'], sprintf('%s', $structure[$i]['url']), $structure[$i]['controller'].'@index')->name(sprintf('%s.index', $structure[$i]['url']));
-        $route->match(['get', 'post'], sprintf('%s/create', $structure[$i]['url']), $structure[$i]['controller'].'@single')->name(sprintf('%s.create', $structure[$i]['url']));
-        $route->match(['get', 'post'], sprintf('%s/{id}', $structure[$i]['url']), $structure[$i]['controller'].'@single')->name(sprintf('%s.update', $structure[$i]['url']));
-        $route->get(sprintf('%s/{id}/view', $structure[$i]['url']), $structure[$i]['controller'].'@single')->name(sprintf('%s.read', $structure[$i]['url']));
-        //$route->delete(sprintf('%s/{id}/delete', $structure[$i]['url']), $structure[$i]['controller'].'@single');
-    }
 });
+
+for($i=0; $i<sizeof($structure); $i++){
+
+    $item = $structure[$i];
+
+    $route->group([
+        'namespace' =>  $item['namespace'],
+        'prefix'    =>  config('ark.prefix'),
+    ], function($route) use ($item){
+        $route->match(['get', 'post'], sprintf('%s/validate', $item['url']), $item['controller'].'@validate')->name(sprintf('%s.validate', $item['url']));
+        $route->get(sprintf('%s/datatable', $item['url']), $item['controller'].'@datatable')->name(sprintf('%s.datatable', $item['url']));
+        $route->post(sprintf('%s/action', $item['url']), $item['controller'].'@action')->name(sprintf('%s.action', $item['url']));
+        $route->post(sprintf('%s/columnVisible', $item['url']), $item['controller'].'@columnVisible')->name(sprintf('%s.columnVisible', $item['url']));
+        $route->post(sprintf('%s/columnReorder', $item['url']), $item['controller'].'@columnReorder')->name(sprintf('%s.columnReorder', $item['url']));
+        $route->post(sprintf('%s/rowReorder', $item['url']), $item['controller'].'@rowReorder')->name(sprintf('%s.rowReorder', $item['url']));
+    });
+
+    $route->group([
+        'namespace' =>  $item['namespace'],
+        'prefix'    =>  config('ark.prefix'),
+        'middleware'    =>  [
+            '\Philip0514\Ark\Middleware\Url',
+            '\Philip0514\Ark\Middleware\Permission',
+        ],
+    ], function($route) use ($item){
+        $route->match(['get', 'post', 'delete'], sprintf('%s', $item['url']), $item['controller'].'@index')->name(sprintf('%s.index', $item['url']));
+        $route->match(['get', 'post'], sprintf('%s/create', $item['url']), $item['controller'].'@single')->name(sprintf('%s.create', $item['url']));
+        $route->match(['get', 'post'], sprintf('%s/{id}', $item['url']), $item['controller'].'@single')->name(sprintf('%s.update', $item['url']));
+        $route->get(sprintf('%s/{id}/view', $item['url']), $item['controller'].'@single')->name(sprintf('%s.read', $item['url']));
+    });
+}

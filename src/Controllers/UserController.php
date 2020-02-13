@@ -28,6 +28,10 @@ class UserController extends Controller
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
+        if(!request()->route()){
+            return false;
+        }
+
 		$route = $request->route()->getName();
 		list($controller, $name) = explode('.', $route);
 		$this->route_index = sprintf('%s.index', $controller);
