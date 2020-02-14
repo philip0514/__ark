@@ -1,11 +1,11 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\AboutRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\AboutRepository as MainRepo;
 
 class AboutController extends Controller
 {

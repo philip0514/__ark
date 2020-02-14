@@ -1,14 +1,13 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\UserRepository as MainRepo;
-use Philip0514\Ark\Repositories\ZipRepository;
+use Philip0514\Ark\Repositories\Dashboard\TagRepository as MainRepo;
 
-class UserController extends Controller
+class TagController extends Controller
 {
     protected 	$repo, 
 				$config,
@@ -18,13 +17,11 @@ class UserController extends Controller
 
 	function __construct(
         Request $request,
-		MainRepo $main,
-		ZipRepository $zipRepo
+		MainRepo $main
 	)
 	{
 		parent::__construct();
         $this->repo->main = $main;
-        $this->repo->zip = $zipRepo;
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
@@ -37,7 +34,7 @@ class UserController extends Controller
 		$this->route_index = sprintf('%s.index', $controller);
 
         $this->config  = [
-			'name'				=>	'會員',
+			'name'				=>	'標籤',
 			'route'				=>	$route,
 			'controller'		=>	$controller,
 			'action'			=>	[
@@ -67,23 +64,15 @@ class UserController extends Controller
 					'width'			=>	'60px',
 					'field'			=>	'id',
 					'visible'		=>	[true, true],
-					'orderby'		=>	['id', 'asc'],
+					'orderby'		=>	['id', 'desc'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'姓名',
+					'name'			=>	'名稱',
 					'field'			=>	'name',
 					'visible'		=>	[true, true],
 					'orderby'		=>	['name'],
-					'orderable'		=>	true,
-					'sortable'		=>	false,
-                ],
-				[
-					'name'			=>	'帳號',
-					'field'			=>	'email',
-					'visible'		=>	[true, true],
-					'orderby'		=>	['email'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -109,7 +98,7 @@ class UserController extends Controller
 					'name'			=>	'刪除時間',
 					'width'			=>	'70px',
 					'field'			=>	'deleted_at',
-					'visible'		=>	[true, false],
+					'visible'		=>	[true, true],
 					'orderby'		=>	['deleted_at'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
@@ -136,38 +125,17 @@ class UserController extends Controller
         switch($this->method){
             case 'post':
 				$id = $request->input('id', 0);
-                $name = $request->input('name', null);
-                $email = $request->input('email', null);
-                $password = $request->input('password', null);
-                $gender = $request->input('gender', 0);
-                $birthday = $request->input('birthday', null);
-                $city_id = $request->input('city_id', 0);
-                $area_id = $request->input('area_id', 0);
-                $address = $request->input('address', null);
-                $phone = $request->input('phone', null);
-                $mobile = $request->input('mobile', null);
+                $name = $request->input('name');
 				$deleted = $request->input('deleted', 0);
 				$display = $request->input('display', 0);
-				$checked = $request->input('checked', 0);
-				$newsletter = $request->input('newsletter', 0);
 				$method = $request->input('__method', 0);
 
 				$data = [
 					'id'			=>	$id,
 					'name'			=>	$name,
-					'email'			=>	$email,
-					'password'		=>	$password,
-					'gender'		=>	$gender,
-					'birthday'		=>	$birthday,
-					'city_id'		=>	$city_id,
-					'area_id'		=>	$area_id,
-					'address'		=>	$address,
-					'phone'			=>	$phone,
-					'mobile'		=>	$mobile,
+					'slug'			=>	$this->short_name($name),
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
-					'checked'		=>	$checked,
-					'newsletter'	=>	$newsletter,
 				];
 
                 if(!$id){
@@ -178,9 +146,9 @@ class UserController extends Controller
 
 				switch($method){
 					case 1:
-					echo json_encode([
-						'id'	=>	$id,
-					]);
+						echo json_encode([
+							'id'	=>	$id,
+						]);
 					break;
 					default:
 					case 0:
@@ -193,50 +161,23 @@ class UserController extends Controller
         }
 
         $rows1 = [];
-		$city = $this->repo->zip->city();
-
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
                 return redirect()->route($this->route_index);
-			}
+            }
 
 			$this->config['name'] = $rows1['name'];
 
-			$area = $this->repo->zip->area($rows1['city_id']);
-
 			$rows1 = $this->repo->main->editor($rows1);
-		}else{
-			$city_id = $city[0]['id'];
-			$area = $this->repo->zip->area($city_id);
 		}
-		
 
         $data = [
 			'config'	=>	$this->config,
             'rows1'     =>  $rows1,
-            'city'     	=>  $city,
-            'area'     	=>  $area,
-		];
+        ];
         return $this->view($this->config['html']['single'], $data);
-    }
-
-    public function validate(Request $request)
-    {
-        /**
-         * false: 已存在
-         * true: 可使用
-         */
-        $type = $request->input('type', null);
-        $email = $request->input('email', null);
-		$id = $request->input('id', null);
-		
-		switch($type){
-			case 'email':
-				echo $this->repo->main->validate($email, $id);
-			break;
-		}
-    }
+	}
 
 	public function search(Request $request)
 	{
@@ -248,5 +189,27 @@ class UserController extends Controller
 			'results'	=>	$rows1
 		);
 		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+	}
+
+	public function insert(Request $request)
+	{
+		$text = $request->input('text');
+
+		$id = $this->repo->main->create([
+			'name'		=>	$text,
+			'slug'		=>	$this->short_name($text),
+		]);
+		
+		echo json_encode([
+			'id'	=>	$id, 
+			'text'	=>	$text
+		]);
+	}
+
+	private function short_name($name)
+	{
+		$name = str_replace(' ', '', preg_replace(config('ark.url_allow_chars'), '' , strtolower(trim($name))));
+	
+		return $name;
 	}
 }

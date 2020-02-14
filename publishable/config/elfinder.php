@@ -40,7 +40,7 @@ return array(
 
     'route' => [
         'prefix' => 'elfinder',
-        'middleware' => array('web'), //Set to null to disable middleware filter
+        'middleware' => array('web', '\Philip0514\Ark\Middleware\ElfinderPermission'), //Set to null to disable middleware filter
     ],
 
     /*

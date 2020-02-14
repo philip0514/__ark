@@ -1,8 +1,9 @@
 <?php
-namespace Philip0514\Ark\Repositories;
+namespace Philip0514\Ark\Repositories\Dashboard;
+
+use Philip0514\Ark\Repositories\Dashboard\Repository;
 
 use Illuminate\Support\Facades\Hash;
-use Philip0514\Ark\Repositories\Repository;
 
 use Philip0514\Ark\Models\User as Model;
 

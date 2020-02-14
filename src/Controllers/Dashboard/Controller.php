@@ -1,5 +1,5 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
 use Auth;
 use Illuminate\Routing\Controller as BaseController;
@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 //Repositories
-use Philip0514\Ark\Repositories\SidebarRepository;
+use Philip0514\Ark\Repositories\Dashboard\SidebarRepository;
 
 class Controller extends BaseController
 {

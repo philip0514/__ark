@@ -1,9 +1,9 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
-use Philip0514\Ark\Repositories\ZipRepository;
+use Philip0514\Ark\Repositories\Dashboard\ZipRepository;
 
 class RequestController extends Controller
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
 use Barryvdh\Elfinder\ElfinderController as Controller;
 

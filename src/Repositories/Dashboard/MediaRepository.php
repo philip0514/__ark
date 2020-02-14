@@ -1,7 +1,7 @@
 <?php
-namespace Philip0514\Ark\Repositories;
+namespace Philip0514\Ark\Repositories\Dashboard;
 
-use Philip0514\Ark\Repositories\Repository;
+use Philip0514\Ark\Repositories\Dashboard\Repository;
 use Storage;
 use Auth;
 use Intervention\Image\ImageManagerStatic as Image;

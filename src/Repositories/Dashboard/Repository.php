@@ -1,10 +1,7 @@
 <?php
-namespace Philip0514\Ark\Repositories;
+namespace Philip0514\Ark\Repositories\Dashboard;
 
-use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use Auth;
-use DB;
 use Philip0514\Ark\Models\Administrator;
 
 class Repository

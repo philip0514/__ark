@@ -1,12 +1,12 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 use Auth;
 
 //Repositories
-use Philip0514\Ark\Repositories\AdministratorRepository as MainRepo;;
+use Philip0514\Ark\Repositories\Dashboard\AdministratorRepository as MainRepo;;
 
 class DashboardController extends Controller
 {

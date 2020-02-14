@@ -1,14 +1,13 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
-use Yajra\Datatables\Datatables;
 
 //Repositories
-use Philip0514\Ark\Repositories\UserRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\NewsRepository as MainRepo;
 
-class NewsletterController extends Controller
+class NewsController extends Controller
 {
     protected 	$repo, 
 				$config,
@@ -35,14 +34,15 @@ class NewsletterController extends Controller
 		$this->route_index = sprintf('%s.index', $controller);
 
         $this->config  = [
-			'name'				=>	'電子報',
+			'name'				=>	'最新消息',
 			'route'				=>	$route,
 			'controller'		=>	$controller,
 			'action'			=>	[
-				'create'			=>	0,
+				'create'			=>	1,
 				'update'			=>	1,
-				'delete'			=>	0,
-				'display'			=>	0,
+				'softDelete'		=>	1,
+				'delete'			=>	1,
+				'display'			=>	1,
 				'sort'				=>	0,
 				'import'			=>	0,
 				'export'			=>	0,
@@ -50,6 +50,15 @@ class NewsletterController extends Controller
 				'autocomplete'		=>	0,
             ],
 			'column'			=>	[
+				[
+					'name'			=>	'select_all',
+					'width'			=>	'20px',
+					'field'			=>	'select',
+                    'visible'		=>	[false, false],
+                    'orderby'       =>  null,
+					'orderable'		=>	false,
+					'sortable'		=>	false,
+                ],
 				[
 					'name'			=>	'#',
 					'width'			=>	'60px',
@@ -60,7 +69,7 @@ class NewsletterController extends Controller
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'姓名',
+					'name'			=>	'名稱',
 					'field'			=>	'name',
 					'visible'		=>	[true, true],
 					'orderby'		=>	['name'],
@@ -68,10 +77,29 @@ class NewsletterController extends Controller
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'電子信箱',
-					'field'			=>	'email',
+					'name'			=>	'新增時間',
+					'width'			=>	'70px',
+					'field'			=>	'created_at',
 					'visible'		=>	[true, true],
-					'orderby'		=>	['email'],
+					'orderby'		=>	['created_at'],
+					'orderable'		=>	true,
+					'sortable'		=>	false,
+                ],
+				[
+					'name'			=>	'更新時間',
+					'width'			=>	'70px',
+					'field'			=>	'updated_at',
+					'visible'		=>	[true, true],
+					'orderby'		=>	['updated_at'],
+					'orderable'		=>	true,
+					'sortable'		=>	false,
+                ],
+				[
+					'name'			=>	'刪除時間',
+					'width'			=>	'70px',
+					'field'			=>	'deleted_at',
+					'visible'		=>	[true, false],
+					'orderby'		=>	['deleted_at'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -90,35 +118,6 @@ class NewsletterController extends Controller
 		$this->config();
     }
 
-    protected function datatable(Request $request)
-    {
-		$config = $this->config;
-		$route = $config['route'];
-		$path = prefixUri($config['controller']);
-		$query = $this->repo->main->newsletter_datatable($request);
-
-		$datatable = Datatables::of($query);
-
-		//update
-		$raw_columns[] = 'update';
-		if($config['action']['update']){
-			$datatable
-			->addColumn('update', function($data) use ($path){
-				$id = $data->id;
-				return sprintf('<a href="%s/%s" class="edit" title="編輯"><i class="fas fa-pen"></i></a>', $path, $id);
-			});
-		}else{
-			$datatable
-			->addColumn('update', function(){
-				return null;
-			});
-		}
-
-		return $datatable
-			->rawColumns($raw_columns)
-			->make(true);
-    }
-
     public function single(Request $request, $id=null)
     {
 		$this->permissionCheck();
@@ -126,14 +125,31 @@ class NewsletterController extends Controller
         switch($this->method){
             case 'post':
 				$id = $request->input('id', 0);
-				$newsletter = $request->input('newsletter', 0);
+                $name = $request->input('name');
+                $news_time = strtotime( $request->input('news_time', date('Y-m-d H:i:s', time()) ) );
+                $description = $request->input('description', null);
+                $content = $request->input('content', null);
+				$deleted = $request->input('deleted', 0);
+				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
+				$ogimage_input = $request->input('ogimage_input', 0);
 
 				$data = [
 					'id'			=>	$id,
-					'newsletter'	=>	$newsletter,
+					'name'			=>	$name,
+					'news_time'		=>	$news_time,
+					'description'	=>	$description,
+					'content'		=>	$content,
+					'ogimage_input'	=>	$ogimage_input,
+					'deleted'		=>	$deleted,
+					'display'		=>	$display,
 				];
-                $this->repo->main->update($data);
+
+                if(!$id){
+                    $id = $this->repo->main->create($data);
+                }else{
+                    $this->repo->main->update($data);
+				}
 
 				switch($method){
 					case 1:
@@ -152,7 +168,6 @@ class NewsletterController extends Controller
         }
 
         $rows1 = [];
-
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -160,6 +175,10 @@ class NewsletterController extends Controller
 			}
 
 			$this->config['name'] = $rows1['name'];
+
+			$rows2 = $this->repo->main->media($rows1['media']);
+			$rows1['ogimage_input'] = $rows2['id'];
+			$rows1['ogimage_data'] = $rows2['data'];
 		}
 
         $data = [

@@ -1,13 +1,14 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\NewsRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\UserRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\ZipRepository;
 
-class NewsController extends Controller
+class UserController extends Controller
 {
     protected 	$repo, 
 				$config,
@@ -17,11 +18,13 @@ class NewsController extends Controller
 
 	function __construct(
         Request $request,
-		MainRepo $main
+		MainRepo $main,
+		ZipRepository $zipRepo
 	)
 	{
 		parent::__construct();
         $this->repo->main = $main;
+        $this->repo->zip = $zipRepo;
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
@@ -34,14 +37,14 @@ class NewsController extends Controller
 		$this->route_index = sprintf('%s.index', $controller);
 
         $this->config  = [
-			'name'				=>	'最新消息',
+			'name'				=>	'會員',
 			'route'				=>	$route,
 			'controller'		=>	$controller,
 			'action'			=>	[
 				'create'			=>	1,
 				'update'			=>	1,
-				'softDelete'		=>	1,
 				'delete'			=>	1,
+				'softDelete'		=>	1,
 				'display'			=>	1,
 				'sort'				=>	0,
 				'import'			=>	0,
@@ -69,10 +72,18 @@ class NewsController extends Controller
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'名稱',
+					'name'			=>	'姓名',
 					'field'			=>	'name',
 					'visible'		=>	[true, true],
 					'orderby'		=>	['name'],
+					'orderable'		=>	true,
+					'sortable'		=>	false,
+                ],
+				[
+					'name'			=>	'帳號',
+					'field'			=>	'email',
+					'visible'		=>	[true, true],
+					'orderby'		=>	['email'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -125,24 +136,38 @@ class NewsController extends Controller
         switch($this->method){
             case 'post':
 				$id = $request->input('id', 0);
-                $name = $request->input('name');
-                $news_time = strtotime( $request->input('news_time', date('Y-m-d H:i:s', time()) ) );
-                $description = $request->input('description', null);
-                $content = $request->input('content', null);
+                $name = $request->input('name', null);
+                $email = $request->input('email', null);
+                $password = $request->input('password', null);
+                $gender = $request->input('gender', 0);
+                $birthday = $request->input('birthday', null);
+                $city_id = $request->input('city_id', 0);
+                $area_id = $request->input('area_id', 0);
+                $address = $request->input('address', null);
+                $phone = $request->input('phone', null);
+                $mobile = $request->input('mobile', null);
 				$deleted = $request->input('deleted', 0);
 				$display = $request->input('display', 0);
+				$checked = $request->input('checked', 0);
+				$newsletter = $request->input('newsletter', 0);
 				$method = $request->input('__method', 0);
-				$ogimage_input = $request->input('ogimage_input', 0);
 
 				$data = [
 					'id'			=>	$id,
 					'name'			=>	$name,
-					'news_time'		=>	$news_time,
-					'description'	=>	$description,
-					'content'		=>	$content,
-					'ogimage_input'	=>	$ogimage_input,
+					'email'			=>	$email,
+					'password'		=>	$password,
+					'gender'		=>	$gender,
+					'birthday'		=>	$birthday,
+					'city_id'		=>	$city_id,
+					'area_id'		=>	$area_id,
+					'address'		=>	$address,
+					'phone'			=>	$phone,
+					'mobile'		=>	$mobile,
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
+					'checked'		=>	$checked,
+					'newsletter'	=>	$newsletter,
 				];
 
                 if(!$id){
@@ -168,6 +193,8 @@ class NewsController extends Controller
         }
 
         $rows1 = [];
+		$city = $this->repo->zip->city();
+
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -176,15 +203,50 @@ class NewsController extends Controller
 
 			$this->config['name'] = $rows1['name'];
 
-			$rows2 = $this->repo->main->media($rows1['media']);
-			$rows1['ogimage_input'] = $rows2['id'];
-			$rows1['ogimage_data'] = $rows2['data'];
+			$area = $this->repo->zip->area($rows1['city_id']);
+
+			$rows1 = $this->repo->main->editor($rows1);
+		}else{
+			$city_id = $city[0]['id'];
+			$area = $this->repo->zip->area($city_id);
 		}
+		
 
         $data = [
 			'config'	=>	$this->config,
             'rows1'     =>  $rows1,
+            'city'     	=>  $city,
+            'area'     	=>  $area,
 		];
         return $this->view($this->config['html']['single'], $data);
     }
+
+    public function validate(Request $request)
+    {
+        /**
+         * false: 已存在
+         * true: 可使用
+         */
+        $type = $request->input('type', null);
+        $email = $request->input('email', null);
+		$id = $request->input('id', null);
+		
+		switch($type){
+			case 'email':
+				echo $this->repo->main->validate($email, $id);
+			break;
+		}
+    }
+
+	public function search(Request $request)
+	{
+		$term = $request->get('term');
+
+		$rows1 = $this->repo->main->search($term);
+
+		$data = array(
+			'results'	=>	$rows1
+		);
+		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+	}
 }

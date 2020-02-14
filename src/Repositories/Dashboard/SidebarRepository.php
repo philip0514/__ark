@@ -1,5 +1,5 @@
 <?php
-namespace Philip0514\Ark\Repositories;
+namespace Philip0514\Ark\Repositories\Dashboard;
 
 use Auth;
 use Philip0514\Ark\Models\Structure;

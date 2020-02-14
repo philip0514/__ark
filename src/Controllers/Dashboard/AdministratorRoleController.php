@@ -1,11 +1,11 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\AdministratorRoleRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\AdministratorRoleRepository as MainRepo;
 
 class AdministratorRoleController extends Controller
 {

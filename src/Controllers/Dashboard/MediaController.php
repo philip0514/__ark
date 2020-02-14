@@ -1,11 +1,11 @@
 <?php
-namespace Philip0514\Ark\Controllers;
+namespace Philip0514\Ark\Controllers\Dashboard;
 
-use Philip0514\Ark\Controllers\Controller;
+use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\MediaRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\MediaRepository as MainRepo;
 
 //Serializer
 use Philip0514\Ark\Serializer\MediaSerializer;

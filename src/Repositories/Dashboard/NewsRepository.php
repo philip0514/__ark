@@ -1,7 +1,7 @@
 <?php
-namespace Philip0514\Ark\Repositories;
+namespace Philip0514\Ark\Repositories\Dashboard;
 
-use Philip0514\Ark\Repositories\Repository;
+use Philip0514\Ark\Repositories\Dashboard\Repository;
 
 use Philip0514\Ark\Models\News as Model;
 

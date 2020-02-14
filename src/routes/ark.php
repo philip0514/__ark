@@ -1,5 +1,5 @@
 <?php
-use Philip0514\Ark\Repositories\AdministratorRepository;
+use Philip0514\Ark\Repositories\Dashboard\AdministratorRepository;
 
 $structure = AdministratorRepository::structure();
 
@@ -7,14 +7,14 @@ $route = app('Illuminate\Routing\Router');
 
 //elfinder
 $route->group([
-    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  'elfinder',
 ], function($route){
     $route->get('tinymce5', 'ElfinderController@showTinyMCE5')->name('elfinder.tinymce5');
 });
 
 $route->group([
-    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  config('ark.prefix'),
 ], function($route){
     $route->get('ark/js/route', 'DashboardController@showRoute')->name('ark.route');
@@ -22,7 +22,7 @@ $route->group([
 
 //login
 $route->group([
-    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  config('ark.prefix'),
 ], function($route){
     //login
@@ -32,7 +32,7 @@ $route->group([
 
 //ajax route
 $route->group([
-    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  config('ark.prefix'),
 ], function($route){
     $route->post('request/toggle_sidebar', 'RequestController@toggle_sidebar')->name('request.toggle_sidebar');
@@ -53,7 +53,7 @@ $route->group([
 });
 
 $route->group([
-    'namespace' =>  '\Philip0514\Ark\Controllers',
+    'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  config('ark.prefix'),
     'middleware'    =>  [
         '\Philip0514\Ark\Middleware\Url',
@@ -66,7 +66,6 @@ $route->group([
 });
 
 for($i=0; $i<sizeof($structure); $i++){
-
     $item = $structure[$i];
 
     $route->group([
