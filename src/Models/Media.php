@@ -2,6 +2,7 @@
 
 namespace Philip0514\Ark\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,6 +19,8 @@ class Media extends Model
         $rows1->news()->detach();
         $rows1->tags()->detach();
         $rows1->setting()->detach();
+
+        DB::table('media_relations')->where('media_id', $rows1->id)->delete();
     }
 
     public function abouts()

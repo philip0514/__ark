@@ -2,6 +2,7 @@
 
 namespace Philip0514\Ark\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,6 +17,8 @@ class Tag extends Model
     {
         $rows1->media()->detach();
         $rows1->setting()->detach();
+
+        DB::table('tag_relations')->where('tag_id', $rows1->id)->delete();
     }
 
     public function media()
