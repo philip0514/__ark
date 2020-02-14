@@ -36,7 +36,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  1002,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [
@@ -47,7 +47,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  1003,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [
@@ -58,7 +58,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  1004,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'update']),
             ],
             [
@@ -69,7 +69,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  501,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [   //6
@@ -80,7 +80,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  502,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [   //7
@@ -102,7 +102,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  504,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [
@@ -113,7 +113,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  505,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'update']),
             ],
             [   //10
@@ -124,7 +124,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  506,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [
@@ -135,7 +135,7 @@ class StructuresTableSeeder extends Seeder
                 'display'       =>  1,
                 'sort'          =>  507,
                 'editable'      =>  1,
-                'namespace'     =>  '\Philip0514\Ark\Controllers',
+                'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
                 'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
         ]);
