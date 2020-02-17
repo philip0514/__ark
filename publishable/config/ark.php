@@ -82,6 +82,17 @@ $config = [
     'tinymce'   =>  [
         'key'       =>  'pat6gvrra1ufopdrc2gorucnzjhu2ng6uwtw4tdqyhib956j'
     ],
+    'route'     =>  [
+        'request.toggle_sidebar',
+        'request.zip',
+        'tag.search',
+        'tag.insert',
+        'media.manager',
+        'media.upload',
+        'media.data',
+        'media.editor',
+        'user.search',
+    ],
 ];
 
 if($config['media']['s3']['active']){

@@ -68,7 +68,7 @@ class InstallCommand extends Command
         $this->info('Publishing the Ark assets, database, and config files');
 
         // Publish only relevant resources on install
-        $tags = ['seeds', 'config', 'ark'];
+        $tags = ['seeds', 'config', 'ark', 'packages'];
 
         $this->call('vendor:publish', ['--provider' => ArkServiceProvider::class, '--tag' => $tags]);
 

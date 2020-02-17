@@ -1,0 +1,220 @@
+/* custom icon size add by Manuel */
+.elfinder-cwd-icon {
+    width: 120px !important;
+    height: 120px !important;
+}
+
+.elfinder-cwd-view-icons .elfinder-cwd-file-wrapper {
+    width: 125px !important;
+    height: 125px !important;
+}
+
+.elfinder-cwd-view-icons .elfinder-cwd-file {
+    width: 150px !important;
+    height: 150px !important;
+}
+#elfinder{
+    height: 580px !important;
+}
+
+.elfinder-toolbar {
+  background: #3e8ef7;
+}
+.elfinder-navbar .ui-state-active,
+.elfinder-disabled .elfinder-navbar .ui-state-active {
+  background: #3e8ef7;
+}
+
+/* icon */
+.elfinder-cwd-icon {
+    background-size: cover;
+}
+.elfinder-cwd-icon:before {
+    top:100px;
+    background-color: black;
+}
+.elfinder-cwd-icon-directory {
+    background-position: center -125px;
+}
+.elfinder-cwd .elfinder-droppable-active .elfinder-cwd-icon {
+    background-position: center -250px;
+}
+.elfinder-cwd-icon-group {
+    background-position: center -375px;
+}
+.elfinder-cwd-icon-application {
+    background-position: center -500px;
+}
+.elfinder-cwd-icon-rtf,
+.elfinder-cwd-icon-rtfd,
+.elfinder-cwd-icon-text {
+    background-position: center -625px;
+}
+.elfinder-cwd-icon-image {
+    background-position: center -750px;
+}
+.elfinder-cwd-icon-audio {
+    background-position: center -875px;
+}
+.elfinder-cwd-icon-video,
+.elfinder-cwd-icon-flash-video,
+.elfinder-cwd-icon-dash-xml,
+.elfinder-cwd-icon-vnd-apple-mpegurl,
+.elfinder-cwd-icon-x-mpegurl {
+    background-position: center -1000px;
+}
+.elfinder-cwd-icon-plain,
+.elfinder-cwd-icon-x-empty {
+    background-position: center -1125px;
+}
+.elfinder-cwd-icon-pdf {
+    background-position: center -1250px;
+}
+.elfinder-cwd-icon-vnd-ms-office {
+    background-position: center -1375px;
+}
+.elfinder-cwd-icon-x-msaccess {
+    background-position: center -1500px;
+}
+.elfinder-cwd-icon-ms-excel,
+.elfinder-cwd-icon-vnd-ms-excel,
+.elfinder-cwd-icon-vnd-ms-excel-addin-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-excel-sheet-binary-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-excel-sheet-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-excel-template-macroEnabled-12 {
+  background-position: center -1625px;
+}
+.elfinder-cwd-icon-vnd-ms-powerpoint,
+.elfinder-cwd-icon-vnd-ms-powerpoint-addin-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-powerpoint-presentation-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-powerpoint-slide-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-powerpoint-slideshow-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-powerpoint-template-macroEnabled-12 {
+  background-position: center -1750px;
+}
+.elfinder-cwd-icon-msword,
+.elfinder-cwd-icon-vnd-ms-word,
+.elfinder-cwd-icon-vnd-ms-word-document-macroEnabled-12,
+.elfinder-cwd-icon-vnd-ms-word-template-macroEnabled-12 {
+  background-position: center -1875px;
+}
+
+
+
+.elfinder-cwd-icon-vnd-oasis-opendocument-base,
+.elfinder-cwd-icon-vnd-oasis-opendocument-chart,
+.elfinder-cwd-icon-vnd-oasis-opendocument-database,
+.elfinder-cwd-icon-vnd-oasis-opendocument-formula,
+.elfinder-cwd-icon-vnd-oasis-opendocument-graphics,
+.elfinder-cwd-icon-vnd-oasis-opendocument-graphics-template,
+.elfinder-cwd-icon-vnd-oasis-opendocument-image,
+.elfinder-cwd-icon-vnd-openofficeorg-extension {
+  background-position: center -2000px;
+}
+.elfinder-cwd-icon-vnd-oasis-opendocument-spreadsheet,
+.elfinder-cwd-icon-vnd-oasis-opendocument-spreadsheet-template,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-spreadsheetml-sheet,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-spreadsheetml-template {
+  background-position: center -2125px;
+}
+.elfinder-cwd-icon-vnd-oasis-opendocument-presentation,
+.elfinder-cwd-icon-vnd-oasis-opendocument-presentation-template,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-presentationml-presentation,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-presentationml-slide,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-presentationml-slideshow,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-presentationml-template {
+  background-position: center -2250px;
+}
+.elfinder-cwd-icon-vnd-oasis-opendocument-text,
+.elfinder-cwd-icon-vnd-oasis-opendocument-text-master,
+.elfinder-cwd-icon-vnd-oasis-opendocument-text-template,
+.elfinder-cwd-icon-vnd-oasis-opendocument-text-web,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-wordprocessingml-document,
+.elfinder-cwd-icon-vnd-openxmlformats-officedocument-wordprocessingml-template {
+  background-position: center -2375px;
+}
+.elfinder-cwd-icon-zip,
+.elfinder-cwd-icon-x-zip,
+.elfinder-cwd-icon-x-xz,
+.elfinder-cwd-icon-x-7z-compressed,
+.elfinder-cwd-icon-x-gzip,
+.elfinder-cwd-icon-x-tar,
+.elfinder-cwd-icon-x-bzip,
+.elfinder-cwd-icon-x-bzip2,
+.elfinder-cwd-icon-x-rar,
+.elfinder-cwd-icon-x-rar-compressed {
+  background-position: center -2500px;
+}
+.elfinder-cwd-icon-postscript {
+  background-position: center -2625px;
+}
+.elfinder-cwd-icon-vnd-adobe-photoshop {
+  background-position: center -2750px;
+}
+.elfinder-cwd-icon-x-shockwave-flash {
+  background-position: center -2875px;
+}
+.elfinder-cwd-icon-vnd-android-package-archive {
+  background-position: center -3000px;
+}
+.elfinder-cwd-icon-x-c,
+.elfinder-cwd-icon-x-csrc,
+.elfinder-cwd-icon-x-chdr,
+.elfinder-cwd-icon-x-c--,
+.elfinder-cwd-icon-x-c--src,
+.elfinder-cwd-icon-x-c--hdr {
+  background-position: center -3125px;
+}
+.elfinder-cwd-icon-css {
+  background-position: center -3250px;
+}
+.elfinder-cwd-icon-html {
+  background-position: center -3375px;
+}
+.elfinder-cwd-icon-x-jar,
+.elfinder-cwd-icon-x-java,
+.elfinder-cwd-icon-x-java-source {
+  background-position: center -3500px;
+}
+.elfinder-cwd-icon-javascript,
+.elfinder-cwd-icon-x-javascript {
+  background-position: center -3625px;
+}
+.elfinder-cwd-icon-json {
+  background-position: center -3750px;
+}
+.elfinder-cwd-icon-markdown,
+.elfinder-cwd-icon-x-markdown {
+  background-position: center -3875px;
+}
+.elfinder-cwd-icon-x-perl {
+  background-position: center -4000px;
+}
+.elfinder-cwd-icon-x-php {
+  background-position: center -4125px;
+}
+.elfinder-cwd-icon-x-python:after,
+.elfinder-cwd-icon-x-python {
+  background-position: center -4250px;
+}
+.elfinder-cwd-icon-x-ruby {
+  background-position: center -4375px;
+}
+.elfinder-cwd-icon-x-sh,
+.elfinder-cwd-icon-x-shellscript {
+  background-position: center -4500px;
+}
+.elfinder-cwd-icon-sql,
+.elfinder-cwd-icon-x-sql,
+.elfinder-cwd-icon-x-sqlite3 {
+  background-position: center -4625px;
+}
+.elfinder-cwd-icon-x-eps,
+.elfinder-cwd-icon-svg,
+.elfinder-cwd-icon-svg-xml {
+  background-position: center -4750px;
+}
+.elfinder-cwd-icon-xml:after,
+.elfinder-cwd-icon-xml {
+  background-position: center -4875px;
+}

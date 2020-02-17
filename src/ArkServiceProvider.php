@@ -7,7 +7,6 @@ class ArkServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-
         $this->loadRoutesFrom(__DIR__.'/routes/ark.php');
 
         $this->mergeConfigFrom(
@@ -20,6 +19,10 @@ class ArkServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(
             __DIR__.'/../publishable/config/auth/provider.php', 'auth.providers'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../publishable/config/filesystems/disks.php', 'filesystems.disks'
         );
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
@@ -66,6 +69,9 @@ class ArkServiceProvider extends ServiceProvider
             'ark' => [
                 "{$publishablePath}/assets/" => public_path('ark'),
             ],
+            'packages'  =>  [
+                "{$publishablePath}/packages/" => public_path('packages'),
+            ]
         ];
 
         foreach ($publishable as $group => $paths) {

@@ -26,7 +26,9 @@ return array(
     |    ]
     */
     'disks' => [
-        'image',
+        'upload' =>  [
+            'URL'   =>  '/upload/',
+        ],
     ],
 
     /*

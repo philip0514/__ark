@@ -95,17 +95,7 @@ class DashboardController extends Controller
 
     public function showRoute(Request $request)
     {
-        $rows1 = [
-            'request.toggle_sidebar',
-            'request.zip',
-            'tag.search',
-            'tag.insert',
-            'media.manager',
-            'media.upload',
-            'media.data',
-            'media.editor',
-            'user.search',
-        ];
+        $rows1 = config('ark.route');
 
         $result = [];
         for($i=0; $i<sizeof($rows1); $i++){

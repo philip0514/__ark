@@ -257,9 +257,9 @@ class Controller extends BaseController
 		if($slash){
 			return prefixUri(implode('/', $path));
 		}else{
-			$view = 'ark::'.implode('.', $path);
+			$view = 'ark.'.implode('.', $path);
 			if(!view()->exists($view)){
-				$view = 'ark.'.implode('.', $path);
+				$view = 'ark::'.implode('.', $path);
 			}
 			return $view;
 		}
