@@ -20,12 +20,10 @@
         "spatie/laravel-permission": "^3.2",
         "symfony/thanks": "^1.1.0",
         "yajra/laravel-datatables-oracle": "~9.0",
-        "league/fractal": "^0.19.2"
+        "laravel/passport": "^7.0",
+        "dingo/api": "^2.4"
     },
     "autoload": {
-        "files": [
-            "philip0514/ark/src/Helpers/autoload.php"
-        ],
         "psr-4": {
             "Philip0514\\Ark\\": "src"
         }

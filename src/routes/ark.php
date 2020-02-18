@@ -90,7 +90,7 @@ for($i=0; $i<sizeof($structure); $i++){
     ], function($route) use ($item){
         $route->match(['get', 'post', 'delete'], sprintf('%s', $item['url']), $item['controller'].'@index')->name(sprintf('%s.index', $item['url']));
         $route->match(['get', 'post'], sprintf('%s/create', $item['url']), $item['controller'].'@single')->name(sprintf('%s.create', $item['url']));
-        $route->match(['get', 'post'], sprintf('%s/{id}', $item['url']), $item['controller'].'@single')->name(sprintf('%s.update', $item['url']));
-        $route->get(sprintf('%s/{id}/view', $item['url']), $item['controller'].'@single')->name(sprintf('%s.read', $item['url']));
+        $route->match(['get', 'post'], sprintf('%s/{id}', $item['url']), $item['controller'].'@single')->name(sprintf('%s.update', $item['url']))->where('id', '[0-9]+');
+        $route->get(sprintf('%s/{id}/view', $item['url']), $item['controller'].'@single')->name(sprintf('%s.read', $item['url']))->where('id', '[0-9]+');
     });
 }

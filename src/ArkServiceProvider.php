@@ -8,6 +8,7 @@ class ArkServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__.'/routes/ark.php');
+        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
 
         $this->mergeConfigFrom(
             __DIR__.'/../publishable/config/auth/guard.php', 'auth.guards'

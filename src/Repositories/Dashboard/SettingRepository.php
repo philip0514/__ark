@@ -4,15 +4,18 @@ namespace Philip0514\Ark\Repositories\Dashboard;
 use Philip0514\Ark\Repositories\Dashboard\Repository;
 
 use Philip0514\Ark\Models\Setting as Model;
+use Philip0514\Ark\Models\OauthClient;
 
 class SettingRepository extends Repository
 {
     protected $model;
 
 	function __construct(
-		Model $model
+		Model $model,
+		OauthClient $OauthClient
 	){
 		$this->model = $model;
+		$this->client = $OauthClient;
 	}
 
     public function single($id)
@@ -30,8 +33,14 @@ class SettingRepository extends Repository
 		])
 		->find($id);
 
+		$rows2 = $this->client->orderBy('id', 'asc')->get();
+
         if($rows1){
-            return $rows1->toArray();
+			$rows1 = $rows1->toArray();
+
+			$rows1['client'] = $rows2->toArray();
+
+			return $rows1;
         }
         return null;
     }

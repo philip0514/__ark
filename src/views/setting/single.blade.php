@@ -103,6 +103,40 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="panel panel-bordered">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Passport Token</h3>
+                                <div class="panel-actions">
+                                    <a class="panel-action icon wb-minus" aria-expanded="true" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                    <a class="panel-action icon wb-expand" data-toggle="panel-fullscreen" aria-hidden="true"></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>id</th>
+                                            <th>name</th>
+                                            <th>secret</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for($i=0; $i<sizeof($rows1['client']); $i++)
+                                        <tr>
+                                            <td>{{ $rows1['client'][$i]['id'] }}</td>
+                                            <td>{{ $rows1['client'][$i]['name'] }}</td>
+                                            <td>{{ $rows1['client'][$i]['secret'] }}</td>
+                                        </tr>
+                                        @endfor
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="page-footer page-submit">

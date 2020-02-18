@@ -2,6 +2,7 @@
 
 namespace Philip0514\Ark\Models;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Philip0514\Ark\Traits\Helper;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, Helper;
+    use Notifiable, SoftDeletes, Helper, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
