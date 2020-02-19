@@ -2,7 +2,7 @@
 namespace Philip0514\Ark\Repositories\API\V1_0;
 
 use Illuminate\Support\Facades\Hash;
-use \Laravel\Passport\Http\Controllers\AccessTokenController;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Lcobucci\JWT\Parser;
 use Carbon\Carbon;
 
@@ -136,10 +136,11 @@ class UserRepository
 
 	public function parse_token($request)
 	{
-		$value = $request->bearerToken();
-        $token_id = (new Parser())->parse($value)->getHeader('jti');
+        $bearerToken = $request->bearerToken();
+        $token = (new Parser())->parse($bearerToken);
+        $token_id = $token->getClaim('jti');
         $token =  DB::table('oauth_access_tokens')->where('id', '=', $token_id)->first();
-		$user_id = $token->user_id;
+        $user_id = $token->user_id;
 
 		return [
 			'token_id'	=>	$token_id,

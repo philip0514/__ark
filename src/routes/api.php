@@ -16,7 +16,7 @@ $api->version('v1_0', function ($api) {
 	//client auth
 	$api->group([
 		'namespace' => '\Philip0514\Ark\Controllers\API\V1_0',
-		'middleware' => 'client_credentials',
+		'middleware' => '\Philip0514\Ark\Middleware\CheckClientCredentials',
 	], function ($api) {
 
 		//user
@@ -36,8 +36,8 @@ $api->version('v1_0', function ($api) {
 		'middleware' => 'auth:api'
 	], function ($api) {
 		//user
-		$api->get('user/info', 'UserController@info_get');
-		$api->post('user/info', 'UserController@info_post');
+		$api->get('user/info', 'UserController@infoGet');
+		$api->post('user/info', 'UserController@infoPost');
 		$api->post('user/logout', 'UserController@logout');
 
     });

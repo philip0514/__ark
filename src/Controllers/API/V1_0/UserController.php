@@ -314,7 +314,7 @@ class UserController extends Controller
 	 *
 	 *
 	 */
-	public function info_get(Request $request)
+	public function infoGet(Request $request)
 	{
 		try{
 			$token = $this->repo->user->parse_token($request);
@@ -330,29 +330,6 @@ class UserController extends Controller
 			if(!$user){
 				throw new Exception('user_404');
 			}
-
-			if($user->avatar){
-				$user->avatar = config('api.s3.avatar.url').$user->avatar.'?t='.strtotime($user->updated_at);
-			}
-
-			if($user->background){
-				$user->background = config('api.s3.background.url').$user->background.'?t='.strtotime($user->updated_at);
-			}
-
-			$user->inviter = null;
-			if($user->inviter_id){
-				$inviter = $this->repo->user->findByID($user->inviter_id);
-				$user->inviter = $inviter->name;
-			}
-
-			$follow = $this->repo->user->followCount($user_id);
-			$user->following = $follow['following'];
-			$user->followed = $follow['followed'];
-
-			$user->twitter_setting = $user->twitter_setting ? json_decode($user->twitter_setting, true) : null;
-			$user->facebook_setting = $user->facebook_setting ? json_decode($user->facebook_setting, true) : null;
-			$user->privacy = $user->privacy ? json_decode($user->privacy, true) : null;
-			$user->twitter_token = $user->twitter_token ? json_decode($user->twitter_token, true) : null;
 
 			$serializer = new UserSerializer();
 			$user = $serializer->info($user);
@@ -377,7 +354,7 @@ class UserController extends Controller
 	 *
 	 *
 	 */
-	public function info_post(Request $request)
+	public function infoPost(Request $request)
 	{
 		try{
 			$data = $this->repo->user->info_post($request);
