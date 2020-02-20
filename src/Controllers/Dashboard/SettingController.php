@@ -45,7 +45,6 @@ class SettingController extends Controller
         switch($this->method){
             case 'post':
                 $title = $request->input('title', null);
-                $keyword = $request->input('keyword', null);
                 $description = $request->input('description', null);
 				$tag = $request->input('tag', null);
 				$ogimage_input = $request->input('ogimage_input', 0);
