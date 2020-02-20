@@ -32,8 +32,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
-            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production', null],
-            ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
+            ['demo', null, InputOption::VALUE_NONE, 'Install with demo data', null],
         ];
     }
 
@@ -73,10 +72,22 @@ class InstallCommand extends Command
         $this->call('vendor:publish', ['--provider' => ArkServiceProvider::class, '--tag' => $tags]);
 
         $this->info('Migrating the database tables into your application');
-        $this->call('migrate', ['--force' => $this->option('force')]);
+        $this->call('migrate');
+
+        $this->info('Install Laravel Passport');
+        $this->call('passport:install');
 
         $this->info('Seeding data into the database');
         $this->seed('ArkDatabaseSeeder');
+
+        $demo = $this->option('demo');
+        if($demo){
+            $tags = ['media'];
+            $this->call('vendor:publish', ['--provider' => ArkServiceProvider::class, '--tag' => $tags]);
+
+            $this->info('Seeding Demo Data into the database');
+            $this->seed('DemoDatabaseSeeder');
+        }
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 

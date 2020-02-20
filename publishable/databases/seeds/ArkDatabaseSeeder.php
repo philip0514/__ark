@@ -16,8 +16,8 @@ class ArkDatabaseSeeder extends Seeder
     public function run()
     {
         $this->seed('StructuresTableSeeder');
-        $this->seed('RolesTableSeeder');
         $this->seed('AdministratorsTableSeeder');
+        $this->seed('PageTypesTableSeeder');
         $this->seed('ZipsTableSeeder');
     }
 }

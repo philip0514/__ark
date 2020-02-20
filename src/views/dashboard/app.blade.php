@@ -124,7 +124,7 @@
             <div class="site-menubar-body">
                 <div>
                     <div>
-                            @yield('sidebar')
+                        @yield('sidebar')
                     </div>
                 </div>
             </div>

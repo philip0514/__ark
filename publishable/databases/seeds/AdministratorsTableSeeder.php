@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Philip0514\Ark\Models\Administrator;
+use Philip0514\Ark\Models\Role;
 
 class AdministratorsTableSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class AdministratorsTableSeeder extends Seeder
      */
     public function run()
     {
-        $role = DB::table('roles')->select('name')->first();
+        $role = Role::select('name')->first();
 
         $admin = Administrator::where('id', 1)->first();
         if(isset($admin->id)){

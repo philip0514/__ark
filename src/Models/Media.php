@@ -19,6 +19,7 @@ class Media extends Model
         $rows1->news()->detach();
         $rows1->tags()->detach();
         $rows1->setting()->detach();
+        $rows1->pages()->detach();
 
         DB::table('media_relations')->where('media_id', $rows1->id)->delete();
     }
@@ -41,5 +42,10 @@ class Media extends Model
     public function setting()
     {
         return $this->morphedByMany('Philip0514\Ark\Models\Setting', 'media_relations');
+    }
+
+    public function pages()
+    {
+        return $this->morphedByMany('Philip0514\Ark\Models\Page', 'media_relations');
     }
 }

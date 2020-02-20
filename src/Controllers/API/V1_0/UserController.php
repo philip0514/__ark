@@ -13,6 +13,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 
 //Repositories
 use Philip0514\Ark\Repositories\API\V1_0\UserRepository;
+use Philip0514\Ark\Repositories\API\V1_0\PageRepository;
 
 //Serializer
 use Philip0514\Ark\Serializer\API\V1_0\UserSerializer;
@@ -32,11 +33,13 @@ class UserController extends Controller
 	private $repo;
 
 	function __construct(
-		UserRepository $userRepository
+		UserRepository $UserRepository,
+		PageRepository $PageRepository
 	)
 	{
 		$this->repo = new \stdClass();
-		$this->repo->user = $userRepository;
+		$this->repo->user = $UserRepository;
+		$this->repo->page = $PageRepository;
 	}
 
 	/**

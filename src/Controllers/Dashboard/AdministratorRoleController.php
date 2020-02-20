@@ -127,7 +127,7 @@ class AdministratorRoleController extends Controller
 						}
 					}
 				}
-				
+
 				asort($structure_id);
 				$structure_id = array_values($structure_id);
 
@@ -212,6 +212,9 @@ class AdministratorRoleController extends Controller
 		}
 
 		for($i=0; $i<sizeof($rows2); $i++){
+			if($rows2[$i]['url']=='dashboard'){
+				continue;
+			}
 			$id = $rows2[$i]['id'];
 			$parent_id = $rows2[$i]['parent_id'];
 			$parent = $parent_node;

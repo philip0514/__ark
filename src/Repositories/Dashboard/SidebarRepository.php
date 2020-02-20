@@ -57,6 +57,7 @@ class SidebarRepository
             $li = $dom->createElement("li");
             $li->setAttribute("class", 'site-menu-category');
 
+        /*
         //主控台
         $root->appendChild($li);
             $li = $dom->createElement("li");
@@ -73,6 +74,7 @@ class SidebarRepository
                 $link->appendChild($span);
             $li->appendChild($link);
         $root->appendChild($li);
+        */
 
         $node_parent = [];
         for($i=0; $i<sizeof($rows1); $i++){
@@ -109,10 +111,14 @@ class SidebarRepository
 			//li > a
 			$link = $dom->createElement('a');
 
-			if(!$rows1[$i]['url']){
+            $url = $rows1[$i]['url'];
+            if($url=='dashboard'){
+                $url = '/';
+            }
+			if(!$url){
 				$link->setAttribute("href", 'javascript:;');
 			}else{
-				$link->setAttribute("href", prefixUri($rows1[$i]['url']));
+				$link->setAttribute("href", prefixUri($url));
 				$link->setAttribute("class", 'animsition-link');
 			}
 

@@ -61,12 +61,26 @@ $route->group([
     ],
 ], function($route){
     //dashboard
-    $route->get('/', 'DashboardController@index')->name('dashboard');
     $route->match(['get', 'post'], 'profile', 'AdministratorController@profile')->name('administrator.profile');
 });
 
 for($i=0; $i<sizeof($structure); $i++){
     $item = $structure[$i];
+
+    if($item['url']=='dashboard'){
+        $route->group([
+            'namespace' =>  $item['namespace'],
+            'prefix'    =>  config('ark.prefix'),
+            'middleware'    =>  [
+                '\Philip0514\Ark\Middleware\Url',
+                '\Philip0514\Ark\Middleware\Permission',
+            ],
+        ], function($route){
+            //dashboard
+            $route->get('/', 'DashboardController@index')->name('dashboard');
+        });
+        continue;
+    }
 
     $route->group([
         'namespace' =>  $item['namespace'],

@@ -72,7 +72,11 @@ class ArkServiceProvider extends ServiceProvider
             ],
             'packages'  =>  [
                 "{$publishablePath}/packages/" => public_path('packages'),
-            ]
+            ],
+            'media'  =>  [
+                "{$publishablePath}/demo/media/" => storage_path('app/public'),
+            ],
+
         ];
 
         foreach ($publishable as $group => $paths) {
