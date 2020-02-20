@@ -37,12 +37,11 @@ class SettingRepository extends Repository
 
         if($rows1){
 			$rows1 = $rows1->toArray();
-
-			$rows1['client'] = $rows2->toArray();
-
-			return $rows1;
         }
-        return null;
+
+		$rows1['client'] = $rows2->toArray();
+
+		return $rows1;
     }
 	
 	public function update($data)
