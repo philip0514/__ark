@@ -27,6 +27,7 @@ class AddColumnToUsersTable extends Migration
             $table->string('address', 255)->nullable();
             $table->string('phone', 100)->nullable();
             $table->string('mobile', 100)->nullable();
+            $table->string('code', 100)->nullable();
             $table->integer('display')->default(1)->nullable();
             $table->integer('checked')->default(0)->nullable();
             $table->string('checked_auth', 100)->nullable();

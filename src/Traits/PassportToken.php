@@ -2,8 +2,8 @@
 
 namespace Philip0514\Ark\Traits;
 
-use App\Models\User;
-use DateTime;
+use Philip0514\Ark\Models\User;
+use DateTimeImmutable;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Events\Dispatcher;
 use Laravel\Passport\Bridge\AccessToken;
@@ -58,7 +58,7 @@ trait PassportToken
         $refreshTokenRepository = app(RefreshTokenRepository::class);
 
         $refreshToken = $refreshTokenRepository->getNewRefreshToken();
-        $refreshToken->setExpiryDateTime((new \DateTime())->add(Passport::refreshTokensExpireIn()));
+        $refreshToken->setExpiryDateTime((new \DateTimeImmutable())->add(Passport::refreshTokensExpireIn()));
         $refreshToken->setAccessToken($accessToken);
 
         while ($maxGenerationAttempts-- > 0) {
@@ -77,10 +77,9 @@ trait PassportToken
 
     protected function createPassportTokenByUser(User $user, $clientId)
     {
-        $accessToken = new AccessToken($user->id);
+        $accessToken = new AccessToken($user->id, [], new Client($clientId, null, null));
         $accessToken->setIdentifier($this->generateUniqueIdentifier());
-        $accessToken->setClient(new Client($clientId, null, null));
-        $accessToken->setExpiryDateTime((new DateTime())->add(Passport::tokensExpireIn()));
+        $accessToken->setExpiryDateTime((new DateTimeImmutable())->add(Passport::tokensExpireIn()) );
 
         $accessTokenRepository = new AccessTokenRepository(new TokenRepository(), new Dispatcher());
         $accessTokenRepository->persistNewAccessToken($accessToken);
@@ -92,14 +91,15 @@ trait PassportToken
         ];
     }
 
-    protected function sendBearerTokenResponse($accessToken, $refreshToken)
+    protected function sendBearerTokenResponse(AccessTokenEntityInterface $accessToken, $refreshToken)
     {
         $response = new BearerTokenResponse();
         $response->setAccessToken($accessToken);
         $response->setRefreshToken($refreshToken);
 
-        $privateKey = new CryptKey('file://'.Passport::keyPath('oauth-private.key'));
+        $privateKey = new CryptKey('file://'.Passport::keyPath('oauth-private.key'), null, false);
 
+        $accessToken->SetprivateKey($privateKey);
         $response->setPrivateKey($privateKey);
         $response->setEncryptionKey(app('encrypter')->getKey());
 

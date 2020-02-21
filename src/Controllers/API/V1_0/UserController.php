@@ -3,7 +3,6 @@ namespace Philip0514\Ark\Controllers\API\V1_0;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Psr\Http\Message\ServerRequestInterface;
 
 //Exception
@@ -45,9 +44,6 @@ class UserController extends Controller
 	/**
 	 *	token
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function token(ServerRequestInterface $request)
 	{
@@ -62,15 +58,19 @@ class UserController extends Controller
 				throw new Exception('token_required');
 			}
 
+			$serializer = new UserSerializer();
 			switch($grant_type){
 				case 'client_credentials':
 					$data = $this->repo->user->client($request);
+					$data = $serializer->clientToken($data);
 				break;
 				case 'password':
 					$data = $this->repo->user->password($request);
+					$data = $serializer->passwordToken($data);
 				break;
 				case 'refresh_token':
 					$data = $this->repo->user->refresh($request);
+					$data = $serializer->refreshToken($data);
 				break;
 				default:
 					throw new Exception('invalid_grant_type');
@@ -103,36 +103,23 @@ class UserController extends Controller
 	/**
 	 *	註冊
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function register(Request $request)
 	{
 		try{
-			$data = $this->repo->user->register($request);
+            $client_id = $request->input('client_id');
+            $email = $request->input('email');
+            $password = $request->input('password');
+			$name = $request->input('name');
+
+			$data = $this->repo->user->register($email, $password, $name, $client_id);
 
 			if(isset($data["error"])){
 				throw new Exception($data["error"]);
 			}
 
-			//邀請人
-			if(isset($data['inviter_id']) && $data['inviter_id']){
-				$this->repo->point->inviter($data['inviter_id']);
-			}
-
-			//後續處理
-			$rows1 = array(
-				'id'			=>	$data['user']['id'],
-				'name'			=>	$data['user']['name'],
-				'email'			=>	$data['user']['email'],
-				'password'		=>	$data['user']['password_hidden'],
-				'inviter_id'	=>	$data['user']['inviter_id'],
-			);
-			$this->repo->user->after_register($rows1, 'default');
-
-			unset($data['user']['inviter_id']);
-			unset($data['user']['password_hidden']);
+			$serializer = new UserSerializer();
+			$data = $serializer->passwordToken($data);
 
 			return $this->responseSuccess([
 				'data'	=>	$data
@@ -148,18 +135,23 @@ class UserController extends Controller
 	/**
 	 *	Facebook
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function facebook(Request $request)
 	{
 		try{
-			$data = $this->repo->user->facebook($request);
+            $client_id = $request->input('client_id');
+            $email = $request->input('email');
+            $facebook_id = $request->input('facebook_id');
+			$name = $request->input('name');
+
+			$data = $this->repo->user->facebook($email, $name, $facebook_id, $client_id);
 
 			if(isset($data["error"])){
 				throw new Exception($data["error"]);
 			}
+
+			$serializer = new UserSerializer();
+			$data = $serializer->passwordToken($data);
 
 			return $this->responseSuccess([
 				'data'	=>	$data
@@ -174,18 +166,23 @@ class UserController extends Controller
 	/**
 	 *	Google
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function google(Request $request)
 	{
 		try{
-			$data = $this->repo->user->google($request);
+            $client_id = $request->input('client_id');
+            $email = $request->input('email');
+            $google_id = $request->input('google_id');
+			$name = $request->input('name');
+
+			$data = $this->repo->user->google($email, $name, $google_id, $client_id);
 
 			if(isset($data["error"])){
 				throw new Exception($data["error"]);
 			}
+
+			$serializer = new UserSerializer();
+			$data = $serializer->passwordToken($data);
 
 			return $this->responseSuccess([
 				'data'	=>	$data
@@ -200,18 +197,23 @@ class UserController extends Controller
 	/**
 	 *	Twitter
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function twitter(Request $request)
 	{
 		try{
-			$data = $this->repo->user->twitter($request);
+            $client_id = $request->input('client_id');
+            $email = $request->input('email');
+            $twitter_id = $request->input('twitter_id');
+			$name = $request->input('name');
+
+			$data = $this->repo->user->twitter($email, $name, $twitter_id, $client_id);
 
 			if(isset($data["error"])){
 				throw new Exception($data["error"]);
 			}
+
+			$serializer = new UserSerializer();
+			$data = $serializer->passwordToken($data);
 
 			return $this->responseSuccess([
 				'data'	=>	$data
@@ -225,9 +227,6 @@ class UserController extends Controller
 
 	/**
 	 *	信件驗證
-	 *
-	 *
-	 *
 	 *
 	 */
 	public function verification(Request $request)
@@ -249,16 +248,7 @@ class UserController extends Controller
 				throw new Exception('verification_checked');
 			}
 
-			$this->repo->user->authCodeUpdate($user->id);
-
-			//配發六度幣
-			$data = array(
-				'user_id'			=>	$user->id,
-				'method'			=>	2,
-				'object_user_id'	=>	0,
-				'amount'			=>	100,
-			);
-			$this->repo->point->insert($data);
+			$this->repo->user->authSuccess($user->id);
 
 			return $this->responseSuccess([]);
 		}
@@ -271,13 +261,11 @@ class UserController extends Controller
 	/**
 	 *	忘記密碼
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function forgot_password(Request $request)
 	{
 		try{
+			$env = env('APP_ENV');
 			$email = $request->input('email');
 
 			if(!$email){
@@ -296,13 +284,16 @@ class UserController extends Controller
 
 			$this->repo->user->forgotPassword($user, $password);
 
-			$data = [
-				'password'	=>	$password		//之後要隱藏
-			];
-			//return $this->responseSuccess();
-			return $this->responseSuccess([
-				'data'	=>	$data
-			]);
+			if($env=='production'){
+				return $this->responseSuccess();
+			}else{
+				$data = [
+					'password'	=>	$password
+				];
+				return $this->responseSuccess([
+					'data'	=>	$data
+				]);
+			}
 		}
 		catch(Exception $e){
             $message = $e->getMessage();
@@ -313,15 +304,11 @@ class UserController extends Controller
 	/**
 	 *	自己用戶資料
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function infoGet(Request $request)
 	{
 		try{
 			$token = $this->repo->user->parse_token($request);
-			$token_id = $token['token_id'];
 			$user_id = $token['user_id'];
 
 			if(!$user_id){
@@ -353,21 +340,14 @@ class UserController extends Controller
 	/**
 	 *	更新用戶資料
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function infoPost(Request $request)
 	{
 		try{
-			$data = $this->repo->user->info_post($request);
+			$data = $this->repo->user->infoPost($request);
 
 			if(isset($data["error"])){
 				throw new Exception($data["error"]);
-			}
-
-			if($data['inviter_id']){
-				$this->repo->point->inviter($data['inviter_id']);
 			}
 
 			return $this->responseSuccess();
@@ -381,18 +361,11 @@ class UserController extends Controller
 	/**
 	 *	登出
 	 *
-	 *
-	 *
-	 *
 	 */
 	public function logout(Request $request)
     {
 		try{
-			$data = $this->repo->user->logout($request);
-
-			if(!$data){
-				throw new Exception('invalid_credentials');
-			}
+			$this->repo->user->logout($request);
 
 			return $this->responseSuccess();
 		}

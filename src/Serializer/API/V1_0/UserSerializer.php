@@ -60,4 +60,50 @@ class UserSerializer extends Collection
 		
 		return $data;
 	}
+
+	public function clientToken($data)
+	{
+		return [
+			'token'				=>	[
+				'token_type'		=>	$data['token_type'],
+				'expires_in'		=>	$data['expires_in'],
+				'access_token'		=>	$data['access_token'],
+			],
+		];
+	}
+
+	public function passwordToken($data)
+	{
+		$user = $data['user'];
+		return [
+			'user'				=>	[
+				'id'				=>	$user['id'],
+				'name'				=>	$user['name'],
+				'email'				=>	$user['email'],
+                'facebook_id'		=>	$user['facebook_id'],
+                'google_id'			=>	$user['google_id'],
+                'twitter_id'		=>	$user['twitter_id'],
+				'gender'			=>	$user['gender'],
+				'birthday'			=>	$user['birthday'],
+			],
+			'token'				=>	[
+				'token_type'		=>	$data['token_type'],
+				'expires_in'		=>	$data['expires_in'],
+				'access_token'		=>	$data['access_token'],
+				'refresh_token'		=>	$data['refresh_token'],
+			],
+		];
+	}
+
+	public function refreshToken($data)
+	{
+		return [
+			'token'				=>	[
+				'token_type'		=>	$data['token_type'],
+				'expires_in'		=>	$data['expires_in'],
+				'access_token'		=>	$data['access_token'],
+				'refresh_token'		=>	$data['refresh_token'],
+			],
+		];
+	}
 }
