@@ -43,15 +43,15 @@ class Controller extends BaseController
             ],
 			'column'			=>	[
 				/*	
-				array(
+				[
 					'name'			=>	'#',
 					'width'			=>	'60px',
 					'field'			=>	'id',
-					'visible'		=>	array(true, true),		//第一個：是否顯示在「欄位顯示」的select中 第二個：在select中是否已被勾選
-					'orderby'		=>	array('A.id', 'asc'),
+					'visible'		=>	[true, true],		//第一個：是否顯示在「欄位顯示」的select中 第二個：在select中是否已被勾選
+					'orderby'		=>	['A.id', 'asc'],
 					'orderable'		=>	true,					//是否可以用th顯示排序
 					'sortable'		=>	false,					//是否可以拖曳排序
-				),	
+				],	
 				*/
 			],
             'action_text'       =>  [
@@ -155,7 +155,7 @@ class Controller extends BaseController
 		$table_view = [];
 
         //datatable config
-		$datatable = array(
+		$datatable = [
 			'first'				    =>	'第一頁',
 			'last'				    =>	'最終頁',
 			'info'				    =>	' _START_ ~ _END_ / 共 _TOTAL_ 筆 ',
@@ -178,24 +178,24 @@ class Controller extends BaseController
 			'rowReorder'		    =>	false,
 			'pageLength'		    =>	10,
 			'displayStart'		    =>	0,
-        );
+		];
 
 		if($config['action']['sort']){
-			$datatable['rowReorder'] = array(
+			$datatable['rowReorder'] = [
 				'selector'			=>	'td.sortable',
 				'update'			=>	false,
-			);
+			];
 		}
 
 		//解析datatable config
 		for($i=0; $i<sizeof($config['column']); $i++){
 			//資料與欄位的對應
-			$datatable['columns'][] = array(
+			$datatable['columns'][] = [
 				'data'		=>	$config['column'][$i]['field'],
-			);
+			];
 
 			if(isset($config['column'][$i]['orderby'][1])){
-				$datatable['order'][] = array($i, $config['column'][$i]['orderby'][1]);
+				$datatable['order'][] = [$i, $config['column'][$i]['orderby'][1]];
 			}
 
 			//是否可以根據th排序
@@ -205,21 +205,21 @@ class Controller extends BaseController
 
 			//th寬度
 			if(isset($config['column'][$i]['width'])){
-				$datatable['columnDefs'][] = array(
+				$datatable['columnDefs'][] = [
 					'width'			=>	$config['column'][$i]['width'],
 					'targets'		=>	$i,
-				);
+				];
 			}
 
 			//visible 控制select中的顯示
 			if($config['column'][$i]['visible'][0]){
                 $is_visible = $config['column'][$i]['visible'][1];
-				$datatable['visible'][] = array(
+				$datatable['visible'][] = [
 					'value'		=>	$i,
 					'name'		=>	$config['column'][$i]['name'],
 					'field'		=>	$config['column'][$i]['field'],
 					'selected'	=>	$is_visible,
-				);
+				];
             }
 
 			//table顯示整理
@@ -291,11 +291,31 @@ class Controller extends BaseController
 		$config = $this->config;
 		$route = $config['route'];
 		$path = prefixUri($config['controller']);
-		$query = $this->repo->main->datatable($request);
+
+        $search = $request->input('search', null);
+        $parameter = $request->input('parameter', null);
+		$order = $request->input('order', []);
+
+        $admin = session()->get('admin');
+        $route = $request->route()->getName();
+		list($controller, $name) = explode('.', $route);
+
+        if($search){
+            $admin['datatable'][$controller]['search'] = $search;
+        }else{
+			$admin['datatable'][$controller]['search'] = null;
+        }
+        if($parameter){
+            $admin['datatable'][$controller]['parameter'] = $parameter;
+        }else{
+			$admin['datatable'][$controller]['parameter'] = null;
+        }
+        session()->put('admin', $admin);
+
+		$query = $this->repo->main->datatable($controller);
 
 		//確認是否為正序，是正序才可以排序
 		$sortable = false;
-		$order = $request->input('order', []);
 		if(sizeof($order)==1){
 			if(
 				($config['column'][ $order[0]['column'] ]['field']=='sort' || $config['column'][ $order[0]['column'] ]['field']=='recommend_sort' )

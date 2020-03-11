@@ -18,20 +18,11 @@ class UserRepository extends Repository
 		$this->model = $model;
 	}
 
-	public function newsletter_datatable($request)
+	public function newsletter_datatable($controller)
 	{
-        $search = $request->input('search', null);
-        $parameter = $request->input('parameter', null);
         $admin = session()->get('admin');
-        $route = $request->route()->getName();
-        list($controller, $name) = explode('.', $route);
-        if($search){
-            $admin['datatable'][$controller]['search'] = $search;
-        }
-        if($parameter){
-            $admin['datatable'][$controller]['parameter'] = $parameter;
-        }
-        session()->put('admin', $admin);
+
+        $parameter = isset($admin['datatable'][$controller]['parameter']) ? $admin['datatable'][$controller]['parameter'] : null;
 
 		$query = $this->model->query();
 		$query = $query->where('newsletter', 1);

@@ -7,7 +7,7 @@ class PageRepository
 
     public function meta($type, $data = null)
     {
-        $meta = array(
+        $meta = [
             'title'         => null,
             'description'   => null,
             'keyword'       => null,
@@ -17,7 +17,7 @@ class PageRepository
                 'title'         => null,
                 'description'   => null,
             ],
-        );
+        ];
 
         return $meta;
     }

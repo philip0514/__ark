@@ -244,9 +244,9 @@ class UserController extends Controller
 
 		$rows1 = $this->repo->main->search($term);
 
-		$data = array(
+		$data = [
 			'results'	=>	$rows1
-		);
+		];
 		echo json_encode($data, JSON_UNESCAPED_UNICODE);
 	}
 }

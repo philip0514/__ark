@@ -95,7 +95,28 @@ class NewsletterController extends Controller
 		$config = $this->config;
 		$route = $config['route'];
 		$path = prefixUri($config['controller']);
-		$query = $this->repo->main->newsletter_datatable($request);
+
+        $search = $request->input('search', null);
+        $parameter = $request->input('parameter', null);
+		$order = $request->input('order', []);
+
+        $admin = session()->get('admin');
+        $route = $request->route()->getName();
+		list($controller, $name) = explode('.', $route);
+
+        if($search){
+            $admin['datatable'][$controller]['search'] = $search;
+        }else{
+			$admin['datatable'][$controller]['search'] = null;
+        }
+        if($parameter){
+            $admin['datatable'][$controller]['parameter'] = $parameter;
+        }else{
+			$admin['datatable'][$controller]['parameter'] = null;
+        }
+		session()->put('admin', $admin);
+
+		$query = $this->repo->main->newsletter_datatable($controller);
 
 		$datatable = Datatables::of($query);
 

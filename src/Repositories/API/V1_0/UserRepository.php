@@ -308,7 +308,7 @@ class UserRepository
     {
         try{
             $client_id = $client_id ? $client_id : $this->client_id;
-            $password = implode(',', array($email, $facebook_id, time(), uniqid()));
+            $password = implode(',', [$email, $facebook_id, time(), uniqid()]);
 
             if(!$facebook_id){
                 throw new Exception('facebook_required');
@@ -378,7 +378,7 @@ class UserRepository
     {
         try{
             $client_id = $client_id ? $client_id : $this->client_id;
-            $password = implode(',', array($email, $google_id, time(), uniqid()));
+            $password = implode(',', [$email, $google_id, time(), uniqid()]);
 
             if(!$google_id){
                 throw new Exception('google_required');
@@ -449,7 +449,7 @@ class UserRepository
     {
         try{
             $client_id = $client_id ? $client_id : $this->client_id;
-            $password = implode(',', array($email, $twitter_id, time(), uniqid()));
+            $password = implode(',', [$email, $twitter_id, time(), uniqid()]);
 
             if(!$twitter_id){
                 throw new Exception('twitter_required');
@@ -621,13 +621,13 @@ class UserRepository
 				throw new Exception('info_required');
 			}
 
-			$data = array(
+			$data = [
 				'name'			=>	$name,
 				'email'			=>	$email,
 				'gender'		=>	$gender,
 				'birthday'		=>	$birthday,
 				'description'	=>	$description,
-			);
+            ];
 
             $inviter_id = null;
 

@@ -114,24 +114,11 @@ class Repository
             ->restore();
     }
 
-    public function datatable($request)
+    public function datatable($controller)
     {
-        $search = $request->input('search', null);
-        $parameter = $request->input('parameter', null);
         $admin = session()->get('admin');
-        $route = $request->route()->getName();
-        list($controller, $name) = explode('.', $route);
-        if($search){
-            $admin['datatable'][$controller]['search'] = $search;
-        }else{
-			$admin['datatable'][$controller]['search'] = null;
-        }
-        if($parameter){
-            $admin['datatable'][$controller]['parameter'] = $parameter;
-        }else{
-			$admin['datatable'][$controller]['parameter'] = null;
-        }
-        session()->put('admin', $admin);
+
+        $parameter = isset($admin['datatable'][$controller]['parameter']) ? $admin['datatable'][$controller]['parameter'] : null;
 
         $query = $this->model->checkTrashed();
         if($parameter){

@@ -128,6 +128,10 @@ class AdministratorRoleController extends Controller
 					}
 				}
 
+				if(!in_array(1, $structure_id)){
+					$structure_id[] = 1;
+					$permission[ 1 ] = ['read'];
+				}
 				asort($structure_id);
 				$structure_id = array_values($structure_id);
 
