@@ -94,6 +94,7 @@ class NewsletterController extends Controller
     {
 		$config = $this->config;
 		$route = $config['route'];
+		$column = $config['column'];
 		$path = prefixUri($config['controller']);
 
         $search = $request->input('search', null);
@@ -108,12 +109,21 @@ class NewsletterController extends Controller
             $admin['datatable'][$controller]['search'] = $search;
         }else{
 			$admin['datatable'][$controller]['search'] = null;
-        }
+		}
+
         if($parameter){
             $admin['datatable'][$controller]['parameter'] = $parameter;
         }else{
 			$admin['datatable'][$controller]['parameter'] = null;
         }
+
+        if($order){
+			$key = $column[ $order[0]['column'] ]['orderby'][0];
+			$order[0]['key'] = $key;
+            $admin['datatable'][$controller]['order'] = $order;
+        }else{
+			$admin['datatable'][$controller]['order'] = null;
+		}
 		session()->put('admin', $admin);
 
 		$query = $this->repo->main->newsletter_datatable($controller);

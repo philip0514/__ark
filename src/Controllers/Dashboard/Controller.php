@@ -75,6 +75,8 @@ class Controller extends BaseController
 				'columnVisible'     =>  $this->path('columnVisible', 1),
 				'columnReorder'		=>	$this->path('columnReorder', 1),
 				'rowReorder'		=>	$this->path('rowReorder', 1),
+				'import'			=>	$this->path('import', 1),
+				'export'			=>	$this->path('export', 1),
             ],
 			'html'				=>	[
 				'index'				=>	$this->path('index', 0),
@@ -138,7 +140,7 @@ class Controller extends BaseController
 		}
 
 		$method = [
-			'create', 'update', 'delete'
+			'create', 'update', 'delete', 'export', 'import'
 		];
 		for($i=0; $i<sizeof($method); $i++){
 			$can = sprintf('%s %s', $method[$i], $config['controller']);
@@ -249,10 +251,6 @@ class Controller extends BaseController
 		}
 		$path[] = $url;
 
-		//print_r($path);
-		//echo resource_path().'/views/'.implode('/', $path).'.blade.php<br>';
-		//dd(file_exists(resource_path().'views/'.implode('/', $path).'.blade.php'));
-
 		//file_exists
 		if($slash){
 			return prefixUri(implode('/', $path));
@@ -290,6 +288,7 @@ class Controller extends BaseController
     {
 		$config = $this->config;
 		$route = $config['route'];
+		$column = $config['column'];
 		$path = prefixUri($config['controller']);
 
         $search = $request->input('search', null);
@@ -304,12 +303,21 @@ class Controller extends BaseController
             $admin['datatable'][$controller]['search'] = $search;
         }else{
 			$admin['datatable'][$controller]['search'] = null;
-        }
+		}
+
         if($parameter){
             $admin['datatable'][$controller]['parameter'] = $parameter;
         }else{
 			$admin['datatable'][$controller]['parameter'] = null;
         }
+
+        if($order){
+			$key = $column[ $order[0]['column'] ]['orderby'][0];
+			$order[0]['key'] = $key;
+            $admin['datatable'][$controller]['order'] = $order;
+        }else{
+			$admin['datatable'][$controller]['order'] = null;
+		}
         session()->put('admin', $admin);
 
 		$query = $this->repo->main->datatable($controller);
@@ -469,6 +477,7 @@ class Controller extends BaseController
 			case 'update':
 			case 'read':
 			case 'delete':
+			case 'export':
 				$status = (int)in_array($can, $permission);
 			break;
 		}
@@ -516,5 +525,15 @@ class Controller extends BaseController
 		}
 
 		return $rows2;
+	}
+
+	public function export(Request $request)
+	{
+
+	}
+
+	public function import(Request $request)
+	{
+
 	}
 }
