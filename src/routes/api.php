@@ -11,6 +11,8 @@ $api->version('v1_0', function ($api) {
 		$api->post('oauth/token', 'UserController@token');
         $api->post('oauth/token/refresh', 'UserController@token');
 
+		$api->get('mail/test', 'MailController@test');
+
     });
 
 	//client auth
