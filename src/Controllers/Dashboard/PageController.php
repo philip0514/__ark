@@ -12,6 +12,8 @@ use Philip0514\Ark\Repositories\Dashboard\PageTypeRepository;
 //Serializer
 use Philip0514\Ark\Serializer\MediaSerializer;
 
+use Philip0514\Ark\Media;
+
 class PageController extends Controller
 {
     protected 	$repo, 
@@ -199,7 +201,8 @@ class PageController extends Controller
 
 			$this->config['name'] = $rows1['name'];
 
-			$rows2 = $this->repo->main->media($rows1['ogimages']);
+			$media = new Media();
+			$rows2 = $media->integrate($rows1['ogimages'], 'facebook');
 			$rows1['ogimage_input'] = $rows2['id'];
 			$rows1['ogimage_data'] = $rows2['data'];
 

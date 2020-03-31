@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 //Repositories
 use Philip0514\Ark\Repositories\Dashboard\TagRepository as MainRepo;
+use Philip0514\Ark\Tag;
 
 class TagController extends Controller
 {
@@ -130,10 +131,13 @@ class TagController extends Controller
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
 
+				$tag = new Tag();
+				$slug = $tag->slug($name);
+
 				$data = [
 					'id'			=>	$id,
 					'name'			=>	$name,
-					'slug'			=>	$this->short_name($name),
+					'slug'			=>	$slug,
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
 				];
@@ -195,21 +199,16 @@ class TagController extends Controller
 	{
 		$text = $request->input('text');
 
+		$tag = new Tag();
+
 		$id = $this->repo->main->create([
 			'name'		=>	$text,
-			'slug'		=>	$this->short_name($text),
+			'slug'		=>	$tag->slug($text),
 		]);
 		
 		echo json_encode([
 			'id'	=>	$id, 
 			'text'	=>	$text
 		]);
-	}
-
-	private function short_name($name)
-	{
-		$name = str_replace(' ', '', preg_replace(config('ark.url_allow_chars'), '' , strtolower(trim($name))));
-	
-		return $name;
 	}
 }

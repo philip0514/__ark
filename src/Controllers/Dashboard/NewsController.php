@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 //Repositories
 use Philip0514\Ark\Repositories\Dashboard\NewsRepository as MainRepo;
 
+use Philip0514\Ark\Media;
+
 class NewsController extends Controller
 {
     protected 	$repo, 
@@ -176,7 +178,8 @@ class NewsController extends Controller
 
 			$this->config['name'] = $rows1['name'];
 
-			$rows2 = $this->repo->main->media($rows1['media']);
+			$media = new Media();
+			$rows2 = $media->integrate($rows1['media'], 'facebook');
 			$rows1['ogimage_input'] = $rows2['id'];
 			$rows1['ogimage_data'] = $rows2['data'];
 		}

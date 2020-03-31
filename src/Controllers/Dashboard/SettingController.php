@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 //Repositories
 use Philip0514\Ark\Repositories\Dashboard\SettingRepository as MainRepo;
 
+use Philip0514\Ark\Media;
+
 class SettingController extends Controller
 {
     protected 	$repo, 
@@ -66,7 +68,8 @@ class SettingController extends Controller
 		$rows1 = $this->repo->main->single(1);
         $tag = isset($rows1['tags']) ? $rows1['tags'] : [];
 
-        $rows2 = isset($rows1['ogimages']) ? $this->repo->main->media($rows1['ogimages']) : [
+        $media = new Media();
+        $rows2 = isset($rows1['ogimages']) ? $media->integrate($rows1['ogimages'], 'facebook') : [
             'id'    =>  null,
             'data'  =>  [],
         ];
