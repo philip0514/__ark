@@ -50,6 +50,51 @@ class Repository
         return $rows1;
     }
 
+    public function save($data)
+    {
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
+        unset($data['id']);
+
+        $deleted = isset($data['deleted']) ? $data['deleted'] : null;
+        unset($data['deleted']);
+
+        $data['deleted_by'] = null;
+        if($deleted){
+            $data['display'] = 0;
+        }
+
+        switch($id){
+            default:
+			case 0:
+			case null:
+                //insert
+                $data = $this->_create($data);
+                $id = $this->model->insertGetId($data);
+            break;
+            case $id:
+                //update
+                $data = $this->_update($data);
+
+                if($deleted){
+					$data['deleted_by'] = $data['updated_by'];
+				}else{
+                    $this->restore($id);
+                }
+
+                $this->model
+                ->checkTrashed()
+                ->where('id', $id)
+                ->update($data);
+            break;
+        }
+
+        if($deleted){
+            $this->delete($id);
+        }
+
+        return $id;
+    }
+
     public function create($data)
     {
         $data = $this->_create($data);
@@ -346,7 +391,6 @@ class Repository
     protected function _update($data)
     {
         $admin_id = Auth::guard('admin')->user()->id;
-
         $data['updated_by'] = $admin_id;
 
         return $data;

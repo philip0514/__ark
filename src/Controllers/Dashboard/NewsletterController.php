@@ -164,7 +164,7 @@ class NewsletterController extends Controller
 					'id'			=>	$id,
 					'newsletter'	=>	$newsletter,
 				];
-                $this->repo->main->update($data);
+                $this->repo->main->save($data);
 
 				switch($method){
 					case 1:

@@ -358,7 +358,8 @@ class MediaRepository extends Repository
 					}
 				break;
 			}
-			$image->save($public->getDriver()->getAdapter()->getPathPrefix().$file_name);
+			$prefix = substr($public->getDriver()->getAdapter()->getPathPrefix(),0 , -1);
+			$image->save($prefix.$file_name);
 
 			if(config('ark.media.s3.active')){
 				$s3->put($file_name, $public->get($file_name));

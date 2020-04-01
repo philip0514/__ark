@@ -141,12 +141,7 @@ class TagController extends Controller
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
 				];
-
-                if(!$id){
-                    $id = $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-				}
+				$id = $this->repo->main->save($data);
 
 				switch($method){
 					case 1:

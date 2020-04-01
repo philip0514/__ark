@@ -23,30 +23,32 @@ class AdministratorRoleRepository extends Repository
         $this->permission = $permission;
     }
 
-    public function create($data)
-    {
-        $permission = $data['permission'];
-        unset($data['id']);
-        unset($data['permission']);
-        $result = $this->role->create($data);
-
-        $this->rolePermission($result->id, $permission);
-
-        return $result->id;
-    }
-
-    public function update($data)
+    public function save($data)
     {
         $id = $data['id'];
-        $permission = $data['permission'];
         unset($data['id']);
+
+        $permission = $data['permission'];
         unset($data['permission']);
 
-        $this->role
-            ->where('id', $id)
-            ->update($data);
-
+        switch($id){
+            default:
+			case 0:
+			case null:
+                //insert
+                $result = $this->role->create($data);
+                $id = $result->id;
+            break;
+            case $id:
+                //update
+                $this->role
+                ->where('id', $id)
+                ->update($data);
+            break;
+        }
         $this->rolePermission($id, $permission);
+
+        return $id;
     }
 
     public function validate($name, $id=null)

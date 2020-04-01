@@ -21,7 +21,7 @@ class NewsRepository extends Repository
 		$rows1 = $this->model
 			->checkTrashed()
 			->with([
-				'media'	=>	function($query){
+				'ogimages'	=>	function($query){
 					$query->orderBy('sort', 'asc');
 				}
 			])
@@ -33,51 +33,10 @@ class NewsRepository extends Repository
         return null;
     }
 
-    public function create($data)
+    public function save($data)
     {
-		$data = $this->_create($data);
-
-		unset($data['id']);
-
-        $deleted = isset($data['deleted']) ? $data['deleted'] : null;
-        unset($data['deleted']);
-
-        $data['deleted_by'] = null;
-        if($deleted){
-            $data['deleted_by'] = $data['updated_by'];
-        }
-
-		$ogimage_input = explode(',',$data['ogimage_input']);
-		unset($data['ogimage_input']);
-		$ogimage = [];
-		for($i=0; $i<sizeof($ogimage_input); $i++){
-			if(!$ogimage_input[$i]){
-				continue;
-			}
-			$ogimage[ $ogimage_input[$i] ] = [
-				'sort'		=>	$i,
-				'type'		=>	'ogimage',
-			];
-		}
-
-		$id = $this->model->insertGetId($data);
-
-		$rows1 = $this->model->checkTrashed()->find($id);
-		$rows1->media()->sync($ogimage);
-
-        if($deleted){
-            $this->delete($id);
-        }
-
-        return $id;
-    }
-
-    public function update($data)
-    {
-		$data = $this->_update($data);
-
-		$id = $data['id'];
-		unset($data['id']);
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
+        unset($data['id']);
 
         $deleted = isset($data['deleted']) ? $data['deleted'] : null;
         unset($data['deleted']);
@@ -85,9 +44,6 @@ class NewsRepository extends Repository
         $data['deleted_by'] = null;
         if($deleted){
             $data['display'] = 0;
-            $data['deleted_by'] = $data['updated_by'];
-        }else{
-            $this->restore($id);
         }
 
 		$ogimage_input = explode(',',$data['ogimage_input']);
@@ -103,17 +59,39 @@ class NewsRepository extends Repository
 			];
 		}
 
-        $this->model
-			->checkTrashed()
-            ->where('id', $id)
-			->update($data);
+        switch($id){
+            default:
+			case 0:
+			case null:
+                //insert
+                $data = $this->_create($data);
+                $id = $this->model->insertGetId($data);
+            break;
+            case $id:
+                //update
+                $data = $this->_update($data);
+
+                if($deleted){
+					$data['deleted_by'] = $data['updated_by'];
+				}else{
+                    $this->restore($id);
+                }
+
+                $this->model
+                ->checkTrashed()
+                ->where('id', $id)
+                ->update($data);
+            break;
+        }
 
 		$rows1 = $this->model->checkTrashed()->find($id);
-		$rows1->media()->sync($ogimage);
+		$rows1->ogimages()->sync($ogimage);
 
         if($deleted){
             $this->delete($id);
         }
+
+        return $id;
     }
 
     protected function actionDeleteForce($id)

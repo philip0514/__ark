@@ -71,10 +71,9 @@ class AdministratorRepository extends Repository
         return null;
     }
 
-    public function create($data)
+    public function save($data)
     {
-        $data = $this->_create($data);
-
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
         unset($data['id']);
 
         $deleted = isset($data['deleted']) ? $data['deleted'] : null;
@@ -82,41 +81,10 @@ class AdministratorRepository extends Repository
 
         $role = $data['role'];
         unset($data['role']);
-
-        $data['password'] = Hash::make($data['password']);
-
-        $id = $this->model->insertGetId($data);
-
-        $this->model->syncRoles($role);
-
-        if($deleted){
-            $this->delete($id);
-        }else{
-            $this->restore($id);
-        }
-
-        return $id;
-    }
-
-    public function update($data)
-    {
-        $data = $this->_update($data);
-
-        $id = $data['id'];
-        unset($data['id']);
-
-        $role = $data['role'];
-        unset($data['role']);
-
-        $deleted = isset($data['deleted']) ? $data['deleted'] : null;
-        unset($data['deleted']);
 
         $data['deleted_by'] = null;
         if($deleted){
             $data['display'] = 0;
-            $data['deleted_by'] = $data['updated_by'];
-        }else{
-            $this->restore($id);
         }
 
         if($data['password']){
@@ -125,10 +93,30 @@ class AdministratorRepository extends Repository
             unset($data['password']);
         }
 
-        $this->model
-            ->checkTrashed()
-            ->where('id', $id)
-            ->update($data);
+        switch($id){
+            default:
+			case 0:
+			case null:
+                //insert
+                $data = $this->_create($data);
+                $id = $this->model->insertGetId($data);
+            break;
+            case $id:
+                //update
+                $data = $this->_update($data);
+
+                if($deleted){
+					$data['deleted_by'] = $data['updated_by'];
+				}else{
+                    $this->restore($id);
+                }
+
+                $this->model
+                ->checkTrashed()
+                ->where('id', $id)
+                ->update($data);
+            break;
+        }
 
         $admin = $this->model->checkTrashed()->find($id);
         $admin->syncRoles($role);
@@ -136,6 +124,8 @@ class AdministratorRepository extends Repository
         if($deleted){
             $this->delete($id);
         }
+
+        return $id;
     }
 
     public function profile_update($data)

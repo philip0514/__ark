@@ -154,15 +154,9 @@ class AdministratorController extends Controller
 					'role'		=>	$role,
 					'deleted'	=>	$deleted,
 				];
+				$id = $this->repo->main->save($data);
 
-                if(!$id){
-                    $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-                }
                 return redirect()->route($this->route_index);
-
-                exit;
             break;
         }
 

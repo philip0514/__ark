@@ -67,7 +67,7 @@ class UserController extends Controller
 					'width'			=>	'60px',
 					'field'			=>	'id',
 					'visible'		=>	[true, true],
-					'orderby'		=>	['id', 'asc'],
+					'orderby'		=>	['id', 'desc'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -169,12 +169,7 @@ class UserController extends Controller
 					'checked'		=>	$checked,
 					'newsletter'	=>	$newsletter,
 				];
-
-                if(!$id){
-                    $id = $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-				}
+				$id = $this->repo->main->save($data);
 
 				switch($method){
 					case 1:

@@ -42,60 +42,55 @@ class UserRepository extends Repository
         return $query;
 	}
 
-    public function create($data)
+    public function save($data)
     {
-        $data = $this->_create($data);
-		unset($data['id']);
+        $id = isset($data['id']) ? (int)$data['id'] : 0;
+        unset($data['id']);
+
         $deleted = isset($data['deleted']) ? $data['deleted'] : null;
         unset($data['deleted']);
 
         $data['deleted_by'] = null;
         if($deleted){
-            $data['deleted_by'] = $data['updated_by'];
+            $data['display'] = 0;
         }
 
-        if($data['password']){
+        if(isset($data['password']) && $data['password']){
             $data['password'] = Hash::make($data['password']);
         }else{
             unset($data['password']);
         }
-        $id = $this->model->insertGetId($data);
+
+        switch($id){
+            default:
+			case 0:
+			case null:
+                //insert
+                $data = $this->_create($data);
+                $id = $this->model->insertGetId($data);
+            break;
+            case $id:
+                //update
+                $data = $this->_update($data);
+
+                if($deleted){
+					$data['deleted_by'] = $data['updated_by'];
+				}else{
+                    $this->restore($id);
+                }
+
+                $this->model
+                ->checkTrashed()
+                ->where('id', $id)
+                ->update($data);
+            break;
+        }
 
         if($deleted){
             $this->delete($id);
         }
 
         return $id;
-    }
-
-    public function update($data)
-    {
-        $data = $this->_update($data);
-        $id = $data['id'];
-		unset($data['id']);
-        $deleted = isset($data['deleted']) ? $data['deleted'] : null;
-        unset($data['deleted']);
-        if(isset($data['password'])){
-            $data['password'] = Hash::make($data['password']);
-        }else{
-            unset($data['password']);
-        }
-
-        $data['deleted_by'] = null;
-        if($deleted){
-            $data['display'] = 0;
-            $data['deleted_by'] = $data['updated_by'];
-        }else{
-            $this->restore($id);
-        }
-
-        $this->model
-            ->where('id', $id)
-            ->update($data);
-
-        if($deleted){
-            $this->delete($id);
-        }
     }
 
     public function validate($email, $id=null)

@@ -145,12 +145,7 @@ class PageController extends Controller
 					'display'		=>	$display,
 					'ogimage_input'	=>	$ogimage_input,
 				];
-
-                if(!$id){
-                    $id = $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-				}
+				$id = $this->repo->main->save($data);
 
 				$rows1 = $this->repo->main->single($id);
 				$serializer = new MediaSerializer();

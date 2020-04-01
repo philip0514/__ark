@@ -14,10 +14,10 @@ class News extends Model
 
     public function detachAll($rows1)
     {
-        $rows1->media()->detach();
+        $rows1->ogimages()->detach();
     }
 
-    public function media()
+    public function ogimages()
     {
         return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations');
     }

@@ -16,17 +16,14 @@ class RequestController extends Controller
 		$this->repo->zip = $zip;
     }
 
-    public function toggle_sidebar(Request $request)
+    public function toggleSidebar(Request $request)
     {
-        $admin = session()->get('admin');
-        $sidebar = 0;
-        if(isset($admin['config']['sidebar'])){
-            $sidebar = $admin['config']['sidebar'];
+        $sidebar = $request->session()->get('ark.config.sidebar');
+        if($sidebar){
+            $request->session()->forget('ark.config.sidebar');
+        }else{
+            $request->session()->put('ark.config.sidebar', 1);
         }
-
-        $admin['config']['sidebar'] = $sidebar ? 0 : 1;
-
-        session()->put('admin', $admin);
     }
 
     public function zip(Request $request)

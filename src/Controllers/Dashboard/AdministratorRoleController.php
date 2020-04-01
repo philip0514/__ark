@@ -142,15 +142,9 @@ class AdministratorRoleController extends Controller
 					'structure'		=>	$structure_id ? json_encode($structure_id, JSON_NUMERIC_CHECK) : null,
 					'permission'	=>	$permission,
 				];
+				$id = $this->repo->main->save($data);
 
-                if(!$id){
-                    $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-                }
                 return redirect()->route($this->route_index);
-
-				exit;
 			break;
         }
 
@@ -167,7 +161,7 @@ class AdministratorRoleController extends Controller
 		}
 		
 		$rows2 = $this->repo->main->structure();
-		$rows2 = $this->structure_html($rows1, $rows2, $rows3);
+		$rows2 = $this->structureHtml($rows1, $rows2, $rows3);
 
 
         $data = [
@@ -196,14 +190,14 @@ class AdministratorRoleController extends Controller
     }
 	
 	/**
-	 * structure_html
+	 * structureHtml
 	 *
 	 * @param [type] $rows1		role
 	 * @param [type] $rows2		structure
 	 * @param [type] $permission
 	 * @return html
 	 */
-	private function structure_html($rows1, $rows2, $permission=[])
+	private function structureHtml($rows1, $rows2, $permission=[])
 	{
 		$dom = new \DOMDocument("1.0");
 		$dom->formatOutput = true;

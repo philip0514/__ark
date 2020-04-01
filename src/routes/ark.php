@@ -35,7 +35,7 @@ $route->group([
     'namespace' =>  '\Philip0514\Ark\Controllers\Dashboard',
     'prefix'    =>  config('ark.prefix'),
 ], function($route){
-    $route->post('request/toggle_sidebar', 'RequestController@toggle_sidebar')->name('request.toggle_sidebar');
+    $route->post('request/toggle_sidebar', 'RequestController@toggleSidebar')->name('request.toggle_sidebar');
     $route->post('request/zip', 'RequestController@zip')->name('request.zip');
 
     //media

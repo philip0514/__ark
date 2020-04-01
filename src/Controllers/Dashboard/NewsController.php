@@ -146,12 +146,7 @@ class NewsController extends Controller
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
 				];
-
-                if(!$id){
-                    $id = $this->repo->main->create($data);
-                }else{
-                    $this->repo->main->update($data);
-				}
+				$id = $this->repo->main->save($data);
 
 				switch($method){
 					case 1:
@@ -179,7 +174,7 @@ class NewsController extends Controller
 			$this->config['name'] = $rows1['name'];
 
 			$media = new Media();
-			$rows2 = $media->integrate($rows1['media'], 'facebook');
+			$rows2 = $media->integrate($rows1['ogimages'], 'facebook');
 			$rows1['ogimage_input'] = $rows2['id'];
 			$rows1['ogimage_data'] = $rows2['data'];
 		}

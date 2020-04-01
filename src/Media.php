@@ -4,11 +4,6 @@ namespace Philip0514\Ark;
 
 class Media {
 
-    public function dump($message)
-    {
-        dump($message);
-    }
-
     public function integrate($rows1, $size='square')
     {
 		$media_id = [];
