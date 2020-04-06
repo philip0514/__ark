@@ -23,6 +23,28 @@
         <script src="{{ '/ark/js/breakpoints.js' }}"></script>
         <script>
             Breakpoints();
+
+		var datatableDom = 
+			"<'row toolbar'>"+
+			"<'row'"+
+				"<'col-xxl-6 col-md-8'"+
+					"<'data-action'>"+
+				">"+
+				"<'col-xxl-6 col-md-4'"+
+					"pl"+
+				">"+
+			">r"+
+			"<'row'"+
+				"<'col-12'"+
+					""+
+				">"+
+			">"+
+			"<'row'"+
+				"<'col-md-12'"+
+					"t"+
+				">"+
+			">"+
+			"<'row'<'col-md-4'i><'col-md-8'p>>";
         </script>
         <style>
         </style>
@@ -195,7 +217,7 @@
         <script src="{{ '/ark/js/blueimp.js' }}"></script>
         <script src="{{ '/ark/js/blueimp-file-upload.js' }}"></script>
         <script src="{{ '/ark/js/cropper.js' }}"></script>
-        <script src="{{ '/ark/js/Ark.js' }}"></script>
+        <script src="{{ '/ark/js/Ark.js?v='.time() }}"></script>
 
         @yield('js')
 

@@ -192,6 +192,7 @@ $(function(){
         input_field: 			'.ogimage_input',
         selectable_limit:		3,
         selectable_multiple:	1,
+        size:					'facebook',
     });
 
     Ark.tag('.tag', true, false);

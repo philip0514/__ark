@@ -59,8 +59,7 @@ var Ark = function(){
 				//ajax submit
 				$('#form1').ajaxSubmit(function(response){
 					Ark.header_message('<strong>儲存完畢</strong>，您可以繼續編輯了');
-					var res = $.parseJSON(response);
-					$('#id').val(res.id);
+					$('#id').val(response.id);
 				});
 				break;
 		}
@@ -108,8 +107,7 @@ var Ark = function(){
 							console.log('AJAX Error');
 						},
 						success: function(response) {
-							var res = $.parseJSON(response);
-							var newOption = new Option(res.text, res.id, true, true);
+							var newOption = new Option(response.text, response.id, true, true);
 							$(event.currentTarget).append(newOption).trigger('change');
 							$(event.currentTarget).select2('close');
 						}
@@ -136,6 +134,7 @@ var Ark = function(){
 			input_field: 			'.ogimage_input',
 			selectable_limit:		$max,
 			selectable_multiple:	1,
+			size:					'facebook',
 		});
 	};
 
@@ -306,7 +305,7 @@ var Ark = function(){
 					alert(xhr.status+' '+errorThrown);
 				},
 				success: function(response){
-					var $res = $.parseJSON(response);
+					var $res = response;
 						//console.log(res);
 					$($area).empty();
 
@@ -443,7 +442,8 @@ var Ark = function(){
 		save_btn:				'.btn-media-save',
 		template_upload_id:		'template_upload',
 		template_download_id:	'template_download',
-		full_column:			false
+		full_column:			false,
+		size:					'square',
 	};
  	
 	function mediaMultiple(e, config){
@@ -572,7 +572,7 @@ var Ark = function(){
 			}).infiniteScroll('loadNextPage');
 
 			$container.on('load.infiniteScroll', function(event, response){
-				var $result = $.parseJSON(response);
+				var $result = response;
 				var $items = $( tmpl('tmpl-image', $result) );
 
 				$container.infiniteScroll( 'appendItems', $items );
@@ -737,38 +737,6 @@ var Ark = function(){
 							$(option.input_field).val(id_array)
 						});
 					});
-					/*
-					swal({
-						title: '確定刪除？',
-						type: "warning",
-						buttons: {
-							cancel: {
-								text: "取消",
-								value: null,
-								visible: true,
-								className: "btn btn-dark",
-								closeModal: true,
-							},
-							confirm: {
-								text: "刪除",
-								value: true,
-								visible: true,
-								className: "btn btn-danger",
-								closeModal: true
-							}
-						}
-					}).then(function () {
-						$.each(input_field, function(index, value){
-							if(value==media_id){
-								$this.parents(option.element_single).remove();
-							}else{
-								id_array.push(value);
-							}
-							$(option.input_field).val(id_array)
-						});
-					});
-					*/
-
 				});
 			},
 			editor: function(option){
@@ -776,12 +744,14 @@ var Ark = function(){
 				$(option.area+' '+option.editor_btn).click(function(){
 					var $this = $(this);
 					var $media_id = $this.parents(option.element_single).data('value');
+					var $size = option.size;
 
 					$.ajax({
 						type: 'GET',
 						url: option.url.editor,
 						data:{
-							id: $media_id
+							id: $media_id,
+							size: $size,
 						},
 						error: function(xhr, textStatus) {
 							console.log(xhr+' '+textStatus);

@@ -145,7 +145,7 @@ class TagController extends Controller
 
 				switch($method){
 					case 1:
-						echo json_encode([
+						return response()->json([
 							'id'	=>	$id,
 						]);
 					break;
@@ -154,8 +154,6 @@ class TagController extends Controller
 						return redirect()->route($this->route_index);
 					break;
 				}
-
-                exit;
             break;
         }
 
@@ -187,7 +185,7 @@ class TagController extends Controller
 		$data = [
 			'results'	=>	$rows1
 		];
-		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+		return response()->json($data);
 	}
 
 	public function insert(Request $request)
@@ -200,10 +198,9 @@ class TagController extends Controller
 			'name'		=>	$text,
 			'slug'		=>	$tag->slug($text),
 		]);
-		
-		echo json_encode([
-			'id'	=>	$id, 
-			'text'	=>	$text
+		return response()->json([
+			'id'	=>	$id,
+			'text'	=>	$text,
 		]);
 	}
 }

@@ -89,6 +89,7 @@ for($i=0; $i<sizeof($structure); $i++){
         $route->match(['get', 'post'], sprintf('%s/validate', $item['url']), $item['controller'].'@validate')->name(sprintf('%s.validate', $item['url']));
         $route->get(sprintf('%s/datatable', $item['url']), $item['controller'].'@datatable')->name(sprintf('%s.datatable', $item['url']));
         $route->post(sprintf('%s/action', $item['url']), $item['controller'].'@action')->name(sprintf('%s.action', $item['url']));
+        $route->post(sprintf('%s/actionController', $item['url']), $item['controller'].'@actionController')->name(sprintf('%s.actionController', $item['url']));
         $route->post(sprintf('%s/columnVisible', $item['url']), $item['controller'].'@columnVisible')->name(sprintf('%s.columnVisible', $item['url']));
         $route->post(sprintf('%s/columnReorder', $item['url']), $item['controller'].'@columnReorder')->name(sprintf('%s.columnReorder', $item['url']));
         $route->post(sprintf('%s/rowReorder', $item['url']), $item['controller'].'@rowReorder')->name(sprintf('%s.rowReorder', $item['url']));

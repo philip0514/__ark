@@ -171,17 +171,15 @@ class MediaController extends Controller
 
 				switch($method){
 					case 1:
-					echo json_encode([
-						'id'	=>	$id,
-					]);
+						return response()->json([
+							'id'	=>	$id,
+						]);
 					break;
 					default:
 					case 0:
 						return redirect()->route($this->route_index);
 					break;
 				}
-
-                exit;
             break;
         }
 
@@ -215,7 +213,7 @@ class MediaController extends Controller
 	{
 		$result = $this->repo->main->upload($request);
 
-		echo json_encode($result);
+		return response()->json($result);
 	}
 	
 	protected function datatableExtend($datatable, $raw_columns)
@@ -244,14 +242,15 @@ class MediaController extends Controller
 		$page 	= $request->input('page', 1);
 		$search 	= $request->input('search', null);
 		$skip 	= $request->input('skip', null);
+		$size 	= $request->input('size', null);
 		$request_time 	= $request->input('request_time', time());
 
 		$rows1 = $this->repo->main->data($page, $limit, $request_time, $skip, $search);
 
 		$serializer = new MediaSerializer();
-		$result = $serializer->data($rows1);
+		$result = $serializer->data($rows1, $size);
 
-		echo json_encode($result);
+		return response()->json($result);
 	}
 
 	public function editor(Request $request)
@@ -261,6 +260,7 @@ class MediaController extends Controller
 				$media_id = $request->input('media_id', 0);
 				$custom_crop = $request->input('custom_crop', 0);
 				$cropper_data = $request->input('cropper_data', []);
+				$size = $request->input('size', 'square');
 
 				for($i=0; $i<sizeof($cropper_data); $i++){
 					$cropper_data[$i] = json_decode($cropper_data[$i], true);
@@ -270,24 +270,26 @@ class MediaController extends Controller
 					'id'			=>	$media_id,
 					'crop_data'		=>	json_encode($cropper_data),
 					'custom_crop'	=>	$custom_crop,
+					'size'			=>	$size,
 				];
 				$result = $this->repo->main->update($data);
 
-				echo json_encode($result);
-
-				exit;
+				return response()->json($result);
 			break;
 		}
 
 		$id = $request->input('id', 0);
+		$size = $request->input('size', 'square');
 		$rows1 = $this->repo->main->single($id);
 
 		list($month, $t) = explode('-', $rows1['name']);
 		$rows1['month'] = date('Ym', $month);
 		$rows1['crop_data'] = json_decode($rows1['crop_data'], true);
+		$rows1['path'] = $this->mediaPath($rows1['name'], 'original');
 
 		$data = [
 			'rows1'		=>	$rows1,
+			'size'		=>	$size,
 		];
 		return view('ark::media.editor', $data);
 	}

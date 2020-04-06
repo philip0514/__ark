@@ -173,17 +173,15 @@ class UserController extends Controller
 
 				switch($method){
 					case 1:
-					echo json_encode([
-						'id'	=>	$id,
-					]);
+						return response()->json([
+							'id'	=>	$id,
+						]);
 					break;
 					default:
 					case 0:
 						return redirect()->route($this->route_index);
 					break;
 				}
-
-                exit;
             break;
         }
 
@@ -242,6 +240,6 @@ class UserController extends Controller
 		$data = [
 			'results'	=>	$rows1
 		];
-		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+		return response()->json($data);
 	}
 }

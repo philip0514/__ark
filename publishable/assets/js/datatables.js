@@ -5936,6 +5936,19 @@ var Datatables = function(){
 		}
 		*/
 	};
+
+	var actionController = function(){
+		$.ajax({
+			url: config.path.actionController,
+			type: 'POST',
+			error: function(xhr, textStatus, errorThrown){
+				console.log(xhr.status+' '+errorThrown);
+			},
+			success: function(response){
+				$('.data-action').html(response);
+			}
+		});
+	};
 	
 	var row_reorder = function(){
 		datatable.on('row-reorder', function(e, setting, detail){
@@ -6077,10 +6090,6 @@ var Datatables = function(){
 				$('.btn-search').trigger('click');
 			});
 		},
-		delete_single: function(){
-			var $prototype = this;
-			
-		},
 		display: function(){
 			var $prototype = this;
 			
@@ -6093,35 +6102,12 @@ var Datatables = function(){
 	};
 	
 	var init = function(){
-		var dom = 
-			
-			"<'row toolbar'>"+
-			"<'row'"+
-				"<'col-xxl-6 col-md-8'"+
-					"<'data-action'>"+
-				">"+
-				"<'col-xxl-6 col-md-4'"+
-					"pl"+
-				">"+
-			">r"+
-			"<'row'"+
-				"<'col-12'"+
-					""+
-				">"+
-			">"+
-			"<'row'"+
-				"<'col-md-12'"+
-					"t"+
-				">"+
-			">"+
-			"<'row'<'col-md-4'i><'col-md-8'p>>";
-
 		$(document).on( 'preInit.dt', function(e, settings){
 			filter.field();
 		});
 		datatable = $('#datatable').DataTable({
 			
-			"dom": dom,
+			"dom": datatableDom,
 			//"pagingType": "input",
 			"pageLength": config.pageLength ? config.pageLength : 10,
 			"displayStart": config.displayStart ? config.displayStart : 0,
@@ -6171,9 +6157,7 @@ var Datatables = function(){
                 }
 			},
 			"initComplete": function(){
-				init_complete();
-
-				$('.dataTables_length .bootstrap-select').removeClass('form-control-sm');
+				actionController();
 			},
 			"drawCallback": function(setting){
 				//datatableExtend.callback();
@@ -6229,6 +6213,20 @@ var Datatables = function(){
 		},
 		error: function(){
 			error();
+		},
+		filter: {
+			field: function()
+			{
+				filter.field();
+			},
+			delete: function()
+			{
+				filter.delete();
+			},
+			display: function()
+			{
+				filter.display();
+			},
 		}
 	};
 }();

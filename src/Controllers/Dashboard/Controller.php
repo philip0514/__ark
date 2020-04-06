@@ -72,6 +72,7 @@ class Controller extends BaseController
                 'create'            =>  $this->path('create', 1),
                 'validate'          =>  $this->path('validate', 1),
                 'action'            =>  $this->path('action', 1),
+                'actionController'	=>  $this->path('actionController', 1),
 				'columnVisible'     =>  $this->path('columnVisible', 1),
 				'columnReorder'		=>	$this->path('columnReorder', 1),
 				'rowReorder'		=>	$this->path('rowReorder', 1),
@@ -431,6 +432,14 @@ class Controller extends BaseController
 		$id = $request->input('id', null);
 
 		$this->repo->main->action($type, $id);
+	}
+
+	protected function actionController()
+	{
+		$this->datatableConfig();
+		$config = $this->config['datatable'];
+
+        return $this->view('ark::dashboard.actionController', $config);
 	}
 
 	protected function columnVisible(Request $request)

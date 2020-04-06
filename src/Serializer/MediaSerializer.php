@@ -10,15 +10,15 @@ class MediaSerializer extends Collection
 {
 	use Serializer;
 
-	public function data($data)
+	public function data($data, $size='square')
 	{
-		$resource = new Collection($data, function($data) {
+		$resource = new Collection($data, function($data) use ($size) {
 			$data = (object)$data;
 
 			$name = $data->name;
 			list($time, $t) = explode('-', $name);
 			$month = date('Ym', $time);
-			$path = sprintf('%s%s/square/%s/%s', config('ark.media.root'), config('ark.media.upload'), $month, $name);
+			$path = sprintf('%s%s/%s/%s/%s', config('ark.media.root'), config('ark.media.upload'), $size, $month, $name);
 
 			return [
 				'id'				=>	(int)$data->id,

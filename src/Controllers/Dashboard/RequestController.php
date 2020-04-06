@@ -32,6 +32,6 @@ class RequestController extends Controller
 
         $area = $this->repo->zip->area($id);
 
-        echo json_encode($area, JSON_UNESCAPED_UNICODE);
+        return response()->json($area);
     }
 }

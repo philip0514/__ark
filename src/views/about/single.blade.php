@@ -201,7 +201,7 @@
 
 @section('js')
 <script src="https://cdn.tiny.cloud/1/{{ config('ark.tinymce.key') }}/tinymce/5/tinymce.min.js"></script>
-<script>tinymce.init({selector:'#content'});</script>
+<script>tinymce.init({selector:'#content', height : "500"});</script>
 <script>
 $(function(){
     $("#form1").validate({
@@ -238,6 +238,7 @@ $(function(){
         input_field: 			'.ogimage_input',
         selectable_limit:		3,
         selectable_multiple:	1,
+        size:                   'facebook',
     });
 
     $('.btn-submit').click(function(){

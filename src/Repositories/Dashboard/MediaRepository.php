@@ -104,9 +104,21 @@ class MediaRepository extends Repository
     public function update($data)
     {
 		$data = $this->_update($data);
-        $id = $data['id'];
-		$tag = $data['tag'];
-		unset($data['tag']);
+		$id = $data['id'];
+
+		$update_tag = false;
+		if(isset($data['tag'])){
+			$tag = $data['tag'];
+			unset($data['tag']);
+			$update_tag = true;
+		}
+
+		$size = 'square';
+		if(isset($data['size'])){
+			$size = $data['size'];
+			unset($data['size']);
+		}
+
         $deleted = isset($data['deleted']) ? $data['deleted'] : null;
         unset($data['deleted']);
 
@@ -134,7 +146,9 @@ class MediaRepository extends Repository
 			->update($data);
 
 		//tag
-		$rows1->tags()->sync($tag);
+		if($update_tag){
+			$rows1->tags()->sync($tag);
+		}
 
         if($deleted){
             $this->delete($id);
@@ -142,7 +156,7 @@ class MediaRepository extends Repository
 
 		return [
 			'id'	=>	$rows1['id'],
-			'path'	=>	$this->mediaPath($name),
+			'path'	=>	$this->mediaPath($name, $size),
 		];
 	}
 

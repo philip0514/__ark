@@ -167,7 +167,7 @@
 <script src="https://cdn.tiny.cloud/1/pat6gvrra1ufopdrc2gorucnzjhu2ng6uwtw4tdqyhib956j/tinymce/5/tinymce.min.js"></script>
 <script>
 $(function(){
-    tinymce.init({selector:'#content'});
+    tinymce.init({selector:'#content', height : "500"});
     $("#form1").validate({
         rules: {
             "name": {

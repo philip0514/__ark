@@ -52,13 +52,14 @@
                             @foreach (config('ark.media.dimensions') as $dimension => $value)
                             <div class="tab-pane @if($dimension=='large') active show @endif" id="Tab{{ ucfirst($dimension) }}" role="tabpanel">
                                 <div>
-                                    <img class="image" src="{{ config('ark.media.root') }}original/{{ $rows1['month'] }}/{{ $rows1['name'] }}">
+                                    <img class="image" src="{{ $rows1['path'] }}">
                                 </div>
                             </div>
                             @endforeach
                         </div>
                     </div>
                     <input type="hidden" id="media_id" name="media_id" value="{{ $rows1['id'] }}">
+                    <input type="hidden" id="size" name="size" value="{{ $size }}">
                 </form>
 
             </div>
@@ -75,7 +76,7 @@ $(function(){
 
     $('.btn-editor-save').click(function(){
         $('#form-media-editor').ajaxSubmit(function(response){
-            var res = $.parseJSON(response);
+            var res = response;
             var d = new Date();
             var n = d.getTime();
             $('.media-single[data-value="'+res.id+'"]').find('img').attr('src', res.path+'?t='+n);
