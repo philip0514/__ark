@@ -19,6 +19,7 @@ class MailController extends Controller
         });
         */
 
+        dd($request->user());
         $data = [
             'a' =>  1,
         ];

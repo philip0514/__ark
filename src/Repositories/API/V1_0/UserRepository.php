@@ -2,9 +2,11 @@
 namespace Philip0514\Ark\Repositories\API\V1_0;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Lcobucci\JWT\Parser;
 use Carbon\Carbon;
+use Philip0514\Ark\Mail\Mailer;
 
 //Exception
 use Exception;
@@ -145,6 +147,26 @@ class UserRepository
             if(!$email || !$password || !$name){
                 throw new Exception('register_required');
             }
+
+            $rows1 = $this->user->where('id', 1)->first();
+
+            $data = [
+                'type'  =>  'registerPassword',
+                'data'  =>  [
+                    'user'  =>  $rows1,
+                ],
+            ];
+            Mail::to('philip0514@gmail.com')
+                ->send(new Mailer($data));
+            exit;
+
+            $data = [];
+            Mail::send('ark::mail.test', $data, function($message)
+            {
+                $message->to('philip0514+1@gmail.com', 'John Smith')->subject('Welcome!');
+            });
+            dd($rows1);
+            exit;
 
             $user = $this->user->where('email', '=', $email)->select('id')->first();
             

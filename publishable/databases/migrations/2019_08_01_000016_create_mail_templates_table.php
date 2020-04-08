@@ -17,11 +17,9 @@ class CreateMailTemplatesTable extends Migration
             $table->increments('id');
             $table->string('name', 100)->nullable();
             $table->integer('type')->nullable();
-            $table->string('url', 200)->nullable();
             $table->bigInteger('start_time')->nullable();
             $table->bigInteger('end_time')->nullable();
             $table->string('title', 100)->nullable()->comment('標題');
-            $table->string('description', 200)->nullable()->comment('敘述');
             $table->text('content')->nullable()->comment('內容');
             $table->integer('display')->default(0)->nullable()->comment('是否顯示');
             $table->integer('created_by')->nullable()->comment('創建者');

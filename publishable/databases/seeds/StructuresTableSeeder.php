@@ -160,7 +160,7 @@ class StructuresTableSeeder extends Seeder
                 'sort'          =>  507,
                 'editable'      =>  1,
                 'namespace'     =>  '\Philip0514\Ark\Controllers\Dashboard',
-                'method'        =>  json_encode(['read', 'update']),
+                'method'        =>  json_encode(['read', 'create', 'update', 'delete']),
             ],
             [
                 'id'            =>  $id+11,
