@@ -19,6 +19,8 @@ class CreateMailTemplatesTable extends Migration
             $table->integer('type')->nullable();
             $table->bigInteger('start_time')->nullable();
             $table->bigInteger('end_time')->nullable();
+            $table->string('from_email', 255)->nullable()->comment('寄件人Email');
+            $table->string('from_name', 100)->nullable()->comment('寄件人姓名');
             $table->string('title', 100)->nullable()->comment('標題');
             $table->text('content')->nullable()->comment('內容');
             $table->integer('display')->default(0)->nullable()->comment('是否顯示');

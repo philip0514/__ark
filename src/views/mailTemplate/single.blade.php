@@ -165,6 +165,25 @@
                             </div>
                             <div class="panel-body">
 
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="form-control-label required">
+                                            寄件人Email
+                                        </label>
+                                        <input type="text" class="form-control" id="from_email" name="from_email" placeholder="寄件人Email" required value="{{ isset($rows1['from_email']) ? $rows1['from_email'] : null }}" />
+                                        <div class="invalid-feedback"></div>
+                                        <div class="help-feedback"></div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="form-control-label required">
+                                            寄件人姓名
+                                        </label>
+                                        <input type="text" class="form-control" id="from_name" name="from_name" placeholder="寄件人姓名" required value="{{ isset($rows1['from_name']) ? $rows1['from_name'] : null }}" />
+                                        <div class="invalid-feedback"></div>
+                                        <div class="help-feedback"></div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="form-control-label required">
                                         標題

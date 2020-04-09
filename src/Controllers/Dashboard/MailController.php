@@ -5,10 +5,9 @@ use Philip0514\Ark\Controllers\Dashboard\Controller;
 use Illuminate\Http\Request;
 
 //Repositories
-use Philip0514\Ark\Repositories\Dashboard\MailTemplateRepository as MainRepo;
-use Philip0514\Ark\Repositories\Dashboard\MailTypeRepository;
+use Philip0514\Ark\Repositories\Dashboard\MailRepository as MainRepo;
 
-class MailTemplateController extends Controller
+class MailController extends Controller
 {
     protected 	$repo, 
 				$config,
@@ -18,13 +17,11 @@ class MailTemplateController extends Controller
 
 	function __construct(
         Request $request,
-		MainRepo $main,
-		MailTypeRepository $MailTypeRepository
+		MainRepo $main
 	)
 	{
 		parent::__construct();
         $this->repo->main = $main;
-        $this->repo->type = $MailTypeRepository;
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
@@ -37,15 +34,15 @@ class MailTemplateController extends Controller
 		$this->route_index = sprintf('%s.index', $controller);
 
         $this->config  = [
-			'name'				=>	'郵件樣板',
+			'name'				=>	'歷史信件',
 			'route'				=>	$route,
 			'controller'		=>	$controller,
 			'action'			=>	[
-				'create'			=>	1,
+				'create'			=>	0,
 				'update'			=>	1,
-				'softDelete'		=>	1,
+				'softDelete'		=>	0,
 				'delete'			=>	1,
-				'display'			=>	1,
+				'display'			=>	0,
 				'sort'				=>	0,
 				'import'			=>	0,
 				'export'			=>	0,
@@ -67,7 +64,7 @@ class MailTemplateController extends Controller
 					'width'			=>	'60px',
 					'field'			=>	'id',
 					'visible'		=>	[true, true],
-					'orderby'		=>	['id', 'asc'],
+					'orderby'		=>	['id', 'desc'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -80,10 +77,10 @@ class MailTemplateController extends Controller
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'標題',
-					'field'			=>	'title',
+					'name'			=>	'收件者',
+					'field'			=>	'user_email',
 					'visible'		=>	[true, true],
-					'orderby'		=>	['title'],
+					'orderby'		=>	['user_email'],
 					'orderable'		=>	true,
 					'sortable'		=>	false,
                 ],
@@ -106,15 +103,6 @@ class MailTemplateController extends Controller
 					'sortable'		=>	false,
                 ],
 				[
-					'name'			=>	'刪除時間',
-					'width'			=>	'70px',
-					'field'			=>	'deleted_at',
-					'visible'		=>	[true, false],
-					'orderby'		=>	['deleted_at'],
-					'orderable'		=>	true,
-					'sortable'		=>	false,
-                ],
-				[
 					'name'			=>	'編輯',
 					'width'			=>	'50px',
 					'field'			=>	'update',
@@ -133,56 +121,6 @@ class MailTemplateController extends Controller
     {
 		$this->permissionCheck();
 
-        switch($this->method){
-            case 'post':
-				$id = $request->input('id', 0);
-                $name = $request->input('name');
-                $type = $request->input('type', null);
-                $start_time = $request->input('start_time', null);
-                $end_time = $request->input('end_time', null);
-                $from_email = $request->input('from_email', null);
-                $from_name = $request->input('from_name', null);
-                $title = $request->input('title', null);
-                $content = $request->input('content', null);
-				$deleted = $request->input('deleted', 0);
-				$display = $request->input('display', 0);
-				$method = $request->input('__method', 0);
-
-				$data = [
-					'id'			=>	$id,
-					'name'			=>	$name,
-					'type'			=>	$type,
-					'start_time'	=>	$start_time,
-					'end_time'		=>	$end_time,
-					'from_email'	=>	$from_email,
-					'from_name'		=>	$from_name,
-					'title'			=>	$title,
-					'content'		=>	$content,
-					'deleted'		=>	$deleted,
-					'display'		=>	$display,
-				];
-				$id = $this->repo->main->save($data);
-
-				switch($method){
-					case 1:
-						return response()->json([
-							'id'	=>	$id,
-						]);
-					break;
-					default:
-					case 0:
-						return redirect()->route($this->route_index);
-					break;
-				}
-            break;
-		}
-
-		/*
-		$blade = 'Hello, {{ $planet }}!';
-		$php = \Blade::compileString($blade);
-		dd($this->render($php, ['planet' => 'World1']));
-		*/
-
         $rows1 = [];
         if($id){
             $rows1 = $this->repo->main->single($id);
@@ -191,34 +129,12 @@ class MailTemplateController extends Controller
 			}
 
 			$this->config['name'] = $rows1['name'];
-
-			$rows1 = $this->repo->main->editor($rows1);
 		}
-
-		$type = $this->repo->type->select()->where('display', 1)->orderBy('id', 'asc')->get()->toArray();
 
         $data = [
 			'config'	=>	$this->config,
-			'rows1'     =>  $rows1,
-			'type'		=>	$type,
+            'rows1'     =>  $rows1,
 		];
         return $this->view($this->config['html']['single'], $data);
-	}
-	
-	function render($__php, $__data)
-	{
-		$obLevel = ob_get_level();
-		ob_start();
-		extract($__data, EXTR_SKIP);
-		try {
-			eval('?' . '>' . $__php);
-		} catch (Exception $e) {
-			while (ob_get_level() > $obLevel) ob_end_clean();
-			throw $e;
-		} catch (Throwable $e) {
-			while (ob_get_level() > $obLevel) ob_end_clean();
-			throw new FatalThrowableError($e);
-		}
-		return ob_get_clean();
-	}
+    }
 }

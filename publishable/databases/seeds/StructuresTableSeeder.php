@@ -167,7 +167,7 @@ class StructuresTableSeeder extends Seeder
                 'parent_id'     =>  $id+9,
                 'name'          =>  '郵件歷史',
                 'icon'          =>  null,
-                'url'           =>  'mailHistory',
+                'url'           =>  'mail',
                 'display'       =>  1,
                 'sort'          =>  508,
                 'editable'      =>  1,

@@ -148,26 +148,6 @@ class UserRepository
                 throw new Exception('register_required');
             }
 
-            $rows1 = $this->user->where('id', 1)->first();
-
-            $data = [
-                'type'  =>  'registerPassword',
-                'data'  =>  [
-                    'user'  =>  $rows1,
-                ],
-            ];
-            Mail::to('philip0514@gmail.com')
-                ->send(new Mailer($data));
-            exit;
-
-            $data = [];
-            Mail::send('ark::mail.test', $data, function($message)
-            {
-                $message->to('philip0514+1@gmail.com', 'John Smith')->subject('Welcome!');
-            });
-            dd($rows1);
-            exit;
-
             $user = $this->user->where('email', '=', $email)->select('id')->first();
             
             if(isset($user->id) && $user->id){
@@ -183,7 +163,7 @@ class UserRepository
             $user_id = $this->user->insertGetId($rows1);
 
             $user = $this->user->find($user_id);
-            $this->after_register($user);
+            $this->afterRegister($user, 2);
 
             $rows1 = $this->getBearerTokenByUser($user, $client_id, false);
             $rows1['user'] = $user;
@@ -197,130 +177,6 @@ class UserRepository
             return $result;
         }
     }
-
-    /**
-     * 註冊之後
-     *
-     */
-	public function after_register($data=[], $email_type='default')
-	{
-        $user_id = $data['id'];
-		$name = $data['name'];
-		$email = $data['email'];
-
-		//驗證碼
-		$checked_auth = md5(uniqid().time());
-		$auth_url = config('api.frontend.user.verify').$checked_auth;
-
-        $code = $this->num2alpha($user_id);
-
-		$this->user->where('id', '=', $user_id)->update([
-			'code'			=>	$code,
-			'checked_auth'	=>	$checked_auth,
-			'checked'	    =>	0,
-        ]);
-
-        /*
-		//mail
-		switch($email_type){
-			case 'facebook':
-				$data = [
-					'name'		=> $name,
-					'email'		=> $email,
-					'auth_url'	=> $auth_url,
-				];
-				$content = view('mail.register_facebook', $data);
-
-				$data = [
-					'name'			=>	'【明鏡】会员注册通知信 - Facebook',
-					'content'		=>	$content,
-					'user_id'		=>	$user_id,
-					'user_name'		=>	$name,
-					'user_email'	=>	$email,
-					'created_at'	=>	Carbon::now(),
-					'updated_at'	=>	Carbon::now(),
-				];
-				break;
-			case 'google':
-				$data = [
-					'name'		=> $name,
-					'email'		=> $email,
-					'auth_url'	=> $auth_url,
-				];
-				$content = view('mail.register_google', $data);
-
-				$data = [
-					'name'			=>	'【明鏡】会员注册通知信 - Google',
-					'content'		=>	$content,
-					'user_id'		=>	$user_id,
-					'user_name'		=>	$name,
-					'user_email'	=>	$email,
-					'created_at'	=>	Carbon::now(),
-					'updated_at'	=>	Carbon::now(),
-				];
-				break;
-			case 'twitter':
-				$data = [
-					'name'		=> $name,
-					'email'		=> $email,
-					'auth_url'	=> $auth_url,
-				];
-				$content = view('mail.register_twitter', $data);
-
-				$data = [
-					'name'			=>	'【明鏡】会员注册通知信 - Twitter',
-					'content'		=>	$content,
-					'user_id'		=>	$user_id,
-					'user_name'		=>	$name,
-					'user_email'	=>	$email,
-					'created_at'	=>	Carbon::now(),
-					'updated_at'	=>	Carbon::now(),
-				];
-				break;
-			default:
-			case 'default':
-				$data = [
-					'name'		=> $name,
-					'email'		=> $email,
-					'auth_url'	=> $auth_url,
-				];
-				$content = view('mail.register', $data);
-
-				$data = [
-					'name'			=>	'【明鏡】会员注册通知信',
-					'content'		=>	$content,
-					'user_id'		=>	$user_id,
-					'user_name'		=>	$name,
-					'user_email'	=>	$email,
-					'created_at'	=>	Carbon::now(),
-					'updated_at'	=>	Carbon::now(),
-				];
-				break;
-		}
-
-        $this->mail->insert($data);
-        */
-    }
-
-    public function num2alpha($id)
-    {
-		//數字轉英文(0=>A、1=>B、26=>AA...以此類推)
-
-		$id_number = substr($id, -3);
-		$id_text = (int)substr($id, 0, -3);
-
-		for($r = ""; $id_text >= 0; $id_text = intval($id_text / 26) - 1){
-			$r = chr($id_text%26 + 0x41) . $r; 
-		}
-		if(strlen($id_number)<3){
-			$id_number = str_pad($id_number, 3, 0, STR_PAD_LEFT);
-		}
-		if(strlen($r)==1){
-			$r = 'A'.$r;
-		}
-
-		return $r.$id_number;
-	}
 
     /**
      * Facebook register/login
@@ -370,7 +226,7 @@ class UserRepository
 
                     //後續處理
                     $user = $this->user->find($user_id);
-                    $this->after_register($user, 'facebook');
+                    $this->afterRegister($user, 3);
                 }
             }else{
                 if(!$user->display){
@@ -441,7 +297,7 @@ class UserRepository
 
                     //後續處理
                     $user = $this->user->find($user_id);
-                    $this->after_register($user, 'google');
+                    $this->afterRegister($user, 4);
                 }
             }else{
                 if(!$user->display){
@@ -511,7 +367,7 @@ class UserRepository
 
                     //後續處理
                     $user = $this->user->find($user_id);
-                    $this->after_register($user, 'twitter');
+                    $this->afterRegister($user, 5);
                 }
             }else{
                 if(!$user->display){
@@ -532,6 +388,56 @@ class UserRepository
             return $result;
         }
     }
+
+    /**
+     * 註冊之後
+     *
+     */
+	public function afterRegister($user, $type_id)
+	{
+        $user_id = $user->id;
+
+		//驗證碼
+		$authCode = md5(uniqid().time());
+		//$auth_url = config('api.frontend.user.verify').$checked_auth;
+
+        $code = $this->num2alpha($user_id);
+
+		$this->user->where('id', '=', $user_id)->update([
+			'code'			=>	$code,
+			'checked_auth'	=>	$authCode,
+			'checked'	    =>	0,
+        ]);
+
+        //mail
+        Mail::to($user->email, $user->name)
+            ->send(new Mailer([
+                'type_id'   =>  $type_id,
+                'data'      =>  [
+                    'user'      =>  $user,
+                ],
+            ]));
+    }
+
+    public function num2alpha($id)
+    {
+		//數字轉英文(0=>A、1=>B、26=>AA...以此類推)
+
+		$id_number = substr($id, -3);
+		$id_text = (int)substr($id, 0, -3);
+
+		for($r = ""; $id_text >= 0; $id_text = intval($id_text / 26) - 1){
+			$r = chr($id_text%26 + 0x41) . $r; 
+		}
+		if(strlen($id_number)<3){
+			$id_number = str_pad($id_number, 3, 0, STR_PAD_LEFT);
+		}
+		if(strlen($r)==1){
+			$r = 'A'.$r;
+		}
+
+		return $r.$id_number;
+	}
 
     public function authCodeGet($code)
     {
@@ -600,26 +506,14 @@ class UserRepository
     }
     public function forgotPassword($user, $password)
     {
-        /*
-		$data = [
-			'name'		=>	$user->name,
-			'email'		=>	$user->email,
-			'password'	=>	$password,
-			'url'		=>	config('api.frontend.user.login'),
-		];
-		$content = view('mail.forgot_password', $data);
-
-		$data = [
-			'name'			=>	'【明鏡】会员忘记密码通知信',
-			'content'		=>	$content,
-			'user_id'		=>	$user->id,
-			'user_name'		=>	$user->name,
-			'user_email'	=>	$user->email,
-			'created_at'	=>	Carbon::now(),
-			'updated_at'	=>	Carbon::now(),
-		];
-        $this->mail->insert($data);
-        */
+        Mail::to($user->email, $user->name)
+            ->queue(new Mailer([
+                'type_id'   =>  6,
+                'data'      =>  [
+                    'user'      =>  $user,
+                    'password'  =>  $password,
+                ],
+            ]));
     }
 
     public function infoPost($request)

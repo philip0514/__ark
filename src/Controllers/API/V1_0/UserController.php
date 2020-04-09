@@ -106,6 +106,7 @@ class UserController extends Controller
 	 */
 	public function register(Request $request)
 	{
+		try{
             $client_id = $request->input('client_id');
             $email = $request->input('email');
             $password = $request->input('password');
@@ -124,7 +125,6 @@ class UserController extends Controller
 				'data'	=>	$data
 			],
 			201);
-			try{
 		}
 		catch(Exception $e){
             $message = $e->getMessage();
