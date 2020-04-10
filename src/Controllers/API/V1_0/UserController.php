@@ -66,6 +66,9 @@ class UserController extends Controller
 				break;
 				case 'password':
 					$data = $this->repo->user->password($request);
+					if(isset($data['error'])){
+						throw new Exception($data['error']);
+					}
 					$data = $serializer->passwordToken($data);
 				break;
 				case 'refresh_token':
