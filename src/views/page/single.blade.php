@@ -144,6 +144,18 @@
                                     <div class="invalid-feedback"></div>
                                     <div class="help-feedback"></div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">
+                                        標籤
+                                    </label>
+                                    <select class="form-control tag" id="tag" name="tag[]" multiple="multiple">
+                                        @for($i=0; $i<sizeof($tag); $i++)
+                                            <option value="{{ $tag[$i]['id'] }}" selected>{{ $tag[$i]['name'] }}</option>
+                                        @endfor
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                    <div class="help-feedback"></div>
+                                </div>
                                 <div>
                                     <div class="form-group">
                                         <a href="javascript:;" class="btn btn-primary btn-ogimage-manager m-t-10 m-b-10"><i class="fas fa-plus"></i> 選擇社群分享圖片</a>
@@ -352,6 +364,7 @@ $(function(){
 			$('.type_1').hide();
 		}
 	}
+    Ark.tag('.tag', true, false);
 
     Ark.submit();
 });

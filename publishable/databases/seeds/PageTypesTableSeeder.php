@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Philip0514\Ark\Models\PageType;
+use Philip0514\Ark\Models\Page;
 
 class PageTypesTableSeeder extends Seeder
 {

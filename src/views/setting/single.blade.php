@@ -35,6 +35,15 @@
                                     <div class="help-feedback"></div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="form-control-label">
+                                        敘述
+                                    </label>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="敘述" value="{{ isset($rows1['description']) ? $rows1['description'] : null }}" />
+                                    <div class="invalid-feedback"></div>
+                                    <div class="help-feedback"></div>
+                                </div>
+
 								<div class="form-group">
 									<label class="form-control-label" for="tag">關鍵字</label>
                                     <select class="form-control tag" id="tag" name="tag[]" multiple="multiple">
@@ -45,15 +54,6 @@
 									<div class="invalid-feedback"></div>
 									<div class="help-feedback"></div>
 								</div>
-
-                                <div class="form-group">
-                                    <label class="form-control-label">
-                                        敘述
-                                    </label>
-                                    <input type="text" class="form-control" id="description" name="description" placeholder="敘述" value="{{ isset($rows1['description']) ? $rows1['description'] : null }}" />
-                                    <div class="invalid-feedback"></div>
-                                    <div class="help-feedback"></div>
-                                </div>
 
                                 <div class="row">
                                     @if(isset($rows1['created_at']))

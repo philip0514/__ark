@@ -23,7 +23,8 @@ class PageRepository extends Repository
 			->with([
 				'ogimages'	=>	function($query){
 					$query->orderBy('sort', 'asc');
-				}
+				},
+				'tags'
 			])
 			->find($id);
 
@@ -57,7 +58,10 @@ class PageRepository extends Repository
 				'sort'		=>	$i,
 				'type'		=>	'ogimage',
 			];
-		}
+        }
+
+		$tag = $data['tag'];
+		unset($data['tag']);
 
         switch($id){
 			default:
@@ -86,6 +90,7 @@ class PageRepository extends Repository
 
 		$rows1 = $this->model->checkTrashed()->find($id);
 		$rows1->ogimages()->sync($ogimage);
+		$rows1->tags()->sync($tag);
 
         if($deleted){
             $this->delete($id);

@@ -3,6 +3,7 @@
 $config = [
     'prefix'    =>  'admin',
     'title'     =>  'Ark',
+    'spliter'   =>  ' - ',
     'permission'    =>  'admin_permission',
     'session_url'   =>  'url',
     'text'      =>  [

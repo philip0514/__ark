@@ -118,6 +118,7 @@ class PageController extends Controller
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
 				$ogimage_input = $request->input('ogimage_input', 0);
+				$tag = $request->input('tag', 0);
 
 				if($type){
 					$rows2 = $this->repo->pageType->select()->where('id', $type)->orderBy('id', 'asc')->first()->toArray();
@@ -144,6 +145,7 @@ class PageController extends Controller
 					'content'		=>	$content,
 					'display'		=>	$display,
 					'ogimage_input'	=>	$ogimage_input,
+					'tag'			=>	$tag,
 				];
 				$id = $this->repo->main->save($data);
 
@@ -185,7 +187,7 @@ class PageController extends Controller
             break;
         }
 
-        $rows1 = [];
+        $rows1 = $tag = [];
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -199,6 +201,8 @@ class PageController extends Controller
 			$rows1['ogimage_input'] = $rows2['id'];
 			$rows1['ogimage_data'] = $rows2['data'];
 
+			$tag = $rows1['tags'];
+
 			$rows1 = $this->repo->main->editor($rows1);
 		}
 		$type = $this->repo->pageType->select()->orderBy('id', 'asc')->get()->toArray();
@@ -207,6 +211,7 @@ class PageController extends Controller
 			'config'	=>	$this->config,
 			'rows1'     =>  $rows1,
 			'type'		=>	$type,
+            'tag'     	=>  $tag,
 		];
         return $this->view($this->config['html']['single'], $data);
     }

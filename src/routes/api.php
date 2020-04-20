@@ -29,7 +29,14 @@ $api->version('v1_0', function ($api) {
 		$api->post('user/twitter', 'UserController@twitter');
 		$api->post('user/verification', 'UserController@verification');
 		$api->post('user/forgot_password', 'UserController@forgot_password');
-        
+
+		//page
+		$api->get('page', 'PageController@index');
+
+		//news
+		$api->get('news', 'NewsController@index');
+		$api->get('news/{id}', 'NewsController@show')->where('id', '[0-9]+');
+
     });
 
 	//password auth
@@ -37,6 +44,7 @@ $api->version('v1_0', function ($api) {
 		'namespace' => '\Philip0514\Ark\Controllers\API\V1_0',
 		'middleware' => 'auth:api'
 	], function ($api) {
+		
 		//user
 		$api->get('user/info', 'UserController@infoGet');
 		$api->post('user/info', 'UserController@infoPost');

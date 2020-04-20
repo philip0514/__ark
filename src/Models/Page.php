@@ -15,10 +15,16 @@ class Page extends Model
     public function detachAll($rows1)
     {
         $rows1->ogimages()->detach();
+        $rows1->tags()->detach();
     }
 
     public function ogimages()
     {
         return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany('Philip0514\Ark\Models\Tag', 'tag_relations');
     }
 }

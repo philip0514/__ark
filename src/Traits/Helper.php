@@ -34,7 +34,7 @@ trait Helper
 	{
 		list($time, $t) = explode('-', $name);
         $month = date('Ym', $time);
-        
+
         if(config('ark.media.s3.active')){
             $root = config('ark.media.s3.root');
         }else{

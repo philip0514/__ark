@@ -572,7 +572,7 @@ var Ark = function(){
 			}).infiniteScroll('loadNextPage');
 
 			$container.on('load.infiniteScroll', function(event, response){
-				var $result = response;
+				var $result = $.parseJSON(response);
 				var $items = $( tmpl('tmpl-image', $result) );
 
 				$container.infiniteScroll( 'appendItems', $items );
