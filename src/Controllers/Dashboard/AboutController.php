@@ -147,6 +147,9 @@ class AboutController extends Controller
                 $name = $request->input('name');
                 $description = $request->input('description', null);
                 $content = $request->input('content', null);
+                $html = $request->input('htmlContent', null);
+                $css = $request->input('cssContent', null);
+                $json = $request->input('jsonContent', null);
 				$deleted = $request->input('deleted', 0);
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
@@ -157,6 +160,9 @@ class AboutController extends Controller
 					'name'			=>	$name,
 					'description'	=>	$description,
 					'content'		=>	$content,
+					'html'			=>	$html,
+					'css'			=>	$css,
+					'json'			=>	$json,
 					'ogimage_input'	=>	$ogimage_input,
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,

@@ -119,8 +119,6 @@
                                     </div>
                                     @endif
                                 </div>
-
-                                <a class="btn btn-primary btn-test" href="javascript:;">test</a>
                             </div>
                         </div>
                     </div>
@@ -274,44 +272,20 @@ $(function(){
         size:                   'facebook',
     });
 
-    $('.btn-submit').click(function(){
-        tinymce.triggerSave();
-    });
-
-    $('.btn-test').click(function(){
-        $.ajax({
-            type: 'GET',
-            url: '/admin/url/manager',
-            error: function(xhr, textStatus) {
-                console.log(xhr+' '+textStatus);
-            },
-            success: function(data, textStatus, jqXHR){
-                $('.modal-main').html(data);
-                $('#modal-url').modal();
-            }
-        });
-    })
-
     PageBuilder.gjs({
         plugins: [
             'bootstrap4',
         ]
     });
+    PageBuilder.load('{!! $rows1["json"] !!}');
 
-    $('.btn-save').click(function(){
+    $('.btn-submit').click(function(){
         PageBuilder.save({
             'html': '#htmlContent',
             'css': '#cssContent',
             'json': '#jsonContent',
         });
     });
-
-    $('.btn-select-submit').click(function(){
-        //console.log(editor);
-        PageBuilder.setUrl('https://google.com');
-        $('.modal').modal('hide');
-    })
-
     Ark.submit();
 });
 </script>
