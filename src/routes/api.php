@@ -32,6 +32,7 @@ $api->version('v1_0', function ($api) {
 
 		//page
 		$api->get('page', 'PageController@index');
+		$api->get('page/{id}', 'PageController@show');
 
 		//news
 		$api->get('news', 'NewsController@index');

@@ -13,6 +13,7 @@
         <title>{{ $config['name'] }} | {{ config('ark.title') }} 管理系統</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
         <link rel="stylesheet" href="{{ '/ark/css/blueimp.css' }}">
         <link rel="stylesheet" href="{{ '/ark/css/cropper.css' }}">

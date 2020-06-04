@@ -50,6 +50,9 @@ $route->group([
 
     //user
     $route->get('user/search', 'UserController@search')->name('user.search');
+
+    //url
+    $route->get('url/manager', 'UrlController@manager')->name('url.manager');
 });
 
 $route->group([

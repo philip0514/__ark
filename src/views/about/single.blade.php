@@ -120,6 +120,7 @@
                                     @endif
                                 </div>
 
+                                <a class="btn btn-primary btn-test" href="javascript:;">test</a>
                             </div>
                         </div>
                     </div>
@@ -154,6 +155,7 @@
                     </div>
                 </div>
 
+                <!--
                 <div class="row">
                     <div class="col-12">
                         <div class="panel panel-bordered">
@@ -166,6 +168,25 @@
                             </div>
                             <div class="panel-body">
                                 <textarea name="content" id="content">{{ isset($rows1['content']) ? $rows1['content'] : null }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="panel panel-bordered">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">內容</h3>
+                                <div class="panel-actions">
+                                    <a class="panel-action icon wb-minus" aria-expanded="true" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                    <a class="panel-action icon wb-expand" data-toggle="panel-fullscreen" aria-hidden="true"></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+                                <div id="editor"></div>
+
                             </div>
                         </div>
                     </div>
@@ -197,11 +218,23 @@
         </div>
     </form>
 </div>
+
+
 @endsection
 
 @section('js')
+<!--
 <script src="https://cdn.tiny.cloud/1/{{ config('ark.tinymce.key') }}/tinymce/5/tinymce.min.js"></script>
 <script>tinymce.init({selector:'#content', height : "500"});</script>
+-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.3/css/grapes.min.css">
+<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/pagebuilder.css">
+<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/tooltip.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.12/grapes.js"></script>
+<script src="https://builder.philip.place/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
+<script src="https://builder.philip.place/theme/bootstrap4/js/grapesjs.js?t=<?=time()?>"></script>
+
 <script>
 $(function(){
     $("#form1").validate({
@@ -244,6 +277,40 @@ $(function(){
     $('.btn-submit').click(function(){
         tinymce.triggerSave();
     });
+
+    $('.btn-test').click(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/admin/url/manager',
+            error: function(xhr, textStatus) {
+                console.log(xhr+' '+textStatus);
+            },
+            success: function(data, textStatus, jqXHR){
+                $('.modal-main').html(data);
+                $('#modal-url').modal();
+            }
+        });
+    })
+
+    PageBuilder.gjs({
+        plugins: [
+            'bootstrap4',
+        ]
+    });
+
+    $('.btn-save').click(function(){
+        PageBuilder.save({
+            'html': '#htmlContent',
+            'css': '#cssContent',
+            'json': '#jsonContent',
+        });
+    });
+
+    $('.btn-select-submit').click(function(){
+        //console.log(editor);
+        PageBuilder.setUrl('https://google.com');
+        $('.modal').modal('hide');
+    })
 
     Ark.submit();
 });
