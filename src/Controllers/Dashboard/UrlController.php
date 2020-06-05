@@ -66,6 +66,6 @@ class UrlController extends Controller
             'default'   =>  $default,
             'news'      =>  $news
         ];
-        return view('ark::url.manager', $data);
+        return view('ark::Dashboard.url.manager', $data);
     }
 }

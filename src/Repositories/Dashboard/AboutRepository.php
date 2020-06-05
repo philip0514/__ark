@@ -10,10 +10,12 @@ class AboutRepository extends Repository
     protected $model;
 
 	function __construct(
-		Model $model
+        Model $model,
+        PageBlockRepository $PageBlockRepository
 	){
 		parent::__construct();
-		$this->model = $model;
+        $this->model = $model;
+        $this->block = $PageBlockRepository;
     }
 
     public function single($id)
@@ -57,7 +59,7 @@ class AboutRepository extends Repository
 				'sort'		=>	$i,
 				'type'		=>	'ogimage',
 			];
-		}
+        }
 
         switch($id){
 			default:

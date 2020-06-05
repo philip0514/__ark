@@ -8,7 +8,7 @@ class ElfinderController extends Controller
     public function showTinyMCE5()
     {
         return $this->app['view']
-            ->make('ark::elfinder.tinymce5')
+            ->make('ark::Dashboard.elfinder.tinymce5')
             ->with($this->getViewVars());
     }
 }

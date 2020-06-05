@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Philip0514\Ark\Models\PageType;
 use Philip0514\Ark\Models\Page;
+use Philip0514\Ark\Models\PageBlock;
 
 class PageTypesTableSeeder extends Seeder
 {
@@ -176,6 +177,28 @@ class PageTypesTableSeeder extends Seeder
 
         if($data){
             PageType::insert($data);
+        }
+
+        //page block
+        $table = DB::select(
+            sprintf("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s'",
+                env('DB_DATABASE'),
+                'page_blocks'
+            )
+        );
+
+        if (empty($table)) { 
+            $data = [
+                [
+                    'id'    =>  1,
+                    'key'   =>  'header',
+                ],
+                [
+                    'id'    =>  2,
+                    'key'   =>  'footer',
+                ]
+            ];
+            PageBlock::insert($data);
         }
 
     }

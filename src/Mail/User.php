@@ -29,6 +29,6 @@ class User extends Mailable
      */
     public function build()
     {
-        return $this->view('ark::mail.test');
+        return $this->view('ark::Dashboard.mail.test');
     }
 }

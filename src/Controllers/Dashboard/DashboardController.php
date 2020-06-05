@@ -48,7 +48,7 @@ class DashboardController extends Controller
             'config'    =>  $this->config,
             'admin'     =>  $admin,
         ];
-        return $this->view('ark::dashboard.index', $data);
+        return $this->view('ark::Dashboard.dashboard.index', $data);
     }
 
     public function login(Request $request)
@@ -82,7 +82,7 @@ class DashboardController extends Controller
 			return redirect()->route('dashboard');
         }
 
-        return view('ark::dashboard.login');
+        return view('ark::Dashboard.dashboard.login');
     }
 
     public function logout(Request $request)
@@ -111,7 +111,7 @@ class DashboardController extends Controller
         $data = [
             'route'     =>  json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
         ];
-        $contents =  view('ark::dashboard.route', $data);
+        $contents =  view('ark::Dashboard.dashboard.route', $data);
 
         return response($contents, 200)->header('Content-Type', 'application/javascript');
     }

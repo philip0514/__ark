@@ -256,9 +256,9 @@ class Controller extends BaseController
 		if($slash){
 			return prefixUri(implode('/', $path));
 		}else{
-			$view = 'ark.'.implode('.', $path);
+			$view = 'ark.Dashboard.'.implode('.', $path);
 			if(!view()->exists($view)){
-				$view = 'ark::'.implode('.', $path);
+				$view = 'ark::Dashboard.'.implode('.', $path);
 			}
 			return $view;
 		}
@@ -439,7 +439,7 @@ class Controller extends BaseController
 		$this->datatableConfig();
 		$config = $this->config['datatable'];
 
-        return $this->view('ark::dashboard.actionController', $config);
+        return $this->view('ark::Dashboard.dashboard.actionController', $config);
 	}
 
 	protected function columnVisible(Request $request)

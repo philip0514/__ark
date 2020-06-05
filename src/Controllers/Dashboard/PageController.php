@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 //Repositories
 use Philip0514\Ark\Repositories\Dashboard\PageRepository as MainRepo;
 use Philip0514\Ark\Repositories\Dashboard\PageTypeRepository;
+use Philip0514\Ark\Repositories\Dashboard\PageBlockRepository;
 
 //Serializer
 use Philip0514\Ark\Serializer\MediaSerializer;
@@ -25,12 +26,14 @@ class PageController extends Controller
 	function __construct(
         Request $request,
 		MainRepo $main,
-		PageTypeRepository $PageTypeRepository
+		PageTypeRepository $PageTypeRepository,
+		PageBlockRepository $PageBlockRepository
 	)
 	{
 		parent::__construct();
 		$this->repo->main = $main;
 		$this->repo->pageType = $PageTypeRepository;
+        $this->repo->block = $PageBlockRepository;
         $this->method = strtolower($request->method());
 		$this->path = $request->path();
 
@@ -115,10 +118,17 @@ class PageController extends Controller
                 $title = $request->input('title', null);
                 $description = $request->input('description', null);
                 $content = $request->input('content', null);
+                $html = $request->input('htmlContent', null);
+                $css = $request->input('cssContent', null);
+                $json = $request->input('jsonContent', null);
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
 				$ogimage_input = $request->input('ogimage_input', 0);
 				$tag = $request->input('tag', 0);
+
+				$block = $this->repo->block->parse($html, $json);
+				$html = $block['html'];
+				$json = $block['json'];
 
 				if($type){
 					$rows2 = $this->repo->pageType->select()->where('id', $type)->orderBy('id', 'asc')->first()->toArray();
@@ -143,6 +153,9 @@ class PageController extends Controller
 					'title'			=>	$title,
 					'description'	=>	$description,
 					'content'		=>	$content,
+					'html'			=>	$html,
+					'css'			=>	$css,
+					'json'			=>	$json,
 					'display'		=>	$display,
 					'ogimage_input'	=>	$ogimage_input,
 					'tag'			=>	$tag,
@@ -188,6 +201,7 @@ class PageController extends Controller
         }
 
         $rows1 = $tag = [];
+		$html = $json = null;
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -195,6 +209,8 @@ class PageController extends Controller
 			}
 
 			$this->config['name'] = $rows1['name'];
+			$html = $rows1['html'];
+			$json = $rows1['json'];
 
 			$media = new Media();
 			$rows2 = $media->integrate($rows1['ogimages'], 'facebook');
@@ -206,6 +222,10 @@ class PageController extends Controller
 			$rows1 = $this->repo->main->editor($rows1);
 		}
 		$type = $this->repo->pageType->select()->orderBy('id', 'asc')->get()->toArray();
+
+		$block = $this->repo->block->merge($html, $json);
+		$rows1['html'] = $block['html'];
+		$rows1['json'] = $block['json'];
 
         $data = [
 			'config'	=>	$this->config,

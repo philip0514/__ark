@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 //Repositories
 use Philip0514\Ark\Repositories\Dashboard\AboutRepository as MainRepo;
+use Philip0514\Ark\Repositories\Dashboard\PageBlockRepository;
 
 use Philip0514\Ark\Media;
 
@@ -19,11 +20,13 @@ class AboutController extends Controller
 
 	function __construct(
         Request $request,
-		MainRepo $main
+		MainRepo $main,
+		PageBlockRepository $PageBlockRepository
 	)
 	{
 		parent::__construct();
         $this->repo->main = $main;
+        $this->repo->block = $PageBlockRepository;
         $this->method = strtolower($request->method());
         $this->path = $request->path();
 
@@ -155,6 +158,10 @@ class AboutController extends Controller
 				$method = $request->input('__method', 0);
 				$ogimage_input = $request->input('ogimage_input', 0);
 
+				$block = $this->repo->block->parse($html, $json);
+				$html = $block['html'];
+				$json = $block['json'];
+
 				$data = [
 					'id'			=>	$id,
 					'name'			=>	$name,
@@ -183,7 +190,8 @@ class AboutController extends Controller
             break;
         }
 
-        $rows1 = [];
+		$rows1 = [];
+		$html = $json = null;
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -191,6 +199,8 @@ class AboutController extends Controller
 			}
 
 			$this->config['name'] = $rows1['name'];
+			$html = $rows1['html'];
+			$json = $rows1['json'];
 
 			$media = new Media();
 			$rows2 = $media->integrate($rows1['ogimages'], 'facebook');
@@ -199,6 +209,10 @@ class AboutController extends Controller
 
 			$rows1 = $this->repo->main->editor($rows1);
 		}
+
+		$block = $this->repo->block->merge($html, $json);
+		$rows1['html'] = $block['html'];
+		$rows1['json'] = $block['json'];
 
         $data = [
 			'config'	=>	$this->config,
