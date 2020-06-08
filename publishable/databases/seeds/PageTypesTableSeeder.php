@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Philip0514\Ark\Models\PageType;
-use Philip0514\Ark\Models\Page;
 use Philip0514\Ark\Models\PageBlock;
 
 class PageTypesTableSeeder extends Seeder
@@ -31,6 +30,15 @@ class PageTypesTableSeeder extends Seeder
         $sort = 0;
         $rows2 = [
             [
+                'name'          =>  '自訂頁面',
+                'slug'          =>  'custom',
+                'url'           =>  '/',
+                'sort'          =>  $sort++,
+                'editable'      =>  1,
+                'display'       =>  1,
+                'text'          =>  null,
+            ],
+            [
                 'name'          =>  '首頁',
                 'slug'          =>  'index',
                 'url'           =>  '/',
@@ -42,7 +50,7 @@ class PageTypesTableSeeder extends Seeder
             [
                 'name'          =>  '會員登入',
                 'slug'          =>  'login',
-                'url'           =>  '/user/login',
+                'url'           =>  '/login',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
@@ -51,7 +59,7 @@ class PageTypesTableSeeder extends Seeder
             [
                 'name'          =>  '會員註冊',
                 'slug'          =>  'register',
-                'url'           =>  '/user/register',
+                'url'           =>  '/register',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
@@ -60,7 +68,7 @@ class PageTypesTableSeeder extends Seeder
             [
                 'name'          =>  '註冊完成',
                 'slug'          =>  'register_complete',
-                'url'           =>  '/user/register_complete',
+                'url'           =>  '/register/complete',
                 'sort'          =>  $sort++,
                 'editable'      =>  1,
                 'display'       =>  1,
@@ -69,7 +77,7 @@ class PageTypesTableSeeder extends Seeder
             [
                 'name'          =>  '忘記密碼',
                 'slug'          =>  'forgot_password',
-                'url'           =>  '/user/forgot_password',
+                'url'           =>  '/forgot_password',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
@@ -78,14 +86,14 @@ class PageTypesTableSeeder extends Seeder
             [
                 'name'          =>  '完成寄送新密碼',
                 'slug'          =>  'forgot_password_complete',
-                'url'           =>  '/user/forgot_password_complete',
+                'url'           =>  '/forgot_password/complete',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
                 'text'          =>  null,
             ],
             [
-                'name'          =>  '個人資料',
+                'name'          =>  '您的資料',
                 'slug'          =>  'user_info',
                 'url'           =>  '/user/info',
                 'sort'          =>  $sort++,
@@ -94,27 +102,27 @@ class PageTypesTableSeeder extends Seeder
                 'text'          =>  null,
             ],
             [
-                'name'          =>  '個人資料 修改完成',
+                'name'          =>  '修改資料完成',
                 'slug'          =>  'info_complete',
-                'url'           =>  '/user/info_complete',
+                'url'           =>  '/user/info/complete',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
                 'text'          =>  null,
             ],
             [
-                'name'          =>  '信箱驗證成功',
+                'name'          =>  '會員驗證成功',
                 'slug'          =>  'verify_success',
-                'url'           =>  '/user/verify_success',
+                'url'           =>  '/user/verify/success',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
                 'text'          =>  null,
             ],
             [
-                'name'          =>  '信箱驗證失敗',
+                'name'          =>  '會員驗證失敗',
                 'slug'          =>  'verify_failed',
-                'url'           =>  '/user/verify_failed',
+                'url'           =>  '/user/verify/failed',
                 'sort'          =>  $sort++,
                 'editable'      =>  0,
                 'display'       =>  1,
@@ -133,6 +141,15 @@ class PageTypesTableSeeder extends Seeder
                 'name'          =>  '關於我們',
                 'slug'          =>  'about',
                 'url'           =>  '/about',
+                'sort'          =>  $sort++,
+                'editable'      =>  1,
+                'display'       =>  1,
+                'text'          =>  null,
+            ],
+            [
+                'name'          =>  '聯絡我們',
+                'slug'          =>  'contact',
+                'url'           =>  '/contact',
                 'sort'          =>  $sort++,
                 'editable'      =>  1,
                 'display'       =>  1,

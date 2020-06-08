@@ -5,12 +5,15 @@ use Illuminate\Http\Request;
 
 use Philip0514\Ark\Repositories\Web\PageRepository;
 
-class WelcomeController extends Controller
+class PageController extends Controller
 {
-    public function index(Request $request)
+    public function __invoke($url)
     {
         $page = new PageRepository();
-        $data = $page->get('index');
+        $data = $page->get($url);
+        if(!$data){
+            abort(404);
+        }
 
         return view('ark::Web.welcome.index', $data);
     }

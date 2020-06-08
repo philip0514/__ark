@@ -52,7 +52,13 @@
 									<div>
 										<select class="selectpicker" id="type" name="type" data-style="btn-dark" data-width="100%">
 											@foreach($type as $index => $value){
-											<option data-editable="{{ $value['editable'] }}" value="{{ $value['id'] }}" {{ isset($rows1['type']) && $value['id']==$rows1['type']?'selected':'' }}>{{ $value['name'] }}</option>
+                                            <option 
+                                                value="{{ $value['id'] }}" 
+                                                data-editable="{{ $value['editable'] }}"
+                                                data-url="{{ $value['url'] }}"
+                                                {{ isset($rows1['type']) && $value['id']==$rows1['type']?'selected':'' }}>
+                                                {{ $value['name'] }}
+                                            </option>
 											@endforeach
 										</select>
 									</div>
@@ -267,31 +273,34 @@ $(function(){
 	$('#type').on('changed.bs.select', function(e){
 		var value = parseInt($(this).val());
 		var editable = $("option[value=" + $(this).val() + "]", this).data('editable');
-		
-		if(!value){
+		var url = $("option[value=" + $(this).val() + "]", this).data('url');
+
+		if(value==1){
 			$("#url").rules("add", {
 				required: true,
 				messages: {
 					required: "必填",
 				}
 			});
-			$("#url").parent('.form-group').show();
+            $('#url').val('');
+            $("#url").attr('disabled', false);
 		}else{
 			$("#url").rules( "remove", "required" );
-			$("#url").parent('.form-group').hide();
+            $('#url').val(url);
+            $("#url").attr('disabled', true);
 		}
 	});
-	
-	if(!parseInt($('#type').val())){
+
+	if(parseInt($('#type').val())==1){
 		$("#url").rules("add", {
 			required: true,
 			messages: {
 				required: "必填",
 			}
 		});
-		$("#url").parent('.form-group').show();
+        $("#url").attr('disabled', false);
 	}else{
-		$("#url").parent('.form-group').hide();
+        $("#url").attr('disabled', true);
 	}
     Ark.tag('.tag', true, false);
 

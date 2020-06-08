@@ -130,7 +130,7 @@ class PageController extends Controller
 				$html = $block['html'];
 				$json = $block['json'];
 
-				if($type){
+				if($type!=1){
 					$rows2 = $this->repo->pageType->select()->where('id', $type)->orderBy('id', 'asc')->first()->toArray();
 					$url = $rows2['url'];
 				}
@@ -139,9 +139,11 @@ class PageController extends Controller
 					$url = '/'.$url;
 				}
 
+				/*
 				if(substr($url, -1)!='/'){
 					$url .= '/';
 				}
+				*/
 
 				$data = [
 					'id'			=>	$id,
@@ -178,13 +180,15 @@ class PageController extends Controller
 					],
 				];
 
-				if(config('ark.media.s3.active')){
-					$disk = Storage::disk('s3');
-				}else{
-					$disk = Storage::disk('public');
+				if(isset($rows2)){
+					if(config('ark.media.s3.active')){
+						$disk = Storage::disk('s3');
+					}else{
+						$disk = Storage::disk('public');
+					}
+					$remote = sprintf('page/%s.json', $rows2['slug']);
+					$disk->put($remote, json_encode($data, JSON_UNESCAPED_UNICODE));
 				}
-				$remote = sprintf('page/%s.json', $rows2['slug']);
-				$disk->put($remote, json_encode($data, JSON_UNESCAPED_UNICODE));
 
 				switch($method){
 					case 1:
@@ -221,7 +225,7 @@ class PageController extends Controller
 
 			$rows1 = $this->repo->main->editor($rows1);
 		}
-		$type = $this->repo->pageType->select()->orderBy('id', 'asc')->get()->toArray();
+		$type = $this->repo->pageType->select()->orderBy('sort', 'asc')->get()->toArray();
 
 		$block = $this->repo->block->merge($html, $json);
 		$rows1['html'] = $block['html'];
