@@ -8,8 +8,8 @@ $api->version('v1_0', function ($api) {
 	$api->group([
 		'namespace' => '\Philip0514\Ark\Controllers\API\V1_0',
 	], function ($api) {
-		$api->post('oauth/token', 'UserController@token');
-        $api->post('oauth/token/refresh', 'UserController@token');
+		$api->post('oauth/token', 'TokenController@oauth');
+        $api->post('oauth/token/refresh', 'TokenController@oauth');
 
 		$api->get('mail/test', 'MailController@test');
 
@@ -22,7 +22,7 @@ $api->version('v1_0', function ($api) {
 	], function ($api) {
 
 		//user
-        $api->post('user/login', 'UserController@token');
+        $api->post('user/login', 'TokenController@oauth');
 		$api->post('user/register', 'UserController@register');
 		$api->post('user/facebook', 'UserController@facebook');
 		$api->post('user/google', 'UserController@google');

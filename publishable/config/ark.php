@@ -13,6 +13,18 @@ $config = [
     'error' =>  [
         'login'     =>  '帳號密碼錯誤，請確認後重新輸入',
     ],
+    'api'   =>  [
+        'url'       =>  env('API_URL', null),
+        'version'   =>  env('API_VERSION', null),
+        'client'    =>  [
+            'id'        =>  env('API_CLIENT_ID', null),
+            'secret'    =>  env('API_CLIENT_SECRET', null),
+        ],
+        'password'    =>  [
+            'id'        =>  env('API_PASSWORD_ID', null),
+            'secret'    =>  env('API_PASSWORD_SECRET', null),
+        ]
+    ],
 
     'media' =>  [
         's3'            =>  [

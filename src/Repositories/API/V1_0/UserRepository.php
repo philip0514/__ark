@@ -3,9 +3,7 @@ namespace Philip0514\Ark\Repositories\API\V1_0;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Lcobucci\JWT\Parser;
-use Carbon\Carbon;
 use Philip0514\Ark\Mail\Mailer;
 
 //Exception
@@ -23,16 +21,11 @@ class UserRepository
     use PassportToken;
 
     private $user;
-    private $atc;
 	private $client_id = 2;
 
-    function __construct(
-        User $user, 
-        AccessTokenController $atc
-    )
+    function __construct()
     {
-        $this->user = $user;
-        $this->atc = $atc;
+        $this->user = new User();
     }
 
     /**
@@ -52,40 +45,22 @@ class UserRepository
      * 登入
      *
      */
-    public function password($request)
+    public function password($username, $password)
     {
-        try{
-            $data = $request->getParsedBody();
-            $username = $data['username'];
-            $password = isset($data['password']) ? $data['password'] : '';
-
-            if(!$username || !$password){
-                throw new Exception();
-            }
-
-            $user = $this->user
-                ->where('email', $username)
-                ->where('display', 1)
-                ->first();
-
-            if(!isset($user->id) || !password_verify($password, $user->password)){
-                throw new Exception();
-            }
-
-            $tokenResponse = $this->atc->issueToken($request);
-            $content = $tokenResponse->getContent();
-            $data = json_decode($content, true);
-
-            $data['user'] = $user->toArray();
-
-            return $data;
+        if(!$username || !$password){
+            return null;
         }
-        catch (Exception $e) {
-            $data = [
-                'error'			=>	'invaild_login',
-            ];
-            return $data;
+
+        $user = $this->user
+        ->where('email', $username)
+        ->where('display', 1)
+        ->first();
+
+        if(!isset($user->id) || !password_verify($password, $user->password)){
+            return null;
         }
+
+        return $user->toArray();
     }
 
     /**

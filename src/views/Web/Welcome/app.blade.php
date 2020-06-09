@@ -29,6 +29,11 @@
 
     <link rel="stylesheet" href="https://builder.philip.place/theme/bootstrap4/css/main.css?t=<?=time()?>">
 
+    <style>
+        .offcanvas, .offcanvas-full{
+            visibility: hidden;
+        }
+    </style>
     @yield('css')
 
 </head>

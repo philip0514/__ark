@@ -307,7 +307,21 @@ $(function(){
     PageBuilder.gjs({
         plugins: [
             'bootstrap4',
-        ]
+        ],
+        canvas: {
+            styles: [
+                'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css',
+                'https://builder.philip.place/theme/bootstrap4/css/main.css?t=<?=time()?>',
+                'https://builder.philip.place/theme/bootstrap4/css/grapesjs.css?t=<?=time()?>',
+            ],
+            scripts: [
+                'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+                'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js'
+            ],
+        },
     });
     PageBuilder.load('{!! $rows1["json"] !!}');
 

@@ -20,11 +20,6 @@ class PageTypesTableSeeder extends Seeder
             )
         );
 
-        $id = 1;
-        if (!empty($table)) { 
-            $id = $table[0]->AUTO_INCREMENT;
-        }
-
         $rows1 = PageType::get();
 
         $sort = 0;
