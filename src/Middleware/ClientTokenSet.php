@@ -3,7 +3,6 @@
 namespace Philip0514\Ark\Middleware;
 
 use Closure;
-use Cookie;
 
 class ClientTokenSet
 {

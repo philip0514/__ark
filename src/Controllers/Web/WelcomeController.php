@@ -8,10 +8,17 @@ use Philip0514\Ark\Repositories\Web\PageRepository;
 
 class WelcomeController extends Controller
 {
-    public function index(Request $request)
+    protected 	$repo;
+
+    public function __construct()
     {
-        $page = new PageRepository();
-        $data = $page->get('index');
+        $this->repo = new \stdClass();
+        $this->repo->page = new PageRepository();
+    }
+
+    public function index()
+    {
+        $data = $this->repo->page->get('index');
 
         return view('ark::Web.welcome.index', $data);
     }

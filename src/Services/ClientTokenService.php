@@ -15,7 +15,7 @@ class ClientTokenService
         if($agent->isRobot() && Storage::disk('local')->has(date('Y/m/d').'/token')) return;
 
         $client = new Client(['base_uri' => config('ark.api.url')]);
-        $response = $client->request('POST', config('ark.api.url').'/oauth/token', [
+        $response = $client->request('POST', 'oauth/token', [
             'headers'        => [
                 'Content-Type'  => 'application/x-www-form-urlencoded',
                 'Accept'        => config('ark.api.version'),

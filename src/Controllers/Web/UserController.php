@@ -4,14 +4,19 @@ namespace Philip0514\Ark\Controllers\Web;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-use Philip0514\Ark\Repositories\API\V1_0\UserRepository;
+use Philip0514\Ark\Repositories\Web\UserRepository;
 use Philip0514\Ark\Repositories\Web\PageRepository;
+
+use Philip0514\Ark\Traits\SessionTrait;
+use Cookie;
 
 class UserController extends Controller
 {
+    use SessionTrait;
+
     protected 	$repo;
 
-    private function init()
+    public function __construct()
     {
         $this->repo = new \stdClass();
         $this->repo->user = new UserRepository();
@@ -20,42 +25,60 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $this->init();
-        $method = strtolower($request->method());
-
-        switch($method){
-            case 'post':
-                $username = $request->input('username', null);
-                $password = $request->input('password', null);
-
-                $data = $this->repo->user->password($username, $password);
-                if(!$data){
-                    return back()->with('status', 'login_failed');
-                }else{
-                    /*
-                    $admin = Auth::guard('admin')->user();
-                    $rows1 = $admin->getAllPermissions()->toArray();
-                    $permission = [];
-                    for($i=0; $i<sizeof($rows1); $i++){
-                        $permission[] = $rows1[$i]['name'];
-                    }
-                    session()->put( config('ark.permission') , $permission);
-
-                    $url = session()->get( config('ark.session_url') );
-                    if($url){
-                        return redirect($url);
-                    }
-                    return redirect()->route('dashboard');
-                    */
-                }
-                dd([
-                    $username,
-                    $password
-                ]);
-            break;
-        }
+        $this->setReferralUrl();
         $data = $this->repo->page->get('login');
 
         return view('ark::Web.user.login', $data);
+    }
+
+    public function loginProcess(Request $request)
+    {
+        $input = $request->except(['_token']);
+        $username = $request->input('username', null);
+        $password = $request->input('password', null);
+
+        $result = $this->repo->user->login($username, $password);
+
+        if(!$result['success']) {
+            $errors = [];
+            foreach ($result['error'] as $key => $value) {
+                $errors[] = $value;
+            }
+            return back()->withInput($input)->withErrors($errors);
+        }
+        $url = $this->getReferralUrl();
+        Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
+        Cookie::queue(Cookie::forget('client_token'));
+        return redirect($url);
+    }
+
+    public function register(Request $request)
+    {
+        $this->setReferralUrl();
+        $data = $this->repo->page->get('register');
+
+        return view('ark::Web.user.register', $data);
+    }
+
+    public function registerProcess(Request $request)
+    {
+        $input = $request->except(['_token']);
+        $name = $request->input('name', null);
+        $username = $request->input('username', null);
+        $password = $request->input('password', null);
+
+        $result = $this->repo->user->register($name, $username, $password);
+
+        if(!$result['success']) {
+            $errors = [];
+            foreach ($result['error'] as $key => $value) {
+                $errors[] = $value;
+            }
+            return back()->withInput($input)->withErrors($errors);
+        }
+        $url = $this->getReferralUrl();
+        Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
+        Cookie::queue(Cookie::forget('client_token'));
+        return redirect($url);
     }
 }

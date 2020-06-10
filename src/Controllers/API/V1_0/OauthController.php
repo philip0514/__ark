@@ -2,7 +2,6 @@
 namespace Philip0514\Ark\Controllers\API\V1_0;
 
 use Laravel\Passport\Http\Controllers\AccessTokenController;
-use Illuminate\Http\Request;
 use Psr\Http\Message\ServerRequestInterface;
 
 //Exception
@@ -23,7 +22,7 @@ use Philip0514\Ark\Traits\Response;
  * Class UserController
  * 
  */
-class TokenController extends AccessTokenController
+class OauthController extends AccessTokenController
 {
 	use Response;
 	
@@ -35,7 +34,7 @@ class TokenController extends AccessTokenController
 		$this->repo->user = new UserRepository();
 	}
 
-    public function oauth(ServerRequestInterface $request)
+    public function token(ServerRequestInterface $request)
     {
 		$this->init();
 		$data = $request->getParsedBody();
@@ -73,7 +72,20 @@ class TokenController extends AccessTokenController
 					$data = $serializer->passwordToken($data);
 				break;
 				case 'refresh_token':
-					$data = $this->repo->user->refresh($request);
+					$refresh_token = isset($data['refresh_token']) ? $data['refresh_token'] : null;
+
+					if(!$refresh_token){
+						throw new Exception('refresh_token_required');
+					}
+
+					$tokenResponse = $this->issueToken($request);
+					$content = $tokenResponse->getContent();
+					$data = json_decode($content, true);
+
+					if(isset($data['error'])){
+						throw new Exception('invalid_refresh_token');
+					}
+
 					$data = $serializer->refreshToken($data);
 				break;
 				default:

@@ -26,13 +26,9 @@ class PageController extends Controller
     public function index(Request $request)
     {
 		try{
-            $slug = $request->input('slug', null);
-
-			$data = $this->repo->page->meta($slug);
-
-			if(isset($data["error"])){
-				throw new Exception($data["error"]);
-			}
+			$url = $request->input('url', null);
+			
+			$data = $this->repo->page->get($url);
 
 			return $this->responseSuccess([
 				'data'	=>	$data

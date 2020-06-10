@@ -29,19 +29,6 @@ class UserRepository
     }
 
     /**
-     * client token
-     *
-     */
-    public function client($request)
-    {
-        $tokenResponse = $this->atc->issueToken($request);
-        $content = $tokenResponse->getContent();
-        $data = json_decode($content, true);
-
-        return $data;
-    }
-
-    /**
      * 登入
      *
      */
@@ -61,39 +48,6 @@ class UserRepository
         }
 
         return $user->toArray();
-    }
-
-    /**
-     * refresh token
-     *
-     */
-    public function refresh($request)
-    {
-        try{
-
-            $data = $request->getParsedBody();
-            $refresh_token = isset($data['refresh_token']) ? $data['refresh_token'] : null;
-
-            if(!$refresh_token){
-                throw new Exception('refresh_token_required');
-            }
-
-            $tokenResponse = $this->atc->issueToken($request);
-            $content = $tokenResponse->getContent();
-            $data = json_decode($content, true);
-
-            if(isset($data['error'])){
-                throw new Exception('invalid_refresh_token');
-            }
-    
-            return $data;
-        }
-        catch (Exception $e) {
-            $data = [
-                'error'			=>	$e->getMessage(),
-            ];
-            return $data;
-        }
     }
 
 	public function parse_token($request)

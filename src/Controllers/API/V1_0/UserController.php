@@ -3,12 +3,9 @@ namespace Philip0514\Ark\Controllers\API\V1_0;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Psr\Http\Message\ServerRequestInterface;
 
 //Exception
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use League\OAuth2\Server\Exception\OAuthServerException;
 
 //Repositories
 use Philip0514\Ark\Repositories\API\V1_0\UserRepository;
@@ -28,7 +25,6 @@ class UserController extends Controller
 {
 	use Response;
 
-	private $client_id = 2;
 	private $repo;
 
 	function __construct(
@@ -39,68 +35,6 @@ class UserController extends Controller
 		$this->repo = new \stdClass();
 		$this->repo->user = $UserRepository;
 		$this->repo->page = $PageRepository;
-	}
-
-	/**
-	 *	token
-	 *
-	 */
-	public function token(ServerRequestInterface $request)
-	{
-		$data = $request->getParsedBody();
-
-		try {
-			$grant_type = isset($data['grant_type']) ? $data['grant_type'] : null;
-			$client_id = isset($data['client_id']) ? $data['client_id'] : null;
-			$client_secret = isset($data['client_secret']) ? $data['client_secret'] : null;
-
-			if(!$grant_type || !$client_id || !$client_secret){
-				throw new Exception('token_required');
-			}
-
-			$serializer = new UserSerializer();
-			switch($grant_type){
-				case 'client_credentials':
-					$data = $this->repo->user->client($request);
-					$data = $serializer->clientToken($data);
-				break;
-				case 'password':
-					$data = $this->repo->user->password($request);
-					if(isset($data['error'])){
-						throw new Exception($data['error']);
-					}
-					$data = $serializer->passwordToken($data);
-				break;
-				case 'refresh_token':
-					$data = $this->repo->user->refresh($request);
-					$data = $serializer->refreshToken($data);
-				break;
-				default:
-					throw new Exception('invalid_grant_type');
-				break;
-			}
-
-			if(isset($data['error'])){
-				throw new Exception($data['error']);
-			}
-
-			return $this->responseSuccess([
-				'data'	=>	$data
-			]);
-		}
-        catch (ModelNotFoundException $e) { 
-			// email not found
-			return $this->responseError('user_404');
-        }
-        catch (OAuthServerException $e) {
-			//password not correct..token not granted
-			return $this->responseError('invalid_credentials');
-        }
-        catch (Exception $e) {
-			//return error message
-			$message = $e->getMessage();
-			return $this->responseError($message);
-        }
 	}
 
 	/**

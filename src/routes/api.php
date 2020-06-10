@@ -8,8 +8,8 @@ $api->version('v1_0', function ($api) {
 	$api->group([
 		'namespace' => '\Philip0514\Ark\Controllers\API\V1_0',
 	], function ($api) {
-		$api->post('oauth/token', 'TokenController@oauth');
-        $api->post('oauth/token/refresh', 'TokenController@oauth');
+		$api->post('oauth/token', 'OauthController@token');
+        $api->post('oauth/token/refresh', 'OauthController@token');
 
 		$api->get('mail/test', 'MailController@test');
 
@@ -20,9 +20,12 @@ $api->version('v1_0', function ($api) {
 		'namespace' => '\Philip0514\Ark\Controllers\API\V1_0',
 		'middleware' => '\Philip0514\Ark\Middleware\CheckClientCredentials',
 	], function ($api) {
+		//welcome
+		$api->get('welcome', 'WelcomeController@index');
+
 
 		//user
-        $api->post('user/login', 'TokenController@oauth');
+        $api->post('user/login', 'OauthController@token');
 		$api->post('user/register', 'UserController@register');
 		$api->post('user/facebook', 'UserController@facebook');
 		$api->post('user/google', 'UserController@google');

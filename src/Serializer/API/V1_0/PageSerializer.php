@@ -11,35 +11,74 @@ class PageSerializer extends Collection
 {
 	use Serializer, Helper;
 	
-	public function meta($data, $site=null)
+	public function siteMeta($data)
 	{
-		$tags = isset($data['tags']) && $data['tags'] ? $data['tags'] : (isset($site['tags']) ? $site['tags'] : []);
+		$title = isset($data['title']) ? $data['title'] : null;
+		$description = isset($data['description']) ? $data['description'] : null;
+
+		$tags = isset($data['tags']) && $data['tags'] ? $data['tags'] : [];
+		$tag = $this->tag($tags);
+
+		$ogimages = isset($data['ogimages']) && $data['ogimages'] ? $data['ogimages'] : [];
+		$ogimage = $this->ogimage($ogimages);
+		
+		$data = [
+            'title'         =>	$title,
+			'site_name'		=>	$title,
+            'description'   =>	$description,
+			'keywords'       =>	$tag,
+			'ogimage'		=>	$ogimage,
+		];
+
+		return $data;
+	}
+
+	public function meta($data, $site)
+	{
+		$meta = $site;
+
+		if($data['title']){
+			$meta['title'] = $data['title'];
+		}
+
+		if($data['description']){
+			$meta['description'] = $data['description'];
+		}
+
+		$tags = isset($data['tags']) && $data['tags'] ? $data['tags'] : [];
+		$tag = $this->tag($tags);
+		if($tag){
+			$meta['keywords'] = $tag;
+		}
+
+		$ogimages = isset($data['ogimages']) && $data['ogimages'] ? $data['ogimages'] : [];
+		$ogimage = $this->ogimage($ogimages);
+		if($ogimage){
+			$meta['ogimage'] = $ogimage;
+		}
+
+		return $meta;
+	}
+
+	private function tag($tags)
+	{
 		$tag = [];
 		for($i=0; $i<sizeof($tags); $i++){
 			$tag[] = $tags[$i]['name'];
 		}
 
-		$ogimages = isset($data['ogimages']) && $data['ogimages'] ? $data['ogimages'] : (isset($site['ogimages']) ? $site['ogimages'] : []);
-		$image = [];
+		$tag = $tag ? implode(', ', $tag) : null;
+
+		return $tag;
+	}
+
+	private function ogimage($ogimages)
+	{
+		$ogimage = [];
 		for($i=0; $i<sizeof($ogimages); $i++){
-			$image[] = $this->mediaPath($ogimages[$i]['name'], 'facebook');
+			$ogimage[] = $this->mediaPath($ogimages[$i]['name'], 'facebook');
 		}
 
-		$title = isset($data['title']) ? $data['title'] : (isset($site['title']) ? $site['title'] : null);
-		$description = isset($data['description']) ? $data['description'] : (isset($site['description']) ? $site['description'] : null);
-
-        $meta = [
-            'title'         => $title,
-            'description'   => $description,
-            'keyword'       => $tag ? implode(', ', $tag) : null,
-            'og'            => [
-                'title'         => $title,
-                'description'   => $description,
-                'site_name'     => $site['title'],
-                'image'         => $image ? $image : null,
-            ],
-		];
-		
-		return $meta;
+		return $ogimage;
 	}
 }

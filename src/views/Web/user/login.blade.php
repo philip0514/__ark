@@ -5,24 +5,26 @@
 @endsection
 
 @section('content')
-{{-- $html --}}
 <section>
     <div class="container-fluid">
         <div class="row h-100vh">
             <div class="col-6 bg-image"></div>
             <div class="col-6 d-flex align-items-center">
-                <form method="post" action="" id="form1" name="form1" class="mx-auto w-p-80">
+                <form method="post" action="/process/login" id="form1" name="form1" class="mx-auto w-80p">
                     <h1>Login</h1>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="username">Email address</label>
-                        <input type="email" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <input type="email" class="form-control" id="username" name="username" placeholder="Enter email" required>
+                        <div class="invalid-feedback"></div>
+                        <div class="help-feedback">Required</div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <div class="invalid-feedback"></div>
+                        <div class="help-feedback">Required</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
             </div>
         </div>
@@ -50,4 +52,48 @@
     }
 {!! $css !!}
 </style>
+@endsection
+
+@section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha256-3TKcZElR88BBIA6CeePJAGOsW1yIYf4lP8pI333YuZw=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha256-+BEKmIvQ6IsL8sHcvidtDrNOdZO3C9LtFPtF2H0dOHI=" crossorigin="anonymous"></script>
+<script>
+    $(function(){
+
+        $("#form1").validate({
+            rules: {
+                "username": {
+                    "required": true
+                },
+                "password": {
+                    "required": true
+                }
+            },
+            messages: {
+                "username":{
+                    "required": "This field is required."
+                },
+                "password":{
+                    "required": "This field is required."
+                }
+            },
+            onblur: true,
+            onkeyup: false,
+            onsubmit: true,
+            highlight: function(element, errorClass, validClass){
+                form_highlight(element, errorClass, validClass);
+            },
+            unhighlight: function(element, errorClass, validClass){
+                form_unhighlight(element, errorClass, validClass);
+            },
+            errorElement: "div",
+            errorPlacement: function($error, $element){
+                form_error_text($error, $element);
+            },
+            submitHandler: function(form){
+                Ark.submitHandler(form);
+            }
+        });
+    })
+</script>
 @endsection
