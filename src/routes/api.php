@@ -27,6 +27,7 @@ $api->version('v1_0', function ($api) {
 		//user
         $api->post('user/login', 'OauthController@token');
 		$api->post('user/register', 'UserController@register');
+		$api->post('user/registerValidate', 'UserController@registerValidate');
 		$api->post('user/facebook', 'UserController@facebook');
 		$api->post('user/google', 'UserController@google');
 		$api->post('user/twitter', 'UserController@twitter');

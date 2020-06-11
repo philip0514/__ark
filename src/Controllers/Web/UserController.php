@@ -67,7 +67,7 @@ class UserController extends Controller
         $username = $request->input('username', null);
         $password = $request->input('password', null);
 
-        $result = $this->repo->user->register($name, $username, $password);
+        $result = $this->repo->user->register($username, $password, $name);
 
         if(!$result['success']) {
             $errors = [];
@@ -76,9 +76,32 @@ class UserController extends Controller
             }
             return back()->withInput($input)->withErrors($errors);
         }
-        $url = $this->getReferralUrl();
+
+        $url = route('register_completed');
         Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
         Cookie::queue(Cookie::forget('client_token'));
         return redirect($url);
+    }
+
+    public function registerValidate(Request $request)
+    {
+        $username = $request->input('username', null);
+
+        $result = $this->repo->user->registerValidate($username);
+
+        $exist = $result['data']['exist'];
+
+        if($exist){
+            return 'false';
+        }else{
+            return 'true';
+        }
+    }
+
+    public function registerCompleted(Request $request)
+    {
+        $data = $this->repo->page->get('register/complete');
+
+        return view('ark::Web.welcome.index', $data);
     }
 }

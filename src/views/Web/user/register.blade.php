@@ -10,7 +10,7 @@
         <div class="row h-100vh">
             <div class="col-6 bg-image"></div>
             <div class="col-6 d-flex align-items-center">
-                <form method="post" action="/process/register" id="form1" name="form1" class="mx-auto w-80p">
+                <form method="post" id="form_register" name="form_register" class="mx-auto w-80p" action="{{ route('register_process') }}">
                     <h1>Register</h1>
 
                     <div class="form-group">
@@ -62,33 +62,14 @@
 {!! $css !!}
 </style>
 @endsection
-<? 
 
-                    /*
-                    "remote": {
-                        url: '{{ $config['path']['validate'] }}',
-                        type: "post",
-                        data: {
-                            type: function(){
-                                return 'email';
-                            },
-                            email: function() {
-                                return $("#email").val();
-                            },
-                            id: function(){
-                                return $('#id').val();
-                            }
-                        }
-                    }
-                    */
-                    ?>
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha256-3TKcZElR88BBIA6CeePJAGOsW1yIYf4lP8pI333YuZw=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha256-+BEKmIvQ6IsL8sHcvidtDrNOdZO3C9LtFPtF2H0dOHI=" crossorigin="anonymous"></script>
 <script>
     $(function(){
 
-        $("#form1").validate({
+        $("#form_register").validate({
             rules: {
                 "name": {
                     "required": true
@@ -96,6 +77,15 @@
                 "username": {
                     "required": true,
                     "minlength": 4,
+                    "remote": {
+                        url: "{{ route('register_validate') }}",
+                        type: "post",
+                        data: {
+                            username: function() {
+                                return $("#username").val();
+                            }
+                        }
+                    }
                 },
                 "password": {
                     "required": true
@@ -109,7 +99,8 @@
                     "required": "Required"
                 },
                 "username":{
-                    "required": "Required"
+                    "required": "Required",
+                    "remote": "This Account is existed."
                 },
                 "password":{
                     "required": "Required"
@@ -130,9 +121,6 @@
             errorElement: "div",
             errorPlacement: function($error, $element){
                 form_error_text($error, $element);
-            },
-            submitHandler: function(form){
-                Ark.submitHandler(form);
             }
         });
     })

@@ -10,7 +10,7 @@
         <div class="row h-100vh">
             <div class="col-6 bg-image"></div>
             <div class="col-6 d-flex align-items-center">
-                <form method="post" action="/process/login" id="form1" name="form1" class="mx-auto w-80p">
+                <form method="post" id="form_login" name="form_login" class="mx-auto w-80p" action="{{ route('login_process') }}">
                     <h1>Login</h1>
                     <div class="form-group required">
                         <label for="username">Email address</label>
@@ -60,7 +60,7 @@
 <script>
     $(function(){
 
-        $("#form1").validate({
+        $("#form_login").validate({
             rules: {
                 "username": {
                     "required": true
@@ -89,9 +89,6 @@
             errorElement: "div",
             errorPlacement: function($error, $element){
                 form_error_text($error, $element);
-            },
-            submitHandler: function(form){
-                Ark.submitHandler(form);
             }
         });
     })

@@ -45,7 +45,7 @@ class UserController extends Controller
 	{
 		try{
             $client_id = $request->input('client_id');
-            $email = $request->input('email');
+            $email = $request->input('username');
             $password = $request->input('password');
 			$name = $request->input('name');
 
@@ -62,6 +62,25 @@ class UserController extends Controller
 				'data'	=>	$data
 			],
 			201);
+		}
+		catch(Exception $e){
+            $message = $e->getMessage();
+			return $this->responseError($message);
+		}
+	}
+
+	public function registerValidate(Request $request)
+	{
+		try{
+            $username = $request->input('username');
+
+			$data = $this->repo->user->registerValidate($username);
+
+			return $this->responseSuccess([
+				'data'	=>	[
+					'exist'	=>	$data,
+				]
+			]);
 		}
 		catch(Exception $e){
             $message = $e->getMessage();

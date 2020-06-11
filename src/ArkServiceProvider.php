@@ -2,11 +2,16 @@
 namespace Philip0514\Ark;
 
 use Illuminate\Support\ServiceProvider;
+use URL;
 
 class ArkServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
+            URL::forceScheme('https');
+        }
+
         $this->loadRoutesFrom(__DIR__.'/routes/ark.php');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');

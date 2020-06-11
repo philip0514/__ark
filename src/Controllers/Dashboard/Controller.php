@@ -137,7 +137,7 @@ class Controller extends BaseController
 		$permission = session()->get( config('ark.permission') );
 
 		if(!$permission){
-			return redirect()->route('login');
+			return redirect()->route('ark.login');
 		}
 
 		$method = [

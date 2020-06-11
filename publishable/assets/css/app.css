@@ -25454,7 +25454,7 @@ button.close {
   
   .blocks,
   [class*=blocks-] {
-    font-size: 0;
+    font-size: initial;
     padding: 0;
     margin: 0;
     /*

@@ -26,8 +26,8 @@ $route->group([
     'prefix'    =>  config('ark.prefix'),
 ], function($route){
     //login
-    $route->match(['get', 'post'], 'login', 'DashboardController@login')->name('login');
-    $route->get('logout', 'DashboardController@logout')->name('logout');
+    $route->match(['get', 'post'], 'login', 'DashboardController@login')->name('ark.login');
+    $route->get('logout', 'DashboardController@logout')->name('ark.logout');
 });
 
 //ajax route

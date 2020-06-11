@@ -10,7 +10,7 @@ class Permission
     public function handle($request, Closure $next)
     {
         if(!Auth::guard('admin')->check()){
-            return redirect()->route('login');
+            return redirect()->route('ark.login');
         }
 
         $admin = Auth::guard('admin')->user();

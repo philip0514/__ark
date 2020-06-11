@@ -32,14 +32,14 @@ class UserRepository
      * 登入
      *
      */
-    public function password($username, $password)
+    public function password($email, $password)
     {
-        if(!$username || !$password){
+        if(!$email || !$password){
             return null;
         }
 
         $user = $this->user
-        ->where('email', $username)
+        ->where('email', $email)
         ->where('display', 1)
         ->first();
 
@@ -98,6 +98,27 @@ class UserRepository
             $rows1['user'] = $user;
 
             return $rows1;
+        }
+        catch (Exception $e) {
+            $result = [
+                'error'     =>  $e->getMessage()
+            ];
+            return $result;
+        }
+    }
+
+    public function registerValidate($username)
+    {
+        try{
+
+            $user = $this->user->where('email', '=', $username)->select('id')->first();
+            
+            $exist = false;
+            if(isset($user->id) && $user->id){
+                $exist = true;
+            }
+
+            return $exist;
         }
         catch (Exception $e) {
             $result = [

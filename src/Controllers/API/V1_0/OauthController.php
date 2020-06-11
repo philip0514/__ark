@@ -57,7 +57,6 @@ class OauthController extends AccessTokenController
                     $data = $serializer->clientToken($data);
 				break;
 				case 'password':
-					$data = $request->getParsedBody();
 					$username = $data['username'];
 					$password = isset($data['password']) ? $data['password'] : '';
 					$user = $this->repo->user->password($username, $password);

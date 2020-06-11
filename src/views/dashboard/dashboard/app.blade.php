@@ -119,7 +119,7 @@
                             <div class="dropdown-menu" role="menu">
                                 <a class="dropdown-item" href="{{ route('administrator.profile') }}" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> 個人資料</a>
                                 <div class="dropdown-divider" role="presentation"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> 登出</a>
+                                <a class="dropdown-item" href="{{ route('ark.logout') }}" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> 登出</a>
                             </div>
                         </li>
                     </ul>

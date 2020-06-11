@@ -90,7 +90,7 @@ class DashboardController extends Controller
         //session()->forget('administrator_info');
         $this->repo->main->logout();
 
-        return redirect()->route('login');
+        return redirect()->route('ark.login');
     }
 
     public function showRoute(Request $request)
