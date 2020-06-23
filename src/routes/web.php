@@ -21,6 +21,7 @@ $route->group([
     //login
     $route->get('login', 'UserController@login')->name('login');
     $route->post('login/process', 'UserController@loginProcess')->name('login_process');
+    $route->get('logout', 'UserController@logout')->name('logout');
 
     //register
     $route->get('register', 'UserController@register')->name('register');

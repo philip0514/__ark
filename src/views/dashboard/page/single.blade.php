@@ -229,7 +229,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.12/grapes.js"></script>
 <script src="https://builder.philip.place/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
-<script src="https://builder.philip.place/theme/bootstrap4/js/grapesjs.js?t=<?=time()?>"></script>
+<script src="https://builder.philip.place/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
 <script>
 
 $(function(){
