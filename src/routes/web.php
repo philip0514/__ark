@@ -43,6 +43,9 @@ $route->group([
     $route->get('user/verify/completed', 'UserController@verify_completed')->name('user_verify_completed');
     $route->get('user/verify/failed', 'UserController@verify_failed')->name('user_verify_failed');
 
+    //order
+    $route->get('user/order', 'UserController@order')->name('user_order');
+
     /**
      *  Search
      */

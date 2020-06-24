@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="https://builder.philip.place/theme/bootstrap4/css/main.css?t=<?=time()?>">
+    <link rel="stylesheet" href="/theme/bootstrap4/css/main.css?t=<?=time()?>">
 
     <style>
         .offcanvas, .offcanvas-full{
@@ -51,7 +51,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 my-5">
-                    <form method="post" id="nav-search" name="nav-search" action="/search">
+                    <form method="post" id="nav-search" name="nav-search" action="{{ route('search') }}">
                         <a class="btn-close text-white display-4"><i class="fa fa-times"></i></a>
                         <h3 class="display-1 text-white">Search</h3>
 
@@ -84,10 +84,10 @@
                 </a>
             </div>
             <div class="divider">Or login with</div>
-            <form method="post" id="sidebar-login" name="sidebar-login" action="/user/login">
+            <form method="post" id="sidebar-login" name="sidebar-login" action="{{ route('login_process') }}">
                 <div class="form-group">
-                    <label class="text-muted" for="sidebar-login-account"><small>Email</small></label>
-                    <input type="email" class="form-control form-control-sm" id="sidebar-login-account" name="account" placeholder="Email">
+                    <label class="text-muted" for="sidebar-login-username"><small>Email</small></label>
+                    <input type="email" class="form-control form-control-sm" id="sidebar-login-username" name="username" placeholder="Email">
                     <small class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
@@ -98,7 +98,7 @@
                 <button type="submit" class="btn btn-sm btn-primary btn-block"><i class="fa fa-sign-in-alt"></i> Login</button>
             </form>
             <div class="divider">Or Create Account</div>
-            <a href="/user/register/" class="btn btn-dark btn-block">
+            <a href="{{ route('register_process') }}" class="btn btn-dark btn-block">
                 <i class="fa fa-registered"></i> Register
             </a>
             
@@ -153,7 +153,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js" integrity="sha256-+Q/z/qVOexByW1Wpv81lTLvntnZQVYppIL1lBdhtIq0=" crossorigin="anonymous"></script>
 
-    <script src="https://builder.philip.place/theme/bootstrap4/js/main.js?t=<?=time()?>"></script>
+    <script src="/theme/bootstrap4/js/main.js?t=<?=time()?>"></script>
 
     @yield('js')
 </html>

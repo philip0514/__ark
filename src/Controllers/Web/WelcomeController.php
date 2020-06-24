@@ -8,7 +8,7 @@ use Philip0514\Ark\Repositories\Web\PageRepository;
 
 class WelcomeController extends Controller
 {
-    protected 	$repo;
+    protected $repo;
 
     public function __construct()
     {

@@ -8,7 +8,6 @@ use Philip0514\Ark\Repositories\Web\UserRepository;
 use Philip0514\Ark\Repositories\Web\PageRepository;
 
 use Philip0514\Ark\Traits\SessionTrait;
-use Cookie;
 
 class UserController extends Controller
 {
@@ -27,8 +26,20 @@ class UserController extends Controller
     {
         $this->setReferralUrl();
         $data = $this->repo->page->get('login');
+        $data['login_failed'] = false;
 
-        return view('ark::Web.user.login', $data);
+        if(session()->has('status')){
+            $data['login_failed'] = true;
+        }
+
+        return view('ark::Web.welcome.index', $data);
+    }
+
+    public function logout(Request $request)
+    {
+        session()->forget('password_token');
+
+        return redirect(route('index'));
     }
 
     public function loginProcess(Request $request)
@@ -44,11 +55,14 @@ class UserController extends Controller
             foreach ($result['error'] as $key => $value) {
                 $errors[] = $value;
             }
-            return back()->withInput($input)->withErrors($errors);
+            //return redirect( route('login') )->withInput($input)->withErrors($errors);
+            return redirect( route('login') )->with('status', 'login_failed');
         }
         $url = $this->getReferralUrl();
-        Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
-        Cookie::queue(Cookie::forget('client_token'));
+
+        session()->put('password_token', $result['data']['token']['access_token']);
+        session()->put('password_token_expires', time()+$result['data']['token']['expires_in']);
+
         return redirect($url);
     }
 
@@ -78,8 +92,12 @@ class UserController extends Controller
         }
 
         $url = route('register_completed');
-        Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
-        Cookie::queue(Cookie::forget('client_token'));
+        //Cookie::queue('password_token', $result['data']['token']['access_token'], $result['data']['token']['expires_in']);
+        //Cookie::queue(Cookie::forget('client_token'));
+
+        session()->put('password_token', $result['data']['token']['access_token']);
+        session()->put('password_token_expires', time()+$result['data']['token']['expires_in']);
+
         return redirect($url);
     }
 

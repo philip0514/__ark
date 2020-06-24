@@ -19,15 +19,18 @@ class PageBlockRepository
         $dom = HtmlDomParser::str_get_html($html);
 		$headerHtml = $footerHtml = $pageHtml = null;
 		$headerJson = $footerJson = $pageJson = [];
-        $headerDom = $dom->find('header', 0);
-        if($headerDom){
-            $headerHtml = $headerDom->outertext;
-            $pageHtml = str_replace($headerHtml, '', $html);
-        }
-        $footerDom = $dom->find('footer', 0);
-        if($footerDom){
-            $footerHtml = $footerDom->outertext;
-            $pageHtml = str_replace($footerHtml, '', $html);
+		if($html){
+			$headerDom = $dom->find('header', 0);
+			$footerDom = $dom->find('footer', 0);
+			
+			if($headerDom){
+				$headerHtml = $headerDom->outertext;
+			}
+			if($footerDom){
+				$footerHtml = $footerDom->outertext;
+			}
+			$pageHtml = str_replace($headerHtml, '', $html);
+			$pageHtml = str_replace($footerHtml, '', $pageHtml);
 		}
 
 		$json = $json ? json_decode($json, true) : null;

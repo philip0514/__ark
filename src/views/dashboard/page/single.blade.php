@@ -224,12 +224,12 @@
 
 @section('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.3/css/grapes.min.css">
-<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/pagebuilder.css">
-<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/tooltip.css">
+<link rel="stylesheet" href="/pagebuilder/css/pagebuilder.css">
+<link rel="stylesheet" href="/pagebuilder/css/tooltip.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.12/grapes.js"></script>
-<script src="https://builder.philip.place/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
-<script src="https://builder.philip.place/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
+<script src="/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
+<script src="/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
 <script>
 
 $(function(){
@@ -312,8 +312,8 @@ $(function(){
             styles: [
                 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css',
-                'https://builder.philip.place/theme/bootstrap4/css/main.css?t=<?=time()?>',
-                'https://builder.philip.place/theme/bootstrap4/css/grapesjs.css?t=<?=time()?>',
+                '/theme/bootstrap4/css/main.css?t={{ time() }}',
+                '/theme/bootstrap4/css/grapesjs.css?t={{ time() }}',
             ],
             scripts: [
                 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
@@ -323,7 +323,7 @@ $(function(){
             ],
         },
     });
-    PageBuilder.load('{!! $rows1["json"] !!}');
+    PageBuilder.load({!! $rows1["json"] !!});
 
     $('.btn-submit').click(function(){
         PageBuilder.save({

@@ -24,6 +24,18 @@
                         <div class="invalid-feedback"></div>
                         <div class="help-feedback">Required</div>
                     </div>
+
+                    @if (session()->has('status'))
+                    <div class="row mt-5">
+                        <div class="control-group col-md-12">
+                            <div class="alert alert-danger text-center">
+                                Login failed.
+                                <br>
+                                Please check your username and password.
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
             </div>

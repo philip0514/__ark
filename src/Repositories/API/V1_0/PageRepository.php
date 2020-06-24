@@ -8,6 +8,10 @@ use Philip0514\Ark\Models\Setting;
 
 use Philip0514\Ark\Serializer\API\V1_0\PageSerializer;
 
+use Sunra\PhpSimple\HtmlDomParser;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Blade;
+
 class PageRepository
 {
     public $spliter, $meta;
@@ -28,7 +32,7 @@ class PageRepository
 		$this->meta = $serializer->siteMeta($site);
 	}
 
-	private function getHeaderFooter()
+	private function getHeaderFooter($user_id=0)
 	{
 		$pageBlock = new PageBlock();
 
@@ -45,13 +49,33 @@ class PageRepository
 			}
 		}
 
+		if($header){
+			if($user_id){
+				$dom = HtmlDomParser::str_get_html($header);
+				$user = $dom->find('.nav-item-user', 0);
+				$user->class .= ' dropdown';
+				$user->innertext .= sprintf('<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="%s">My Account</a></li>
+					<li><a class="dropdown-item" href="%s">Orders</a></li>
+					<div class="dropdown-divider"></div>
+					<li><a class="dropdown-item" href="%s">Logout</a></li>
+				</ul>',
+					route('user_info'),
+					route('user_order'),
+					route('logout')
+				);
+
+				$header = $dom->outertext;
+			}
+		}
+
 		return [
 			'header'	=>	$header,
 			'footer'	=>	$footer,
 		];
 	}
 
-    public function get($url=null)
+    public function get($url=null, $user_id=0)
     {
 		$serializer = new PageSerializer();
 		$pageType = new PageType();
@@ -78,13 +102,19 @@ class PageRepository
 			$rows2 = $rows2->toArray();
 		}else{
             return null;
-            
+
             //404
 		}
 
 		$meta = $serializer->meta($rows2, $this->meta);
 
-		$headerFooter = $this->getHeaderFooter();
+		$headerFooter = $this->getHeaderFooter($user_id);
+
+		//$html = mb_convert_encoding($rows2['html'], "UTF-8", "HTML-ENTITIES");
+		//$html = str_replace(['&#039;', '&quot;'], ["'", '"'], $rows2['html']);
+		$html = html_entity_decode($rows2['html'], ENT_QUOTES);
+        $php = Blade::compileString($html);
+		$rows2['html'] = $this->renderHtml($php);
 
 		return [
 			'meta'		=>	$meta,
@@ -93,5 +123,22 @@ class PageRepository
 			'html'		=>	$rows2['html'],
 			'css'		=>	$rows2['css'],
 		];
+    }
+
+    private function renderHtml($__php, $__data=[])
+    {
+        $obLevel = ob_get_level();
+        ob_start();
+        extract($__data, EXTR_SKIP);
+        try {
+            eval('?' . '>' . $__php);
+        } catch (Exception $e) {
+            while (ob_get_level() > $obLevel) ob_end_clean();
+            throw $e;
+        } catch (Throwable $e) {
+            while (ob_get_level() > $obLevel) ob_end_clean();
+            throw new FatalThrowableError($e);
+        }
+        return ob_get_clean();
     }
 }
