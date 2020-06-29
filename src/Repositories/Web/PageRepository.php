@@ -20,7 +20,7 @@ class PageRepository
 		$this->page = new Page();
 	}
 
-	public function get($url, $data=[])
+	public function get($url)
 	{
 		$response = $this->page->get([
 			'url'	=>	$url

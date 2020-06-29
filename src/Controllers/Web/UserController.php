@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Philip0514\Ark\Repositories\Web\UserRepository;
 use Philip0514\Ark\Repositories\Web\PageRepository;
 
+//trait
 use Philip0514\Ark\Traits\SessionTrait;
+use Philip0514\Ark\Traits\Helper;
 
 class UserController extends Controller
 {
-    use SessionTrait;
+    use SessionTrait, Helper;
 
     protected 	$repo;
 
@@ -26,11 +28,10 @@ class UserController extends Controller
     {
         $this->setReferralUrl();
         $data = $this->repo->page->get('login');
-        $data['login_failed'] = false;
 
-        if(session()->has('status')){
-            $data['login_failed'] = true;
-        }
+        $data['html'] = $this->bladeHtml($data['html'], [
+            'login_failed'  =>  session()->has('status')
+        ]);
 
         return view('ark::Web.welcome.index', $data);
     }
@@ -51,11 +52,6 @@ class UserController extends Controller
         $result = $this->repo->user->login($username, $password);
 
         if(!$result['success']) {
-            $errors = [];
-            foreach ($result['error'] as $key => $value) {
-                $errors[] = $value;
-            }
-            //return redirect( route('login') )->withInput($input)->withErrors($errors);
             return redirect( route('login') )->with('status', 'login_failed');
         }
         $url = $this->getReferralUrl();
@@ -71,7 +67,7 @@ class UserController extends Controller
         $this->setReferralUrl();
         $data = $this->repo->page->get('register');
 
-        return view('ark::Web.user.register', $data);
+        return view('ark::Web.welcome.index', $data);
     }
 
     public function registerProcess(Request $request)

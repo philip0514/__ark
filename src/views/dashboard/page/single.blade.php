@@ -323,7 +323,7 @@ $(function(){
             ],
         },
     });
-    PageBuilder.load({!! $rows1["json"] !!});
+    PageBuilder.load({!! $rows1["json"] !!}, "{!! $rows1['css'] !!}");
 
     $('.btn-submit').click(function(){
         PageBuilder.save({

@@ -9,8 +9,6 @@ use Philip0514\Ark\Models\Setting;
 use Philip0514\Ark\Serializer\API\V1_0\PageSerializer;
 
 use Sunra\PhpSimple\HtmlDomParser;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Blade;
 
 class PageRepository
 {
@@ -110,11 +108,9 @@ class PageRepository
 
 		$headerFooter = $this->getHeaderFooter($user_id);
 
-		//$html = mb_convert_encoding($rows2['html'], "UTF-8", "HTML-ENTITIES");
-		//$html = str_replace(['&#039;', '&quot;'], ["'", '"'], $rows2['html']);
-		$html = html_entity_decode($rows2['html'], ENT_QUOTES);
-        $php = Blade::compileString($html);
-		$rows2['html'] = $this->renderHtml($php);
+		//$html = html_entity_decode($rows2['html'], ENT_QUOTES);
+        //$php = Blade::compileString($html);
+		//$rows2['html'] = $this->renderHtml($php);
 
 		return [
 			'meta'		=>	$meta,
@@ -123,22 +119,5 @@ class PageRepository
 			'html'		=>	$rows2['html'],
 			'css'		=>	$rows2['css'],
 		];
-    }
-
-    private function renderHtml($__php, $__data=[])
-    {
-        $obLevel = ob_get_level();
-        ob_start();
-        extract($__data, EXTR_SKIP);
-        try {
-            eval('?' . '>' . $__php);
-        } catch (Exception $e) {
-            while (ob_get_level() > $obLevel) ob_end_clean();
-            throw $e;
-        } catch (Throwable $e) {
-            while (ob_get_level() > $obLevel) ob_end_clean();
-            throw new FatalThrowableError($e);
-        }
-        return ob_get_clean();
     }
 }
