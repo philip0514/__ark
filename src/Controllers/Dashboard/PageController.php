@@ -119,7 +119,7 @@ class PageController extends Controller
                 $description = $request->input('description', null);
                 $content = $request->input('content', null);
                 $html = $request->input('htmlContent', null);
-                $css = $request->input('cssContent', null);
+                $css = str_replace('"', "'", $request->input('cssContent', null));
                 $json = $request->input('jsonContent', null);
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);

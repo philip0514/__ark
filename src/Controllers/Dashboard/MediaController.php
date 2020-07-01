@@ -242,7 +242,7 @@ class MediaController extends Controller
 		$page 	= $request->input('page', 1);
 		$search 	= $request->input('search', null);
 		$skip 	= $request->input('skip', null);
-		$size 	= $request->input('size', null);
+		$size 	= $request->input('size', 'square');
 		$request_time 	= $request->input('request_time', time());
 
 		$rows1 = $this->repo->main->data($page, $limit, $request_time, $skip, $search);

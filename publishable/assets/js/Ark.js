@@ -403,16 +403,18 @@ var Ark = function(){
 }();
 (function($){
 	'use strict';
-	
+
 	var retrieving = false;
-	
+
 	var option = {};
-	
+
 	var $media_id = [];
 
 	var $container;
-	
-	var mce = false;
+
+	var builder = false;
+
+	var $editor;
 
 	var default_option = {
 		is_image:				1,
@@ -448,10 +450,10 @@ var Ark = function(){
  	
 	function mediaMultiple(e, config){
 		var $prototype = this;
-		
+
 		if(typeof config == "undefined" || config.area){
 			$(e).on('click', function(){
-				mce = false;
+				builder = false;
 				option = $.extend({}, default_option, config );
 				$prototype.manager();
 			});
@@ -460,8 +462,16 @@ var Ark = function(){
 			$prototype.sortable(option);
 			$prototype.image.delete(option);
 			$prototype.image.editor(option);
+		}else if(config.editor){
+			builder = true;
+
+			$editor = config.editor;
+			config.selectable_limit = 1;
+			config.selectable_multiple = 0;
+			option = $.extend({}, default_option, config );
+			$prototype.manager();
 		}else{
-			mce = true;
+			//builder = true;
 			option = $.extend({}, default_option, config );
 			$prototype.manager();
 		}
@@ -474,7 +484,7 @@ var Ark = function(){
 		{
       		var $prototype = this;
 			var data = {};
-			
+
 			$.ajax({
 				type: 'POST',
 				url: option.url.manager,
@@ -507,35 +517,51 @@ var Ark = function(){
 
 			//存檔
 			$(option.save_btn).click(function(){
-				//console.log($media_id);
-				var $data = [];
-				$.each($media_id, function($index, $value){
-					var $e = $('.media-single a[data-id='+$value+']')
-					var $title = $e.data('title');
-					var $path = $e.data('path');
+				if($editor){
+					//pagebuilder
+					var $e = $('.media-single a[data-id='+$media_id[0]+']');
+					var $url = $e.data('path');
 
-					$data.push({
-						'id': 		$value,
-						'title': 	$title,
-						'path': 	$path,
-					});
-				});
-
-				if(option.selectable_multiple){
-					$(option.area).append(tmpl('tmpl-preview', $data));
-					var $val = $(option.input_field).val();
-					if(!$val){
-						$(option.input_field).val($media_id.join());
-					}else{
-						$(option.input_field).val($val+','+$media_id.join());
+					var $tagName = $editor.getSelected().attributes.tagName;
+					switch($tagName){
+						case 'img':
+							$editor.getSelected().set('src', $url)
+						break;
+						default:
+							$url = $url.replace('square', 'original');
+							$editor.getSelected().setStyle({ 'background-image': 'url("'+$url+'")' });
+						break;
 					}
 				}else{
-					$(option.area).html(tmpl('tmpl-preview', $data));
-					$(option.input_field).val($media_id.join());
-				}
+					var $data = [];
+					$.each($media_id, function($index, $value){
+						var $e = $('.media-single a[data-id='+$value+']')
+						var $title = $e.data('title');
+						var $path = $e.data('path');
 
-				$prototype.image.delete(option);
-				$prototype.image.editor(option);
+						$data.push({
+							'id': 		$value,
+							'title': 	$title,
+							'path': 	$path,
+						});
+					});
+
+					if(option.selectable_multiple){
+						$(option.area).append(tmpl('tmpl-preview', $data));
+						var $val = $(option.input_field).val();
+						if(!$val){
+							$(option.input_field).val($media_id.join());
+						}else{
+							$(option.input_field).val($val+','+$media_id.join());
+						}
+					}else{
+						$(option.area).html(tmpl('tmpl-preview', $data));
+						$(option.input_field).val($media_id.join());
+					}
+
+					$prototype.image.delete(option);
+					$prototype.image.editor(option);
+				}
 				$(option.modal_content).modal('hide');
 
 			});

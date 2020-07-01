@@ -223,11 +223,11 @@
 @endsection
 
 @section('js')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.3/css/grapes.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/css/grapes.min.css">
 <link rel="stylesheet" href="/pagebuilder/css/pagebuilder.css">
 <link rel="stylesheet" href="/pagebuilder/css/tooltip.css">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.12/grapes.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/grapes.js"></script>
 <script src="/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
 <script src="/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
 <script>
@@ -323,6 +323,7 @@ $(function(){
             ],
         },
     });
+
     PageBuilder.load({!! $rows1["json"] !!}, "{!! $rows1['css'] !!}");
 
     $('.btn-submit').click(function(){
