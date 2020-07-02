@@ -224,8 +224,8 @@
 
 @section('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/css/grapes.min.css">
-<link rel="stylesheet" href="/pagebuilder/css/pagebuilder.css">
-<link rel="stylesheet" href="/pagebuilder/css/tooltip.css">
+<link rel="stylesheet" href="/pagebuilder/css/pagebuilder.css?t=<?=time()?>">
+<link rel="stylesheet" href="/pagebuilder/css/tooltip.css?t=<?=time()?>">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/grapes.js"></script>
 <script src="/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
@@ -310,15 +310,14 @@ $(function(){
         ],
         canvas: {
             styles: [
-                'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css',
                 '/theme/bootstrap4/css/main.css?t={{ time() }}',
                 '/theme/bootstrap4/css/grapesjs.css?t={{ time() }}',
             ],
             scripts: [
-                'https://code.jquery.com/jquery-3.3.1.slim.min.js',
-                'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
-                'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js'
             ],
         },
