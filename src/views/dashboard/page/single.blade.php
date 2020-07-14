@@ -224,11 +224,11 @@
 
 @section('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/css/grapes.min.css">
-<link rel="stylesheet" href="/pagebuilder/css/pagebuilder.css?t=<?=time()?>">
-<link rel="stylesheet" href="/pagebuilder/css/tooltip.css?t=<?=time()?>">
+<link rel="stylesheet" href="/ark/pagebuilder/css/pagebuilder.css?t=<?=time()?>">
+<link rel="stylesheet" href="/ark/pagebuilder/css/tooltip.css?t=<?=time()?>">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/grapes.js"></script>
-<script src="/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
+<script src="/ark/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
 <script src="/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
 <script>
 

@@ -226,12 +226,12 @@
 <script>tinymce.init({selector:'#content', height : "500"});</script>
 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.3/css/grapes.min.css">
-<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/pagebuilder.css">
-<link rel="stylesheet" href="https://builder.philip.place/pagebuilder/css/tooltip.css">
+<link rel="stylesheet" href="/ark/pagebuilder/css/pagebuilder.css">
+<link rel="stylesheet" href="/ark/pagebuilder/css/tooltip.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.12/grapes.js"></script>
-<script src="https://builder.philip.place/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
-<script src="https://builder.philip.place/theme/bootstrap4/js/grapesjs.js?t=<?=time()?>"></script>
+<script src="/ark/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
+<script src="/theme/bootstrap4/js/grapesjs.js?t=<?=time()?>"></script>
 
 <script>
 $(function(){
