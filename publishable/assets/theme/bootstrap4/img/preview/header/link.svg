@@ -1,0 +1,24 @@
+<svg viewBox="0 0 350 226" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="link">
+            <path d="M0,17 L350,17 L350,222 C350,224.209139 348.209139,226 346,226 L4,226 C1.790861,226 2.705415e-16,224.209139 0,222 L0,17 L0,17 Z" id="Rectangle-1" fill="#E3EBFF"></path>
+            <rect id="Rectangle-2" fill="#EEF3FF" x="32" y="34" width="286" height="192"></rect>
+            <path d="M4,0 L346,0 C348.209139,-4.05812251e-16 350,1.790861 350,4 L350,21 L350,21 L0,21 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle-3" fill="#EBF1FF"></path>
+            <g id="Group-3" transform="translate(0.000000, 20.000000)">
+                <rect id="Rectangle-4" fill="#428EF7" x="0" y="0" width="350" height="26"></rect>
+                <g id="Group-9" transform="translate(15.000000, 9.000000)">
+                    <rect id="Rectangle-5" fill="#9EC7FF" x="0" y="0" width="25" height="8" rx="2"></rect>
+                    <rect id="Rectangle-6" fill="#9EC7FF" x="41" y="0" width="23" height="8" rx="2"></rect>
+                    <rect id="Rectangle-7" fill="#9EC7FF" x="118" y="0" width="25" height="8" rx="2"></rect>
+                    <rect id="Rectangle-8" fill="#9EC7FF" x="79" y="0" width="23" height="8" rx="2"></rect>
+                </g>
+            </g>
+            <path d="M0,0 L350,0 L350,222 C350,224.209139 348.209139,226 346,226 L4,226 C1.790861,226 2.705415e-16,224.209139 0,222 L0,21 L0,21 Z" id="Rectangle-4" fill-opacity="0.346372378" fill="#000000" style="z-index: 1;"/>
+            <g id="Group-3" opacity="1" transform="translate(0, 20)">
+                <g id="Group-9" transform="translate(15, 9)">
+                    <rect id="Rectangle-9" fill="#E0EDFF" x="159" y="0" width="25" height="8" rx="2"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

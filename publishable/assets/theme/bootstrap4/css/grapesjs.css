@@ -1,0 +1,17 @@
+
+
+.navbar .nav-link {
+    padding: 0;
+}
+.navbar-nav .nav-item {
+    padding: 1rem .5rem;
+}
+@media all and (min-width: 992px) {
+    .navbar .nav-item:hover .dropdown-menu{ display: none; }
+}
+.gjs-empty{
+    height: 3rem !important;
+}
+.gjs-empty-text{
+    height: 1rem !important;
+}

@@ -74,7 +74,8 @@ class ArkServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/permission.php" => config_path('permission.php'),
             ],
             'ark' => [
-                "{$publishablePath}/assets/" => public_path('ark'),
+                "{$publishablePath}/assets/ark/" => public_path('ark'),
+                "{$publishablePath}/assets/theme/" => public_path('theme'),
             ],
             'packages'  =>  [
                 "{$publishablePath}/packages/" => public_path('packages'),

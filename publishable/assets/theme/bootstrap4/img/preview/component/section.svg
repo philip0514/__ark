@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 320 180" version="1.1">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="section">
+            <path d="M4,0 L320,0 C320,-4.05812251e-16 320,1.790861 320,4 L320,20 L320,20 L0,20 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle-0" fill="#EBF1FF"/>
+            <path d="M0,0 L320,0 L320,180 C320,180 320,160 320,180 L4,180 C1,160 2e-16,224.209139 0,160 L0,1 L0,1 Z" id="Rectangle-1" fill="#E3EBFF"/>
+            <rect id="Rectangle-2" data-name="Rectangle 2" width="320" height="160" rx="2" transform="translate(0 30)" fill="#6EABFF"/>
+        </g>
+    </g>
+</svg>

@@ -525,11 +525,28 @@ var Ark = function(){
 					var $tagName = $editor.getSelected().attributes.tagName;
 					switch($tagName){
 						case 'img':
-							$editor.getSelected().set('src', $url)
+							$editor.getSelected().set('src', $url);
 						break;
 						default:
-							$url = $url.replace('square', 'original');
-							$editor.getSelected().setStyle({ 'background-image': 'url("'+$url+'")' });
+							var $component = $editor.getSelected();
+							var $type = $component.attributes.type;
+
+							switch($type){
+								case 'card-overlay':
+									var $children = $component.components();
+									let $image = $children.filter(function(comp) {
+										if(comp.attributes.tagName=='img'){
+											return comp;
+										}
+									})[0];
+
+									$image.set('src', $url);
+								break;
+								default:
+									$url = $url.replace('square', 'original');
+									$editor.getSelected().setStyle({ 'background-image': 'url("'+$url+'")' });
+								break;
+							}
 						break;
 					}
 				}else{
