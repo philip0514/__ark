@@ -23,6 +23,9 @@ class NewsRepository extends Repository
 			->with([
 				'ogimages'	=>	function($query){
 					$query->orderBy('sort', 'asc');
+				},
+				'media'	=>	function($query){
+					$query->orderBy('sort', 'asc');
 				}
 			])
 			->find($id);
@@ -59,6 +62,19 @@ class NewsRepository extends Repository
 			];
 		}
 
+		$media_input = explode(',',$data['media_input']);
+		unset($data['media_input']);
+		$media = [];
+		for($i=0; $i<sizeof($media_input); $i++){
+			if(!$media_input[$i]){
+				continue;
+			}
+			$media[ $media_input[$i] ] = [
+				'sort'		=>	$i,
+				'type'		=>	'media',
+			];
+		}
+
         switch($id){
             default:
 			case 0:
@@ -86,6 +102,7 @@ class NewsRepository extends Repository
 
 		$rows1 = $this->model->checkTrashed()->find($id);
 		$rows1->ogimages()->sync($ogimage);
+		$rows1->media()->sync($media);
 
         if($deleted){
             $this->delete($id);

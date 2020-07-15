@@ -131,10 +131,14 @@ class NewsController extends Controller
                 $news_time = strtotime( $request->input('news_time', date('Y-m-d H:i:s', time()) ) );
                 $description = $request->input('description', null);
                 $content = $request->input('content', null);
+                $html = $request->input('htmlContent', null);
+                $css = str_replace('"', "'", $request->input('cssContent', null));
+                $json = $request->input('jsonContent', null);
 				$deleted = $request->input('deleted', 0);
 				$display = $request->input('display', 0);
 				$method = $request->input('__method', 0);
 				$ogimage_input = $request->input('ogimage_input', 0);
+				$media_input = $request->input('media_input', 0);
 
 				$data = [
 					'id'			=>	$id,
@@ -142,7 +146,11 @@ class NewsController extends Controller
 					'news_time'		=>	$news_time,
 					'description'	=>	$description,
 					'content'		=>	$content,
+					'html'			=>	$html,
+					'css'			=>	$css,
+					'json'			=>	$json,
 					'ogimage_input'	=>	$ogimage_input,
+					'media_input'	=>	$media_input,
 					'deleted'		=>	$deleted,
 					'display'		=>	$display,
 				];
@@ -163,6 +171,7 @@ class NewsController extends Controller
         }
 
         $rows1 = [];
+		$html = $json = null;
         if($id){
             $rows1 = $this->repo->main->single($id);
             if(!$rows1){
@@ -175,6 +184,10 @@ class NewsController extends Controller
 			$rows2 = $media->integrate($rows1['ogimages'], 'facebook');
 			$rows1['ogimage_input'] = $rows2['id'];
 			$rows1['ogimage_data'] = $rows2['data'];
+
+			$rows2 = $media->integrate($rows1['media'], 'square');
+			$rows1['media_input'] = $rows2['id'];
+			$rows1['media_data'] = $rows2['data'];
 		}
 
         $data = [

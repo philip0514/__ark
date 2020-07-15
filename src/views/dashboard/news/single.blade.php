@@ -105,6 +105,13 @@
                                         <div class="row ogimage-area">@if(isset($rows1['ogimage_data'])) @each('ark::Dashboard.media.preview', $rows1['ogimage_data'], 'data') @endif</div>
                                         <input id="ogimage_input" name="ogimage_input" class="ogimage_input" type="hidden" value="{{ isset($rows1['ogimage_input']) ? $rows1['ogimage_input'] : '' }}" />
                                     </div>
+
+                                    <div class="form-group">
+                                        <a href="javascript:;" class="btn btn-primary btn-media-manager m-t-10 m-b-10"><i class="fa fa-plus"></i> 選擇新聞圖片</a>
+                                        <div class="alert alert-info">圖片可以拖曳排序</div>
+                                        <div class="row media-area">@if(isset($rows1['media_data'])) @each('ark::Dashboard.media.preview', $rows1['media_data'], 'data') @endif</div>
+                                        <input id="media_input" name="media_input" class="media_input" type="hidden" value="{{isset($rows1['media_input']) ? $rows1['media_input'] : null}}" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +129,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <textarea name="content" id="content">{{ isset($rows1['content']) ? $rows1['content'] : null }}</textarea>
+                                <div id="editor"></div>
                             </div>
                         </div>
                     </div>
@@ -158,16 +165,21 @@
 
 @section('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" integrity="sha256-b5ZKCi55IX+24Jqn638cP/q3Nb2nlx+MH/vMMqrId6k=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/css/grapes.min.css">
+<link rel="stylesheet" href="/ark/pagebuilder/css/pagebuilder.css?t=<?=time()?>">
+<link rel="stylesheet" href="/ark/pagebuilder/css/tooltip.css?t=<?=time()?>">
 @endsection
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha256-5YmaxAwMjIpMrVlK84Y/+NjCpKnFYa8bWWBbUHSBGfU=" crossorigin="anonymous"></script>
-<script src="https://cdn.tiny.cloud/1/pat6gvrra1ufopdrc2gorucnzjhu2ng6uwtw4tdqyhib956j/tinymce/5/tinymce.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.16.18/grapes.js"></script>
+<script src="/ark/pagebuilder/js/pagebuilder.js?t=<?=time()?>"></script>
+<script src="/theme/bootstrap4/js/grapes.js?t=<?=time()?>"></script>
+
 <script>
 $(function(){
-    tinymce.init({selector:'#content', height : "500"});
     $("#form1").validate({
         rules: {
             "name": {
@@ -199,9 +211,35 @@ $(function(){
 
     Ark.datepicker.date('#news_time');
     Ark.ogimage();
+    Ark.media();
+
+    PageBuilder.gjs({
+        plugins: [
+            'bootstrap4',
+        ],
+        canvas: {
+            styles: [
+                'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css',
+                '/theme/bootstrap4/css/main.css',
+                '/theme/bootstrap4/css/grapesjs.css',
+            ],
+            scripts: [
+                'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js'
+            ],
+        },
+    });
+
+    PageBuilder.load({!! $rows1['json'] ? $rows1['json'] : '{}' !!}, "{!! $rows1['css'] !!}");
 
     $('.btn-submit').click(function(){
-        tinymce.triggerSave();
+        PageBuilder.save({
+            'html': '#htmlContent',
+            'css': '#cssContent',
+            'json': '#jsonContent',
+        });
     });
 
     Ark.submit();

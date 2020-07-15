@@ -13,6 +13,9 @@ $config = [
     'error' =>  [
         'login'     =>  '帳號密碼錯誤，請確認後重新輸入',
     ],
+    'web'   =>  [
+        'url'       =>  env('WEB_URL', null),
+    ],
     'api'   =>  [
         'url'       =>  env('API_URL', null),
         'version'   =>  env('API_VERSION', null),
@@ -31,7 +34,7 @@ $config = [
             'active'        =>  false,
             'root'          =>  env('AWS_S3_URL'),
         ],
-        'root'          =>  '/storage',
+        'root'          =>  env('WEB_URL', null).'/storage',
         'upload'        =>  '/upload',
         'dimensions'    =>  [
             'large'         =>  [

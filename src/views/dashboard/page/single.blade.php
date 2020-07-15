@@ -51,7 +51,7 @@
 									<label for="type" class="form-control-label">頁面類型</label>
 									<div>
 										<select class="selectpicker" id="type" name="type" data-style="btn-dark" data-width="100%">
-											@foreach($type as $index => $value){
+											@foreach($type as $index => $value)
                                             <option 
                                                 value="{{ $value['id'] }}" 
                                                 data-editable="{{ $value['editable'] }}"
@@ -186,7 +186,7 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                                
+
                                 <div id="editor"></div>
 
                             </div>
@@ -323,7 +323,7 @@ $(function(){
         },
     });
 
-    PageBuilder.load({!! $rows1["json"] !!}, "{!! $rows1['css'] !!}");
+    PageBuilder.load({!! $rows1['json'] ? $rows1['json'] : '{}' !!}, "{!! $rows1['css'] !!}");
 
     $('.btn-submit').click(function(){
         PageBuilder.save({

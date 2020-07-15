@@ -127,7 +127,7 @@ var Ark = function(){
 			});
 		}
 	}
-	
+
 	var ogimage = function($max){
 		$('.btn-ogimage-manager').media({
 			area: 					'.ogimage-area',
@@ -135,6 +135,14 @@ var Ark = function(){
 			selectable_limit:		$max,
 			selectable_multiple:	1,
 			size:					'facebook',
+		});
+	};
+
+	var media = function($max){
+		$('.btn-media-manager').media({
+			area: 					'.media-area',
+			input_field: 			'.media_input',
+			selectable_multiple:	1,
 		});
 	};
 
@@ -373,6 +381,10 @@ var Ark = function(){
 		ogimage: function($max=3)
 		{
 			ogimage($max);
+		},
+		media: function($max=0)
+		{
+			media($max);
 		},
 		datepicker: {
 			date: function($e)

@@ -68,9 +68,10 @@ class MediaSerializer extends Collection
 			$month = date('Ym', $time);
 
 			$path = [];
-			$rows1 = config('api.media');
-			for($i=0; $i<sizeof($rows1); $i++){
-				$path[ $rows1[$i] ] = sprintf('%s%s/%s/%s/%s', config('ark.media.root'), config('ark.media.upload'), $rows1[$i], $month, $name);
+			$dimensions = array_keys(config('ark.media.dimensions'));
+
+			for($i=0; $i<sizeof($dimensions); $i++){
+				$path[ $dimensions[$i] ] = sprintf('%s%s/%s/%s/%s', config('ark.media.root'), config('ark.media.upload'), $dimensions[$i], $month, $name);
 			}
 
 			return $path;

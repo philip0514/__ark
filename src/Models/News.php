@@ -19,6 +19,11 @@ class News extends Model
 
     public function ogimages()
     {
-        return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations');
+        return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations')->wherePivot('type', 'ogimage');
+    }
+
+    public function media()
+    {
+        return $this->morphToMany('Philip0514\Ark\Models\Media', 'media_relations')->wherePivot('type', 'media');
     }
 }
