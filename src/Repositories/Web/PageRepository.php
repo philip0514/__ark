@@ -26,8 +26,12 @@ class PageRepository
 			'url'	=>	$url
 		]);
 
-		$result = $response['data'];
+		$data = $response['data'];
+		$html = $response['html'];
 
-		return $result;
+		return [
+			'data'		=>	$data,
+			'html'		=>	$html,
+		];
 	}
 }

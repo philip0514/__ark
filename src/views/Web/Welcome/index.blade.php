@@ -1,19 +1,19 @@
 @extends('ark::Web.welcome.app')
 
 @section('header')
-{!! $header !!}
+{!! $html['header'] !!}
 @endsection
 
 @section('content')
-{!! $html !!}
+{!! $html['body'] !!}
 @endsection
 
 @section('footer')
-{!! $footer !!}
+{!! $html['footer'] !!}
 @endsection
 
 @section('css')
 <style>
-{!! $css !!}
+{!! isset($html['css']) ? $html['css'] : '' !!}
 </style>
 @endsection

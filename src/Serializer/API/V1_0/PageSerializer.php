@@ -37,11 +37,11 @@ class PageSerializer extends Collection
 	{
 		$meta = $site;
 
-		if($data['title']){
+		if(isset($data['title']) && $data['title']){
 			$meta['title'] = $data['title'];
 		}
 
-		if($data['description']){
+		if(isset($data['description']) && $data['description']){
 			$meta['description'] = $data['description'];
 		}
 

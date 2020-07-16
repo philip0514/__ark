@@ -16,19 +16,36 @@ class PageBlockRepository
 
 	public function parse($html, $json)
 	{
+		//minify html
+		$search = array(
+			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+			'/[^\S ]+\</s',     // strip whitespaces before tags, except space
+			'/(\s)+/s',         // shorten multiple whitespace sequences
+			'/<!--(.|\s)*?-->/' // Remove HTML comments
+		);
+		$replace = array(
+			'>',
+			'<',
+			'\\1',
+			''
+		);
+		$html = preg_replace($search, $replace, $html);
+
+		//dom parser
         $dom = HtmlDomParser::str_get_html($html);
 		$headerHtml = $footerHtml = $pageHtml = null;
 		$headerJson = $footerJson = $pageJson = [];
 		if($html){
 			$headerDom = $dom->find('header', 0);
 			$footerDom = $dom->find('footer', 0);
-			
+
 			if($headerDom){
 				$headerHtml = $headerDom->outertext;
 			}
 			if($footerDom){
 				$footerHtml = $footerDom->outertext;
 			}
+
 			$pageHtml = str_replace($headerHtml, '', $html);
 			$pageHtml = str_replace($footerHtml, '', $pageHtml);
 		}

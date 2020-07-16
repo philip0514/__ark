@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $meta['title'] }}</title>
-    <meta name="description" content="{{ $meta['description'] }}">
-    <meta name="keywords" content="{{ $meta['keywords'] }}">
+    <title>{{ $html['meta']['title'] }}</title>
+    <meta name="description" content="{{ $html['meta']['description'] }}">
+    <meta name="keywords" content="{{ $html['meta']['keywords'] }}">
 
     <meta property="og:type" 		content="website" />
-    <meta property="og:site_name" 	content="{{ $meta['site_name'] }}" />
-    <meta property="og:title" 		content="{{ $meta['title'] }}" />
-    <meta property="og:description" content="{{ $meta['description'] }}" />
+    <meta property="og:site_name" 	content="{{ $html['meta']['site_name'] }}" />
+    <meta property="og:title" 		content="{{ $html['meta']['title'] }}" />
+    <meta property="og:description" content="{{ $html['meta']['description'] }}" />
     <meta property="og:url" 		content="{{ url()->current() }}" />
-@for($i=0; $i<sizeof($meta['ogimage']); $i++)
-    <meta property="og:image" 		content="{{ $meta['ogimage'][$i] }}" />
+@for($i=0; $i<sizeof($html['meta']['ogimage']); $i++)
+    <meta property="og:image" 		content="{{ $html['meta']['ogimage'][$i] }}" />
 @endfor
 
 

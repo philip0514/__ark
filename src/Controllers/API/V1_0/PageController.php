@@ -33,11 +33,12 @@ class PageController extends Controller
 			$user_id = $token['user_id'];
 
 			$url = $request->input('url', null);
-			
-			$data = $this->repo->page->get($url, $user_id);
+
+			$html = $this->repo->page->get($url, $user_id);
 
 			return $this->responseSuccess([
-				'data'	=>	$data
+				'data'	=>	null,
+				'html'	=>	$html,
 			]);
 		}
 		catch(Exception $e){

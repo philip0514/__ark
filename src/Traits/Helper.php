@@ -41,7 +41,7 @@ trait Helper
         if(config('ark.media.s3.active')){
             $root = config('ark.media.s3.root');
         }else{
-            $root = '//'.request()->getHost().config('ark.media.root');
+            $root = config('ark.media.root');
         }
         $path = sprintf('%s%s/%s/%s/%s', $root, config('ark.media.upload'), $folder, $month, $name);
 

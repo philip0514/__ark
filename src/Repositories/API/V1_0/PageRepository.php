@@ -116,8 +116,24 @@ class PageRepository
 			'meta'		=>	$meta,
 			'header'	=>	$headerFooter['header'],
 			'footer'	=>	$headerFooter['footer'],
-			'html'		=>	$rows2['html'],
+			'body'		=>	$rows2['html'],
 			'css'		=>	$rows2['css'],
 		];
-    }
+	}
+	
+	public function site($rows1, $user_id=0)
+	{
+		$serializer = new PageSerializer();
+
+		$meta = $serializer->meta($rows1, $this->meta);
+
+		$headerFooter = $this->getHeaderFooter($user_id);
+
+		return [
+			'meta'		=>	$meta,
+			'header'	=>	$headerFooter['header'],
+			'footer'	=>	$headerFooter['footer'],
+		];
+
+	}
 }

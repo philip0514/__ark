@@ -68,12 +68,11 @@ trait Response
 
     protected function responseSuccess($rows1=null, $code=200, $outout='json')
     {
-        //$data = isset($rows1['data']) && sizeof($rows1['data']) ? $rows1['data'] : null;
         $data = isset($rows1['data']) ? $rows1['data'] : null;
         $data = is_array($data) ? $data : [];
         $data = sizeof($data) ? $data : null;
 
-        $meta = isset($rows1['meta']) ? $rows1['meta'] : null;
+        $html = isset($rows1['html']) ? $rows1['html'] : null;
         $pagination = isset($rows1['pagination']) ? $rows1['pagination'] : null;
        
         $result = [
@@ -81,12 +80,12 @@ trait Response
             'status_code'	=>	$code,
             'error'			=>	null,
             'data'			=>	$data,
-            'meta'          =>  $meta,
             'pagination'    =>  $pagination,
+            'html'          =>  $html,
         ];
 
-        if(!$meta){
-            unset($result['meta']);
+        if(!$html){
+            unset($result['html']);
         }
 
         if(!$pagination){
@@ -95,7 +94,6 @@ trait Response
 
 		return response()->json($result, 200);
     }
-
 
     protected function pagination($result)
     {
@@ -106,7 +104,6 @@ trait Response
 			'last_page'		=>	(int)$result->lastPage(),
 			'next_page_url'	=>	$result->nextPageUrl(),
 			'prev_page_url'	=>	$result->previousPageUrl(),
-			
 		];
     }
 }

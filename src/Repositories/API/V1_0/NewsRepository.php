@@ -40,7 +40,7 @@ class NewsRepository
         }
     }
 
-	public function single($id)
+	public function show($id)
 	{
 		try {
 			$result = $this->model
@@ -63,7 +63,7 @@ class NewsRepository
 			if(!isset($result->id)){
 				throw new Exception('news_404');
 			}else{
-				return $result;
+				return $result->toArray();
 			}
 
 		}catch(Exception $e){

@@ -52,6 +52,12 @@ $route->group([
     $route->get('search', 'SearchController@index')->name('search');
 
     /**
+     *  News
+     */
+    $route->get('news', 'NewsController@index')->name('news');
+    $route->get('news/{id}', 'NewsController@show')->name('news_show');
+
+    /**
      *  Page
      */
     $route->get('/{page}', 'PageController')->name('page');

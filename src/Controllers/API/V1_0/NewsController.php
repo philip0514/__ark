@@ -5,8 +5,10 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-use Philip0514\Ark\Repositories\API\V1_0\NewsRepository;
+//Repository
+use Philip0514\Ark\Repositories\API\V1_0\UserRepository;
 use Philip0514\Ark\Repositories\API\V1_0\PageRepository;
+use Philip0514\Ark\Repositories\API\V1_0\NewsRepository;
 
 //Traits
 use Philip0514\Ark\Traits\Response;
@@ -21,13 +23,15 @@ class NewsController extends Controller
 	private $repo;
 
 	function __construct(
-		NewsRepository $NewsRepository,
-		PageRepository $PageRepository
+		UserRepository $UserRepository,
+		PageRepository $PageRepository,
+		NewsRepository $NewsRepository
 	)
 	{
 		$this->repo = new \stdClass();
-		$this->repo->news = $NewsRepository;
+		$this->repo->user = $UserRepository;
 		$this->repo->page = $PageRepository;
+		$this->repo->news = $NewsRepository;
     }
 
     public function index(Request $request)
@@ -36,6 +40,9 @@ class NewsController extends Controller
 			$page = $request->get('page', 1);
 			$limit = $request->get('limit', 10);
 			$start = $limit*($page-1);
+
+			$token = $this->repo->user->parse_token($request);
+			$user_id = $token['user_id'];
 
 			$data = $this->repo->news->index($start, $limit);
 
@@ -56,10 +63,14 @@ class NewsController extends Controller
 			])->links();
 			$pagination = $this->pagination($paginate);
 
+			$html = $this->repo->page->site([
+				'title'		=>	'最新消息',
+			], $user_id);
+
 			return $this->responseSuccess([
 				'data'			=>	$result,
 				'pagination'	=>	$pagination,
-				//'meta'			=>	$meta,
+				'html'			=>	$html,
 			]);
 		}
 		catch(Exception $e){
@@ -71,14 +82,28 @@ class NewsController extends Controller
     public function show(Request $request, $id)
     {
 		try{
+			$token = $this->repo->user->parse_token($request);
+			$user_id = $token['user_id'];
+
 			$result = $this->repo->news->show($id);
 
 			if(isset($result["error"])){
 				throw new Exception($result["error"]);
 			}
 
+			$serializer = new NewsSerializer();
+			$result = $serializer->show($result);
+
+			$html = $this->repo->page->site([
+				'title'				=>	$result['name'],
+				'description'		=>	$result['description'],
+				'ogimage'			=>	$result['ogimage'],
+			], $user_id);
+			unset($result['ogimage']);
+
 			return $this->responseSuccess([
-				'data'	=>	$result,
+				'data'			=>	$result,
+				'html'			=>	$html,
 			]);
 		}
 		catch(Exception $e){

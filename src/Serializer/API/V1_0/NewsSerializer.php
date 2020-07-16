@@ -28,6 +28,7 @@ class NewsSerializer extends Collection
 				'id'				=>	(int)$data->id,
 				'name'				=>	htmlspecialchars_decode($data->name),
 				'description'		=>	htmlspecialchars_decode($data->description),
+				'news_time'			=>	$data->news_time,
 				'media'				=>	$media,
 			];
 		});
@@ -35,5 +36,23 @@ class NewsSerializer extends Collection
 		$data = $this->manager($resource);
 		
 		return $data;
+	}
+	
+	public function show($data)
+	{
+		$data = (object)$data;
+		$serializer = new MediaSerializer();
+		$media = $serializer->collection($data->media);
+		$ogimage = $serializer->collection($data->ogimages);
+
+		return [
+			'id'				=>	(int)$data->id,
+			'name'				=>	htmlspecialchars_decode($data->name),
+			'description'		=>	htmlspecialchars_decode($data->description),
+			'news_time'			=>	$data->news_time,
+			'media'				=>	$media,
+			'content'			=>	$data->html,
+			'ogimage'			=>	$ogimage,
+		];
 	}
 }
