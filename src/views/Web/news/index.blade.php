@@ -4,6 +4,7 @@
 {!! $html['header'] !!}
 @endsection
 
+@section('content')
 <section style="padding-top: 100px">
     <div class="container">
         <div class="row">
@@ -27,6 +28,7 @@
         </div>
     </div>
 </section>
+@endsection
 
 @section('footer')
 {!! $html['footer'] !!}
