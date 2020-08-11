@@ -5,10 +5,11 @@ use League\Fractal\Resource\Collection;
 
 //Traits
 use Philip0514\Ark\Traits\Serializer;
+use Philip0514\Ark\Traits\Helper;
 
 class MediaSerializer extends Collection
 {
-	use Serializer;
+	use Serializer, Helper;
 
 	public function data($data, $size='square')
 	{
@@ -80,5 +81,15 @@ class MediaSerializer extends Collection
 		$data = $this->manager($resource);
 		
 		return $data;
+	}
+
+	public function ogimage($data)
+	{
+		$ogimage = [];
+		for($i=0; $i<sizeof($data); $i++){
+			$ogimage[] = $this->mediaPath($data[$i]['name'], 'facebook');
+		}
+		
+		return $ogimage;
 	}
 }

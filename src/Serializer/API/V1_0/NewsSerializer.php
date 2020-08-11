@@ -43,7 +43,7 @@ class NewsSerializer extends Collection
 		$data = (object)$data;
 		$serializer = new MediaSerializer();
 		$media = $serializer->collection($data->media);
-		$ogimage = $serializer->collection($data->ogimages);
+		$ogimage = $serializer->ogimage($data->ogimages);
 
 		return [
 			'id'				=>	(int)$data->id,

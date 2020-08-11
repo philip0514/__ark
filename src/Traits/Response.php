@@ -72,6 +72,7 @@ trait Response
         $data = is_array($data) ? $data : [];
         $data = sizeof($data) ? $data : null;
 
+        $meta = isset($rows1['meta']) ? $rows1['meta'] : null;
         $html = isset($rows1['html']) ? $rows1['html'] : null;
         $pagination = isset($rows1['pagination']) ? $rows1['pagination'] : null;
        
@@ -80,9 +81,14 @@ trait Response
             'status_code'	=>	$code,
             'error'			=>	null,
             'data'			=>	$data,
-            'pagination'    =>  $pagination,
+            'meta'          =>  $meta,
             'html'          =>  $html,
+            'pagination'    =>  $pagination,
         ];
+
+        if(!$meta){
+            unset($result['meta']);
+        }
 
         if(!$html){
             unset($result['html']);

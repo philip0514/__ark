@@ -30,7 +30,7 @@ class PageRepository
 		$this->meta = $serializer->siteMeta($site);
 	}
 
-	private function getHeaderFooter($user_id=0)
+	public function getHeaderFooter($user_id=0)
 	{
 		$pageBlock = new PageBlock();
 
@@ -120,20 +120,13 @@ class PageRepository
 			'css'		=>	$rows2['css'],
 		];
 	}
-	
-	public function site($rows1, $user_id=0)
+
+	public function meta($meta)
 	{
 		$serializer = new PageSerializer();
 
-		$meta = $serializer->meta($rows1, $this->meta);
+		$meta = $serializer->meta($meta, $this->meta);
 
-		$headerFooter = $this->getHeaderFooter($user_id);
-
-		return [
-			'meta'		=>	$meta,
-			'header'	=>	$headerFooter['header'],
-			'footer'	=>	$headerFooter['footer'],
-		];
-
+		return $meta;
 	}
 }

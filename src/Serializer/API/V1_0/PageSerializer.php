@@ -51,11 +51,17 @@ class PageSerializer extends Collection
 			$meta['keywords'] = $tag;
 		}
 
+		if(isset($data['ogimage']) && $data['ogimage']){
+			$meta['ogimage'] = $data['ogimage'];
+		}
+
+		/*
 		$ogimages = isset($data['ogimages']) && $data['ogimages'] ? $data['ogimages'] : [];
 		$ogimage = $this->ogimage($ogimages);
 		if($ogimage){
 			$meta['ogimage'] = $ogimage;
 		}
+		*/
 
 		return $meta;
 	}

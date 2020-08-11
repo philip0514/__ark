@@ -35,9 +35,12 @@ class PageController extends Controller
 			$url = $request->input('url', null);
 
 			$html = $this->repo->page->get($url, $user_id);
+			$meta = $html['meta'];
+			unset($html['meta']);
 
 			return $this->responseSuccess([
 				'data'	=>	null,
+				'meta'	=>	$meta,
 				'html'	=>	$html,
 			]);
 		}

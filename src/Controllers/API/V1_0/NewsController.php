@@ -63,14 +63,14 @@ class NewsController extends Controller
 			])->links();
 			$pagination = $this->pagination($paginate);
 
-			$html = $this->repo->page->site([
+			$meta = $this->repo->page->meta([
 				'title'		=>	'最新消息',
-			], $user_id);
+            ]);
 
 			return $this->responseSuccess([
 				'data'			=>	$result,
 				'pagination'	=>	$pagination,
-				'html'			=>	$html,
+				'meta'			=>	$meta,
 			]);
 		}
 		catch(Exception $e){
@@ -94,16 +94,16 @@ class NewsController extends Controller
 			$serializer = new NewsSerializer();
 			$result = $serializer->show($result);
 
-			$html = $this->repo->page->site([
-				'title'				=>	$result['name'],
-				'description'		=>	$result['description'],
-				'ogimage'			=>	$result['ogimage'],
-			], $user_id);
+			$meta = $this->repo->page->meta([
+				'title'			=>	$result['name'],
+				'description'	=>	$result['description'],
+				'ogimage'		=>	$result['ogimage'],
+			]);
 			unset($result['ogimage']);
 
 			return $this->responseSuccess([
 				'data'			=>	$result,
-				'html'			=>	$html,
+				'meta'			=>	$meta,
 			]);
 		}
 		catch(Exception $e){
