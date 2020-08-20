@@ -1,5 +1,5 @@
 <?php
-namespace Philip0514\Ark\Repositories\Api\V1_0;
+namespace Philip0514\Ark\Repositories\API\V1_0;
 
 //Models
 use Philip0514\Ark\Models\Zip;
