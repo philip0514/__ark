@@ -60,5 +60,5 @@ $route->group([
     /**
      *  Page
      */
-    $route->get('/{page}', 'PageController')->name('page');
+    //$route->get('/{page}', 'PageController')->name('page');
 });
